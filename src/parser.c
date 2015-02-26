@@ -3,17 +3,20 @@
 #include <stdlib.h>
 #include "parser.h"
 
-int read_file(FILE *f){
-	fopen(f,"r");
-	int count=0;
-	char linha[100];
-	while(fscanf(f,"%s\n",linha)!=EOF){
-		count++;
-	}
-	return count;
+int read_file(char* filename){
+  FILE *fp;
+  fp = fopen(filename,"r");
+  int count=0;
+  char linha[100];
+  while( fgets (linha, sizeof linha, fp) != NULL){
+    count++;
+  }
+  fclose(fp);
+  return count;
 }
 
 int main(){
-	read_file("../files/compras.txt");
-	return 0;
+  printf("número de linhas %d\n",read_file("../files/compras.txt"));
+  return 0;
 }
+
