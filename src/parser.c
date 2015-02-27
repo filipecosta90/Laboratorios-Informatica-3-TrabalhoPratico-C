@@ -18,9 +18,19 @@ int productOk(char* line){
 }
 
 int priceOk(char* buf){
-
-  return 0;
-
+  volatile int totalSize = strlen(buf);
+  volatile int untilPoint = strcspn(buf,".");
+  volatile int position = 0;
+  volatile int errorFlag = 0;
+  while (position < totalSize && errorFlag != 1){
+    if(position != untilPoint){
+      if(!isdigit(buf[position])){
+        errorFlag = 1;
+      }
+    }
+    position++;
+  }
+  return errorFlag;
 }
 
 int unitOk (char* buf){
