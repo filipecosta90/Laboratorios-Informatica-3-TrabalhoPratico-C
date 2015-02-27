@@ -1,21 +1,96 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include <string.h>
+
 #include "parser.h"
+
+int productOk(char* line){
+  int result = 1;
+  if(isalpha(line[0])){
+    if(isalpha(line[1])){
+      if( isdigit(line[2]) && isdigit(line[3]) && isdigit(line[4]) && isdigit(line[5]) ){
+        result = 0;
+      }
+    }
+  }
+  return result;
+}
+
+int priceOk(char* buf){
+
+  return 0;
+
+}
+
+int unitOk (char* buf){
+
+  return 0;
+}
+
+int salesTypeOk(char* buf){
+
+  return ( buf[0] == 'P' || buf[0] == 'p' || buf[0] == 'n'|| buf[0] == 'N' ) ? 0 : 1;
+}
+
+int clientOk(char* buf){
+  return 0;
+}
+
+int monthOk(char* buf){
+  return 0;
+}
 
 int read_file(char* filename){
   FILE *fp;
   fp = fopen(filename,"r");
-  int count=0;
-  char linha[100];
-  while( fgets (linha, sizeof linha, fp) != NULL){
-    count++;
+  volatile int totalCount=0;
+  volatile int correctCount=0;
+  volatile int errorCount=0;
+  volatile int error = 0;
+  volatile int tokenPosition = 0;
+  char buf[32];
+  char* tk;
+  while( fgets (buf, sizeof buf, fp) != NULL){
+    totalCount++;
+    tk = strtok(buf, " ");
+    productOk(tk) == 0  ? tokenPosition++ : error++;
+    if(!error){
+      tk = strtok(NULL, " ");
+      priceOk(tk) == 0? tokenPosition++ : error++;
+      if(!error){
+        tk = strtok(NULL, " ");
+        unitOk(tk) == 0 ? tokenPosition++ : error++;
+        if(!error){
+          tk = strtok(NULL, " ");
+          salesTypeOk(tk) == 0? tokenPosition ++ : error++;
+          if(!error){
+            tk = strtok(NULL, " ");
+            clientOk(tk) == 0? tokenPosition ++ : error++;
+            if(!error){
+              tk = strtok(NULL, " ");
+              monthOk(tk) == 0 ? tokenPosition ++ : error++;
+              if(error==0){
+                correctCount++;
+              }
+              else{
+                errorCount++;
+              }
+            }
+          }
+        }
+      }
+    }
+    error=0;
+    tokenPosition=0;
   }
   fclose(fp);
-  return count;
+  printf("total %d, correct %d, error %d\n", totalCount, correctCount, errorCount);
+  return totalCount;
 }
 
-int main(){
+int main(void){
+
   printf("número de linhas %d\n",read_file("../files/compras.txt"));
   return 0;
 }

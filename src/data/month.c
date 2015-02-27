@@ -1,7 +1,9 @@
 typedef struct Month {
 
-  int numberSales;
-  int numberClients;
+  static int numberSales;
+  static int numberClients;
 
 }Month;
+
+
 
