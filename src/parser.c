@@ -24,7 +24,13 @@ int priceOk(char* buf){
 }
 
 int unitOk (char* buf){
-
+/*	int result = 1,i=0;
+	while(buf[i]!='\0'){
+		if(isdigit(buf[i])){
+			result=0;
+			i++;
+		}
+	}*/
   return 0;
 }
 
