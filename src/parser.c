@@ -6,11 +6,14 @@
 #include "parser.h"
 
 int productOk(char* line){
-  int result = 1;
-  if(isalpha(line[0])){
-    if(isalpha(line[1])){
-      if( isdigit(line[2]) && isdigit(line[3]) && isdigit(line[4]) && isdigit(line[5]) ){
-        result = 0;
+  volatile int result = 1;
+  volatile int size = strlen(line);
+  if (size == 6){
+    if(isalpha(line[0])){
+      if(isalpha(line[1])){
+        if( isdigit(line[2]) && isdigit(line[3]) && isdigit(line[4]) && isdigit(line[5]) ){
+          result = 0;
+        }
       }
     }
   }
@@ -39,16 +42,45 @@ int unitOk (char* buf){
 }
 
 int salesTypeOk(char* buf){
-
-  return ( buf[0] == 'P' || buf[0] == 'p' || buf[0] == 'n'|| buf[0] == 'N' ) ? 0 : 1;
+  volatile int size = strlen (buf);
+  volatile int result = 1;
+  if (size == 1){
+    if( buf[0] == 'P' || buf[0] == 'p' || buf[0] == 'n'|| buf[0] == 'N' ) 
+    {
+      result = 0;
+    }
+  }
+  return result;
 }
 
 int clientOk(char* buf){
-  return 0;
+  volatile int result = 1;
+  volatile int size = strlen (buf);
+  if (size == 5){
+    if(isalpha(buf[0])){
+      if(isalpha(buf[1])){
+        if( isdigit(buf[2]) && isdigit(buf[3]) && isdigit(buf[4])){
+          result = 0;
+        }
+      }
+    }
+  }
+  return result;
 }
 
 int monthOk(char* buf){
-  return 0;
+  volatile int result = 0;
+  volatile int size = strlen (buf) - 2;
+  volatile int position = 0;
+  if(size >= 1 && size <=2 ){
+    while (position < size && result == 0){
+      if(!isdigit(buf[position])){
+        result = 1;
+      }
+      position++;
+    }
+  }
+  return result;
 }
 
 int read_file(char* filename){
