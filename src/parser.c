@@ -46,12 +46,19 @@ int unitOk (char* buf){
 }
 
 int salesTypeOk(char* buf){
-
   return ( buf[0] == 'P' || buf[0] == 'p' || buf[0] == 'n'|| buf[0] == 'N' ) ? 0 : 1;
 }
 
 int clientOk(char* buf){
-  return 0;
+	int result = 1;
+	if(isalpha(buf[0])){
+    	if(isalpha(buf[1])){
+      		if( isdigit(buf[2]) && isdigit(buf[3]) && isdigit(buf[4])){
+        		result = 0;
+      		}
+   		 }
+  	}
+  return result;
 }
 
 int monthOk(char* buf){
