@@ -34,14 +34,15 @@ int priceOk(char* buf){
 }
 
 int unitOk (char* buf){
-/*	int result = 1,i=0;
-	while(buf[i]!='\0'){
-		if(isdigit(buf[i])){
-			result=0;
-			i++;
+	int errorFlag=0,i=0;
+	int totalSize=strlen(buf);
+	while(i<totalSize && errorFlag!=1){
+		if(!isdigit(buf[i])){
+			errorFlag=1;
 		}
-	}*/
-  return 0;
+		i++;
+	}
+  return errorFlag;
 }
 
 int salesTypeOk(char* buf){
