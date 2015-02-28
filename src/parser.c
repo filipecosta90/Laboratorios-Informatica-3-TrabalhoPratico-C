@@ -37,8 +37,16 @@ int priceOk(char* buf){
 }
 
 int unitOk (char* buf){
-
-  return 0;
+  volatile int errorFlag=0;
+  volatile int position=0;
+  volatile int totalSize=strlen(buf);
+  while(position < totalSize && errorFlag==0){
+    if(!isdigit(buf[position])){
+      errorFlag=1;
+    }
+    position++;
+  }
+  return errorFlag;
 }
 
 int salesTypeOk(char* buf){
