@@ -6,17 +6,19 @@
 #ifndef _MONTH_H_INCLUDED_
 #define _MONTH_H_INCLUDED_
 
-typedef struct month* Month;
+typedef struct month * Month;
 
-void initMonth ( void );
+Month newMonth( void );
 
-int getNumberSales ( void );
+void initMonth ( Month );
 
-int getNumberClients ( void );
+int getNumberSales ( Month );
 
-void addSales ( int sales );
+int getNumberClients ( Month );
 
-void addClients ( int clients );
+void addSales ( Month , int );
+
+void addClients ( Month, int );
 
 #endif /* _MONTH_H_INCLUDED_ */
 

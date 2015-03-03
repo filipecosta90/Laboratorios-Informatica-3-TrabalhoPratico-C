@@ -1,30 +1,39 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "month.h"
 
-typedef struct month {
+struct month {
 
-  static int numberSales;
-  static int numberClients;
+  int numberSales;
+  int numberClients;
 
-}Month;
+};
 
-void initMonth( void ){
-  numberSales = 0;
-  numberClients = 0;
+Month newMonth ( void ) {
+  Month newMonth = (Month) malloc ( sizeof (struct month));
+  memset (( newMonth ) , '\0', ( sizeof ( struct month)) );
+  return newMonth;
 }
 
-int getNumberSales( void ){
-  return numberSales;
+void initMonth( Month initMonth ){
+  initMonth->numberSales = 0;
+  initMonth->numberClients = 0;
 }
 
-int getNumberClients(void ){
-  return numberClients;
+int getNumberSales( Month getMonth ){
+  return getMonth->numberSales;
 }
 
-void addSales ( int sales ) {
-  numberSales += sales;
+int getNumberClients( Month getMonth ){
+  return getMonth->numberClients;
 }
 
-void addClients ( int clients) {
-  numberClients += clients;
+void addSales ( Month addMonth , int sales ) {
+  addMonth->numberSales += sales;
+}
+
+void addClients ( Month addMonth , int clients) {
+  addMonth->numberClients += clients;
 }
 
