@@ -7,6 +7,7 @@
 #ifndef _CLIENT_H_INCLUDED_
 #define _CLIENT_H_INCLUDED_
 
+typedef struct client*  Client;
 
 #endif /* _CLIENT_H_INCLUDED_ */
 

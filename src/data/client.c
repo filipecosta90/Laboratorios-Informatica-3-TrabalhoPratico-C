@@ -4,5 +4,5 @@ typedef struct client {
   char secondLetter;
   char[3] numbers;
 
-};
+} Client;
 

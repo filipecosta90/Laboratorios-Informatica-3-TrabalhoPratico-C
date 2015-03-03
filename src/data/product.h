@@ -7,6 +7,7 @@
 #ifndef _PRODUCT_H_INCLUDED_
 #define _PRODUCT_H_INCLUDED_
 
+typedef struct product* Product;
 
 #endif /* _PRODUCT_H_INCLUDED_ */
 
