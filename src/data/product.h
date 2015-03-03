@@ -13,7 +13,7 @@ Product newProduct ( void );
 
 void initProduct ( Product );
 
-void setProduct ( char, char, char[4] );
+void setProduct ( Product, char, char, char[4] );
 
 char getFirstLetter ( Product );
 
