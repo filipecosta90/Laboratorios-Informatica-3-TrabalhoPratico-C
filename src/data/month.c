@@ -7,7 +7,7 @@ struct month {
 
   int numberSales;
   int numberClients;
-
+  float totalBilled;
 };
 
 Month newMonth ( void ) {
@@ -19,6 +19,7 @@ Month newMonth ( void ) {
 void initMonth( Month initMonth ){
   initMonth->numberSales = 0;
   initMonth->numberClients = 0;
+  initMonth->totalBilled = 0.0;
 }
 
 int getNumberSales( Month getMonth ){
@@ -29,12 +30,20 @@ int getNumberClients( Month getMonth ){
   return getMonth->numberClients;
 }
 
+float getTotalBilled ( Month getMonth ){
+  return getMonth->totalBilled;
+} 
+
 void addSales ( Month addMonth , int sales ) {
   addMonth->numberSales += sales;
 }
 
 void addClients ( Month addMonth , int clients) {
   addMonth->numberClients += clients;
+}
+
+void addBills ( Month addMonth, float bill) {
+  addMonth->totalBilled += bill;
 }
 
 void deleteMonth ( Month monthToDelete ){
