@@ -37,3 +37,7 @@ void addClients ( Month addMonth , int clients) {
   addMonth->numberClients += clients;
 }
 
+void deleteMonth ( Month monthToDelete ){
+  free( monthToDelete );
+}
+

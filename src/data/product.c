@@ -3,17 +3,15 @@
 #include "product.h"
 
 struct product {
-
   char firstLetter;
   char secondLetter;
   char numbers[4];
-
 };
 
 Product newProduct ( void ){
-  Product newProduct = (Product) malloc ( sizeof ( struct product ));
-  memset ( (newProduct), '\0', ( sizeof ( struct product)) );
-  return newProduct;
+  Product productNew = (Product) malloc ( sizeof ( struct product ));
+  memset ( ( productNew ), '\0', ( sizeof ( struct product)) );
+  return productNew;
 }
 
 void setProduct ( Product productToSet, char fstLetter, char sndLetter, char setNumbers[4] ){

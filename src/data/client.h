@@ -9,5 +9,17 @@
 
 typedef struct client*  Client;
 
+Client newClient ( void );
+
+void setClient ( Client , char, char, char[3] );
+
+char getFirstLetter ( Client );
+
+char getSecondLetter ( Client );
+
+char* getNumbers ( Client );
+
+int equals ( Client, Client );
+
 #endif /* _CLIENT_H_INCLUDED_ */
 
