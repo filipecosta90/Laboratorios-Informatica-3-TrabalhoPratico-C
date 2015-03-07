@@ -91,7 +91,7 @@ int monthOk(char* buf){
 	return result;
 }
 
-int read_file(char* filename){
+int read_file_sales(char* filename){
 	FILE *fp;
 	fp = fopen(filename,"r");
 	volatile int totalCount=0;
@@ -142,9 +142,71 @@ int read_file(char* filename){
 	return totalCount;
 }
 
+int read_file_product(char* filename){
+	FILE *fp;
+	fp = fopen(filename,"r");
+	volatile int totalCount=0;
+	volatile int correctCount=0;
+	volatile int errorCount=0;
+	volatile int error = 0;
+	volatile int tokenPosition = 0;
+	char buf[32];
+	volatile int maxSize=0;  
+	char* tk;
+	char* newtk;
+	while( fgets (buf, sizeof buf, fp) != NULL){
+		totalCount++;
+		if(strlen(buf)>maxSize){maxSize=strlen(buf);}
+		tk = strtok(buf, "\r");
+		productOk(tk) == 0  ? tokenPosition++ : error++;
+		if(error==0){
+			correctCount++;
+		}
+		else{
+			errorCount++;
+		}
+	}
+	fclose(fp);
+	printf("total %d, correct %d, error %d\n", totalCount, correctCount, errorCount);
+	printf("Max size of line: %d\n", maxSize);  
+	return totalCount;
+}
+
+int read_file_clients(char* filename){
+	FILE *fp;
+	fp = fopen(filename,"r");
+	volatile int totalCount=0;
+	volatile int correctCount=0;
+	volatile int errorCount=0;
+	volatile int error = 0;
+	volatile int tokenPosition = 0;
+	char buf[32];
+	volatile int maxSize=0;  
+	char* tk;
+	char* newtk;
+	while( fgets (buf, sizeof buf, fp) != NULL){
+		totalCount++;
+		if(strlen(buf)>maxSize){maxSize=strlen(buf);}
+		tk = strtok(buf, "\r");
+		clientOk(tk) == 0  ? tokenPosition++ : error++;
+		if(error==0){
+			correctCount++;
+		}
+		else{
+			errorCount++;
+		}
+	}
+	fclose(fp);
+	printf("total %d, correct %d, error %d\n", totalCount, correctCount, errorCount);
+	printf("Max size of line: %d\n", maxSize);  
+	return totalCount;
+}
+
 int main(void){
 
-	printf("número de linhas %d\n",read_file("../files/compras.txt"));
+	printf("número de linhas %d\n\n",read_file_sales("../files/compras.txt"));
+	printf("número de linhas %d\n\n",read_file_product("../files/FichProdutos.txt"));
+	printf("número de linhas %d\n\n",read_file_clients("../files/FichClientes.txt"));
 	return 0;
 }
 
