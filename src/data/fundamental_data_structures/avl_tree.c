@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "avl_tree.h"
+#include <stdio.h>
 
 struct internalAvlTreeNode {
   char* key_value;
@@ -19,12 +20,17 @@ AvlTree newAvlTree ( void ){
   return newTree;
 }
 
-static struct internalAvlTreeNode* newInternalNode ( char * key ){
+struct internalAvlTreeNode* newInternalNode ( char * key ){
   struct internalAvlTreeNode* newNode = ( struct internalAvlTreeNode* ) malloc ( sizeof ( struct internalAvlTreeNode ) );
+  int sizeToAllocate = strlen (key) +1;
+  printf("size to allocate: %s,%d\n", key, sizeToAllocate);
+  newNode->key_value = (char*) malloc ( sizeToAllocate * sizeof ( char ) );
   strcpy( newNode->key_value , key );
+  printf("new string copied: %s\n", newNode->key_value);
   newNode->left = NULL;
   newNode->right = NULL;
   newNode->height = 1;
+  printf("created new node\n");
   return newNode;
 }
 
@@ -90,33 +96,24 @@ static int getAvlBalance ( struct internalAvlTreeNode *node ){
   }
 }
 
-
-int getSizeOfAvlTree ( AvlTree getTree ){
-
-}
-
 static char* getRootKey ( AvlTree getTree ){
   return getTree->root->key_value;
 }
 
-void insertInAvlTree ( AvlTree tree, char* key){
+void internalInsertInAvlTree ( struct internalAvlTreeNode *insertTree, char* key){
 
-  // 1. Perform the normal Avl rotation
-  if( tree->root == NULL )
-    tree->root = newInternalNode ( key );
-
-  struct internalAvlTreeNode * insertTree = tree->root;
   int compareValue = strcmp ( key , insertTree->key_value ); 
   if( compareValue < 0 )
-    insertInAvlTree ( insertTree->left, key );
+    internalInsertInAvlTree ( insertTree->left, key );
   if( compareValue > 0 )
-    insertInAvlTree ( insertTree->right , key);
+    internalInsertInAvlTree ( insertTree->right , key);
 
   // 2. Update Height of this ancestor node 
   insertTree->height = max ( getHeightOfAvlTree ( insertTree->left ), getHeightOfAvlTree ( insertTree->right ) ) + 1;
 
   // 3. Get the balance factor of this ancestor node to check whetherthis node became unbalanced
-  int balance = getAvlBalance ( insertTree );
+  int balance;
+  balance = getAvlBalance ( insertTree );
 
   // If this node becomes unbalanced, then there are 4 cases
   // Left Left Case
@@ -140,4 +137,18 @@ void insertInAvlTree ( AvlTree tree, char* key){
     insertTree->right = rightRotate( insertTree->right );
     leftRotate( insertTree );
   }
+}
+
+void insertInAvlTree ( AvlTree tree, char* key ) {
+  printf("testing\n");
+  if ( tree->root == NULL ){
+    printf("tree->root was null! insertig:%s\n",key);
+    tree->root = newInternalNode ( key );
+    printf("inserted the node on root\n");
+  }
+  else{
+    printf("going to insert: %s",key);
+    internalInsertInAvlTree ( tree->root , key  );
+  }
+  printf("bye\n");
 }
