@@ -8,11 +8,13 @@
 
 typedef struct avlTree * AvlTree;
 
-AvlTree newAvlTree( void );
+void newAvlTree( AvlTree );
 
 int getSizeOfAvlTree ( AvlTree );
 
 void insertInAvlTree ( AvlTree , char* );
+
+void preOrder ( AvlTree );
 
 #endif /* _AVL_TREE_H_INCLUDED_ */
 

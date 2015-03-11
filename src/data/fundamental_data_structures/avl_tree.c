@@ -14,10 +14,9 @@ struct avlTree {
   struct internalAvlTreeNode *root;
 };
 
-AvlTree newAvlTree ( void ){
-  struct avlTree* newTree = ( struct avlTree* ) malloc ( sizeof (struct avlTree ));
+void newAvlTree ( struct avlTree* newTree ){
+  newTree = ( struct avlTree* ) malloc ( sizeof (struct avlTree ));
   newTree->root = NULL;
-  return newTree;
 }
 
 struct internalAvlTreeNode* newInternalNode ( char * key ){
@@ -62,13 +61,13 @@ static struct internalAvlTreeNode* rightRotate ( struct internalAvlTreeNode *y )
   return x;
 }
 
-static struct internalAvlTreeNode* leftRotate ( struct internalAvlTreeNode *y ) {
-  struct internalAvlTreeNode *x = y->left;
-  struct internalAvlTreeNode *T2 = x->right;
+static struct internalAvlTreeNode* leftRotate ( struct internalAvlTreeNode *x ) {
+  struct internalAvlTreeNode *y = x->right;
+  struct internalAvlTreeNode *T2 = y->left;
 
   // Perform rotation
-  x->left = y;
-  y->right = T2;
+  y->left = x;
+  x->right = T2;
 
   // Update heights
   x->height = max( height( x->left ), height( x->right ) ) +1;
@@ -101,41 +100,53 @@ static char* getRootKey ( AvlTree getTree ){
 }
 
 void internalInsertInAvlTree ( struct internalAvlTreeNode *insertTree, char* key){
-
-  int compareValue = strcmp ( key , insertTree->key_value ); 
-  if( compareValue < 0 )
-    internalInsertInAvlTree ( insertTree->left, key );
-  if( compareValue > 0 )
-    internalInsertInAvlTree ( insertTree->right , key);
-
-  // 2. Update Height of this ancestor node 
-  insertTree->height = max ( getHeightOfAvlTree ( insertTree->left ), getHeightOfAvlTree ( insertTree->right ) ) + 1;
-
-  // 3. Get the balance factor of this ancestor node to check whetherthis node became unbalanced
-  int balance;
-  balance = getAvlBalance ( insertTree );
-
-  // If this node becomes unbalanced, then there are 4 cases
-  // Left Left Case
-  if (balance > 1 && ( strcmp ( key , insertTree->left->key_value) == -1 ))
-    insertTree = rightRotate( insertTree );
-
-  // Right Right Case
-  if (balance < -1 && ( strcmp ( key , insertTree->right->key_value) == 1 ))
-    insertTree = leftRotate( insertTree );
-
-  // Left Right Case
-  if (balance > 1 && ( strcmp ( key , insertTree->left->key_value) == 1 ))
-  {
-    insertTree->left =  leftRotate( insertTree->left );
-    rightRotate( insertTree );
+  if (insertTree == NULL){
+    insertTree = newInternalNode( key );
   }
+  else{
+    int compareValue = strcmp ( key , insertTree->key_value ); 
+    printf("compare[%s,%s] value %d\n", key, insertTree->key_value, compareValue);
+    if( compareValue < 0 ){
+      printf("going left\n");
+      internalInsertInAvlTree ( insertTree->left, key );
+    }
+    if( compareValue > 0 ){
+      printf("going right\n");
+      internalInsertInAvlTree ( insertTree->right , key);
+    }
+    // 2. Update Height of this ancestor node 
+    insertTree->height = max ( getHeightOfAvlTree ( insertTree->left ), getHeightOfAvlTree ( insertTree->right ) ) + 1;
+    printf("update height %d\n", insertTree->height);
+    // 3. Get the balance factor of this ancestor node to check whetherthis node became unbalanced
+    int balance;
+    balance = getAvlBalance ( insertTree );
+    printf("balance factor %d\n", balance );
+    // If this node becomes unbalanced, then there are 4 cases
+    // Left Left Case
+    if (balance > 1 && ( strcmp ( key , insertTree->left->key_value) == -1 ))
+      insertTree = rightRotate( insertTree );
+    else{
+      // Right Right Case
+      if (balance < -1 && ( strcmp ( key , insertTree->right->key_value) == 1 ))
+        insertTree = leftRotate( insertTree );
+      else {
+        // Left Right Case
+        if (balance > 1 && ( strcmp ( key , insertTree->left->key_value) == 1 ))
+        {
+          insertTree->left =  leftRotate( insertTree->left );
+          rightRotate( insertTree );
+        }
+        else{
 
-  // Right Left Case
-  if (balance < -1 && ( strcmp ( key , insertTree->right->key_value) == -1 ))
-  {
-    insertTree->right = rightRotate( insertTree->right );
-    leftRotate( insertTree );
+          // Right Left Case
+          if (balance < -1 && ( strcmp ( key , insertTree->right->key_value) == -1 ))
+          {
+            insertTree->right = rightRotate( insertTree->right );
+            leftRotate( insertTree );
+          }
+        }
+      }
+    }
   }
 }
 
@@ -147,8 +158,29 @@ void insertInAvlTree ( AvlTree tree, char* key ) {
     printf("inserted the node on root\n");
   }
   else{
-    printf("going to insert: %s",key);
+    printf("going to insert: %s\nabc",key);
     internalInsertInAvlTree ( tree->root , key  );
   }
   printf("bye\n");
+}
+
+int getSizeOfAvlTree ( AvlTree tree ) {
+  if ( tree->root == NULL) {
+    return 0;
+  }
+  else{
+    return tree->root->height;
+  }
+}
+
+void printNode ( struct internalAvlTreeNode *print ){
+  if (print != NULL ){
+    printf("[%s],",print->key_value);
+  }
+}
+
+void preOrder (AvlTree tree){
+  printNode(tree->root);
+  printNode(tree->root->left);
+  printNode(tree->root->right);
 }

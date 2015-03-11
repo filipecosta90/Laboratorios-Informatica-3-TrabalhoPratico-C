@@ -3,10 +3,13 @@
 
 int main (){
   AvlTree arvore;
-  arvore = newAvlTree();
+  newAvlTree ( arvore );
   printf("abc\n");
   insertInAvlTree(arvore, "teste");
-  insertInAvlTree(arvore, "abc");
-  printf("inseriu\n");
+  insertInAvlTree(arvore, "b");
+  insertInAvlTree(arvore, "a");
+  insertInAvlTree(arvore, "d");
+  preOrder(arvore);
+  printf("inseriu\n, %d\n", getSizeOfAvlTree ( arvore ));
   return 0;
 }
