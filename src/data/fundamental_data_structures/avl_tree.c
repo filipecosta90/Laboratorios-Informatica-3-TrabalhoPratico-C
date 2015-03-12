@@ -3,37 +3,25 @@
 #include "avl_tree.h"
 #include <stdio.h>
 
-struct internalAvlTreeNode {
+struct avlTree {
   char* key_value;
-  struct internalAvlTreeNode *left;
-  struct internalAvlTreeNode *right;
+  struct avlTree *left;
+  struct avlTree *right;
   int height;
 };
 
-struct avlTree {
-  struct internalAvlTreeNode *root;
-};
-
-void newAvlTree ( struct avlTree* newTree ){
-  newTree = ( struct avlTree* ) malloc ( sizeof (struct avlTree ));
-  newTree->root = NULL;
-}
-
-struct internalAvlTreeNode* newInternalNode ( char * key ){
-  struct internalAvlTreeNode* newNode = ( struct internalAvlTreeNode* ) malloc ( sizeof ( struct internalAvlTreeNode ) );
+static struct avlTree*  newNode ( char * key ){
+  struct avlTree* newNode = ( struct avlTree* ) malloc ( sizeof (  struct avlTree ) );
   int sizeToAllocate = strlen (key) +1;
-  printf("size to allocate: %s,%d\n", key, sizeToAllocate);
   newNode->key_value = (char*) malloc ( sizeToAllocate * sizeof ( char ) );
   strcpy( newNode->key_value , key );
-  printf("new string copied: %s\n", newNode->key_value);
   newNode->left = NULL;
   newNode->right = NULL;
   newNode->height = 1;
-  printf("created new node\n");
-  return newNode;
+  return (newNode);
 }
 
-int height(struct internalAvlTreeNode* node){
+static int height(struct avlTree* node){
   if (node == NULL)
     return 0;
   else
@@ -41,13 +29,13 @@ int height(struct internalAvlTreeNode* node){
 }
 
 // A utility function to get maximum of two integers
-int max( int a, int b ){
+static int max( int a, int b ){
   return (a > b)? a : b;
 }
 
-static struct internalAvlTreeNode* rightRotate ( struct internalAvlTreeNode *y ) {
-  struct internalAvlTreeNode *x = y->left;
-  struct internalAvlTreeNode *T2 = x->right;
+static struct avlTree* rightRotate ( struct avlTree *y ) {
+  struct avlTree *x = y->left;
+  struct avlTree *T2 = x->right;
 
   // Perform rotation
   x->right = y;
@@ -61,9 +49,9 @@ static struct internalAvlTreeNode* rightRotate ( struct internalAvlTreeNode *y )
   return x;
 }
 
-static struct internalAvlTreeNode* leftRotate ( struct internalAvlTreeNode *x ) {
-  struct internalAvlTreeNode *y = x->right;
-  struct internalAvlTreeNode *T2 = y->left;
+static struct avlTree* leftRotate ( struct avlTree *x ) {
+  struct avlTree *y = x->right;
+  struct avlTree *T2 = y->left;
 
   // Perform rotation
   y->left = x;
@@ -77,7 +65,7 @@ static struct internalAvlTreeNode* leftRotate ( struct internalAvlTreeNode *x ) 
   return y;
 }
 
-int getHeightOfAvlTree ( struct internalAvlTreeNode *getAvl ){
+int getHeightOfAvlTree ( struct avlTree *getAvl ){
   if( getAvl == NULL ){
     return 0;
   }
@@ -86,7 +74,7 @@ int getHeightOfAvlTree ( struct internalAvlTreeNode *getAvl ){
   }
 }
 
-static int getAvlBalance ( struct internalAvlTreeNode *node ){
+static int getAvlBalance ( struct avlTree *node ){
   if( node == NULL){
     return 0;
   }
@@ -95,92 +83,55 @@ static int getAvlBalance ( struct internalAvlTreeNode *node ){
   }
 }
 
-static char* getRootKey ( AvlTree getTree ){
-  return getTree->root->key_value;
-}
-
-void internalInsertInAvlTree ( struct internalAvlTreeNode *insertTree, char* key){
+struct avlTree* insertInAvlTree ( struct avlTree* insertTree, char* key){
   if (insertTree == NULL){
-    insertTree = newInternalNode( key );
+    return ( newNode( key ) );
   }
-  else{
-    int compareValue = strcmp ( key , insertTree->key_value ); 
-    printf("compare[%s,%s] value %d\n", key, insertTree->key_value, compareValue);
-    if( compareValue < 0 ){
-      printf("going left\n");
-      internalInsertInAvlTree ( insertTree->left, key );
-    }
-    if( compareValue > 0 ){
-      printf("going right\n");
-      internalInsertInAvlTree ( insertTree->right , key);
-    }
-    // 2. Update Height of this ancestor node 
-    insertTree->height = max ( getHeightOfAvlTree ( insertTree->left ), getHeightOfAvlTree ( insertTree->right ) ) + 1;
-    printf("update height %d\n", insertTree->height);
-    // 3. Get the balance factor of this ancestor node to check whetherthis node became unbalanced
-    int balance;
-    balance = getAvlBalance ( insertTree );
-    printf("balance factor %d\n", balance );
-    // If this node becomes unbalanced, then there are 4 cases
-    // Left Left Case
-    if (balance > 1 && ( strcmp ( key , insertTree->left->key_value) == -1 ))
-      insertTree = rightRotate( insertTree );
-    else{
-      // Right Right Case
-      if (balance < -1 && ( strcmp ( key , insertTree->right->key_value) == 1 ))
-        insertTree = leftRotate( insertTree );
-      else {
-        // Left Right Case
-        if (balance > 1 && ( strcmp ( key , insertTree->left->key_value) == 1 ))
-        {
-          insertTree->left =  leftRotate( insertTree->left );
-          rightRotate( insertTree );
-        }
-        else{
+  int compareValue = strcmp ( key , insertTree->key_value ); 
+  if( compareValue < 0 ){
+    insertTree->left = insertInAvlTree ( insertTree->left, key );
+  }
+  if( compareValue > 0 ){
+    insertTree->right = insertInAvlTree ( insertTree->right , key);
+  }
+  // 2. Update Height of this ancestor node 
+  insertTree->height = max ( getHeightOfAvlTree ( insertTree->left ), getHeightOfAvlTree ( insertTree->right ) ) + 1;
 
-          // Right Left Case
-          if (balance < -1 && ( strcmp ( key , insertTree->right->key_value) == -1 ))
-          {
-            insertTree->right = rightRotate( insertTree->right );
-            leftRotate( insertTree );
-          }
-        }
-      }
-    }
-  }
-}
+  // 3. Get the balance factor of this ancestor node to check whetherthis node became unbalanced
+  int balance;
+  balance = getAvlBalance ( insertTree );
 
-void insertInAvlTree ( AvlTree tree, char* key ) {
-  printf("testing\n");
-  if ( tree->root == NULL ){
-    printf("tree->root was null! insertig:%s\n",key);
-    tree->root = newInternalNode ( key );
-    printf("inserted the node on root\n");
+  // If this node becomes unbalanced, then there are 4 cases
+  // Left Left Case
+  if (balance > 1 && ( strcmp ( key , insertTree->left->key_value) == -1 ))
+    return rightRotate( insertTree );
+
+  // Right Right Case
+  if (balance < -1 && ( strcmp ( key , insertTree->right->key_value) == 1 ))
+    return leftRotate( insertTree );
+
+  // Left Right Case
+  if (balance > 1 && ( strcmp ( key , insertTree->left->key_value) == 1 ))
+  {
+    insertTree->left =  leftRotate( insertTree->left );
+    return rightRotate( insertTree );
   }
-  else{
-    printf("going to insert: %s\nabc",key);
-    internalInsertInAvlTree ( tree->root , key  );
+
+  // Right Left Case
+  if (balance < -1 && ( strcmp ( key , insertTree->right->key_value) == -1 ))
+  {
+    insertTree->right = rightRotate( insertTree->right );
+    return leftRotate( insertTree );
   }
-  printf("bye\n");
+  return insertTree;
 }
 
 int getSizeOfAvlTree ( AvlTree tree ) {
-  if ( tree->root == NULL) {
+  if ( tree == NULL) {
     return 0;
   }
   else{
-    return tree->root->height;
+    return 1 + getSizeOfAvlTree (tree->left) + getSizeOfAvlTree (tree->right);
   }
 }
 
-void printNode ( struct internalAvlTreeNode *print ){
-  if (print != NULL ){
-    printf("[%s],",print->key_value);
-  }
-}
-
-void preOrder (AvlTree tree){
-  printNode(tree->root);
-  printNode(tree->root->left);
-  printNode(tree->root->right);
-}
