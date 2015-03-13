@@ -12,7 +12,7 @@ int getSizeOfAvlTree ( AvlTree );
 
 AvlTree insertInAvlTree ( AvlTree , char* );
 
-void preOrder ( AvlTree );
+void freeAvlTree ( AvlTree );
 
 #endif /* _AVL_TREE_H_INCLUDED_ */
 
