@@ -11,7 +11,7 @@ typedef struct accounting * Accounting;
 
 void initAccounting ( Accounting );
 
-Accounting newAccountig ( void );
+Accounting newAccounting ( void );
 
 void addSale ( Accounting , int );
 

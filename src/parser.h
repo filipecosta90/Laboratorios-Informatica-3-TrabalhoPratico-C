@@ -7,6 +7,7 @@
 #ifndef _PARSER_H_INCLUDED_
 #define _PARSER_H_INCLUDED_
 
+int readFileSales ( char* , Accounting );
 
 #endif /* _PARSER_H_INCLUDED_ */
 
