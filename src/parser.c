@@ -6,7 +6,7 @@
 #include "accounting.h"
 #include "parser.h"
 
-int productOk(char* line){
+static int productOk(char* line){
 
   volatile int result = 1;
   volatile int size = strlen(line);
@@ -22,7 +22,7 @@ int productOk(char* line){
   return result;
 }
 
-int priceOk(char* buf){
+static int priceOk(char* buf){
   volatile int totalSize = strlen(buf);
   volatile int untilPoint = strcspn(buf,".");
   volatile int position = 0;
@@ -38,7 +38,7 @@ int priceOk(char* buf){
   return errorFlag;
 }
 
-int unitOk (char* buf){
+static int unitOk (char* buf){
   volatile int errorFlag=0;
   volatile int position=0;
   volatile int totalSize=strlen(buf);
@@ -51,7 +51,7 @@ int unitOk (char* buf){
   return errorFlag;
 }
 
-int salesTypeOk(char* buf){
+static int salesTypeOk(char* buf){
   volatile int size = strlen (buf);
   volatile int result = 1;
   if (size == 1){
@@ -63,7 +63,7 @@ int salesTypeOk(char* buf){
   return result;
 }
 
-int clientOk(char* buf){
+static int clientOk(char* buf){
   volatile int result = 1;
   volatile int size = strlen (buf);
   if (size == 5){
@@ -78,7 +78,7 @@ int clientOk(char* buf){
   return result;
 }
 
-int monthOk(char* buf){
+static int monthOk(char* buf){
   volatile int result = 0;
   volatile int size = strlen (buf) - 2;
   volatile int position = 0;
@@ -103,6 +103,12 @@ int readFileSales(char* filename, Accounting acBook){
   char buf[32];
   volatile int maxSize=0;
   char* tk;
+  float priceToken = 0.0;
+  char productToken[7];
+  char modeToken;
+  int unitToken=0;
+  char clientToken[6];
+  int monthToken=0;
   fp = fopen(filename,"r");
   while( fgets (buf, sizeof buf, fp) != NULL){
     totalCount++;
@@ -110,21 +116,27 @@ int readFileSales(char* filename, Accounting acBook){
     tk = strtok(buf, " ");
     productOk(tk) == 0  ? tokenPosition++ : error++;
     if(!error){
+      strcpy ( productToken , tk );
       tk = strtok(NULL, " ");
       priceOk(tk) == 0? tokenPosition++ : error++;
       if(!error){
+        priceToken = atof( tk );
         tk = strtok(NULL, " ");
         unitOk(tk) == 0 ? tokenPosition++ : error++;
         if(!error){
+          unitToken=atoi( tk );
           tk = strtok(NULL, " ");
           salesTypeOk(tk) == 0? tokenPosition ++ : error++;
           if(!error){
+            modeToken = tk[0];
             tk = strtok(NULL, " ");
             clientOk(tk) == 0? tokenPosition ++ : error++;
             if(!error){
+              strcpy ( clientToken, tk );
               tk = strtok(NULL, " ");
               monthOk(tk) == 0 ? tokenPosition ++ : error++;
               if(error==0){
+                monthToken = atoi ( tk );
                 correctCount++;
               }
               else{
