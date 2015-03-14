@@ -138,6 +138,9 @@ int readFileSales(char* filename, Accounting acBook){
               if(error==0){
                 monthToken = atoi ( tk );
                 correctCount++;
+                addSale( acBook, monthToken  );
+                addClient( acBook, monthToken );
+                addBill( acBook, monthToken, priceToken );
               }
               else{
                 errorCount++;
