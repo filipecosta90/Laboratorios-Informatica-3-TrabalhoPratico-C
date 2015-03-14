@@ -10,6 +10,6 @@ int main (int argc, char *argv[] ){
   Accounting acBook;
   acBook = newAccounting();
   initAccounting (acBook);
-  readFileSales( "files/compras.txt" , acBook );
+  readFileSales( "../files/compras.txt" , acBook );
   return 0;
 }
