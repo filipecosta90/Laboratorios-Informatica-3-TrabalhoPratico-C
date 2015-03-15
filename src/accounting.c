@@ -1,8 +1,8 @@
 #include "accounting.h"
 #include "month.h"
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
+#include <stdio.h>
 
 struct accounting {
   Month monthsArray[12];

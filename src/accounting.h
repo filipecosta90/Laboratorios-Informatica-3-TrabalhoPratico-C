@@ -3,15 +3,14 @@
  *  * Copyright (C) Laboratórios Informática III, Universidade do Minho, 2015
  *  */
 
-
-#ifndef _PRODUCT_CATALOG_H_INCLUDED_
-#define _PRODUCT_CATALOG_H_INCLUDED_
+#ifndef _ACCOUNTING_H_INCLUDED_
+#define _ACCOUNTING_H_INCLUDED_
 
 typedef struct accounting * Accounting;
 
-void initAccounting ( Accounting );
-
 Accounting newAccounting ( void );
+
+void initAccounting ( Accounting );
 
 void addSale ( Accounting , int );
 
@@ -27,5 +26,5 @@ float getIntervalTotalBilled ( Accounting, int, int );
 
 void deleteAccounting ( Accounting );
 
-#endif /* _PRODUCT_CATALOG_H_INCLUDED_ */
+#endif /* _ACCOUNTING_H_INCLUDED_ */
 

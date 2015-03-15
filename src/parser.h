@@ -9,5 +9,7 @@
 
 int readFileSales ( char* , Accounting );
 
+int readFileClients ( char*, ClientCatalog );
+
 #endif /* _PARSER_H_INCLUDED_ */
 

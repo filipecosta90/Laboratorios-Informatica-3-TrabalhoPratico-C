@@ -15,4 +15,3 @@ AvlTree insertInAvlTree ( AvlTree , char* );
 void freeAvlTree ( AvlTree );
 
 #endif /* _AVL_TREE_H_INCLUDED_ */
-

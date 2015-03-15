@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
-#include "avl_tree.h"
+#include "avlTree.h"
 #include <stdio.h>
 
 struct avlTree {
@@ -28,24 +28,25 @@ static int height(struct avlTree* node){
     return node->height;
 }
 
-// A utility function to get maximum of two integers
 static int max( int a, int b ){
   return (a > b)? a : b;
 }
 
 static struct avlTree* rightRotate ( struct avlTree *y ) {
-  struct avlTree *x = y->left;
-  struct avlTree *T2 = x->right;
+  struct avlTree *x ;
+  struct avlTree *T2;
+  x = y->left;
+  T2 = x->right;
 
-  // Perform rotation
+  /* Perform rotation */
   x->right = y;
   y->left = T2;
 
-  // Update heights
+  /* Update heights */
   y->height = max( height( y->left ), height( y->right ) ) +1;
   x->height = max( height( x->left ), height( x->right ) ) +1;
 
-  //Return new root
+  /* Return new root */
   return x;
 }
 
@@ -53,15 +54,15 @@ static struct avlTree* leftRotate ( struct avlTree *x ) {
   struct avlTree *y = x->right;
   struct avlTree *T2 = y->left;
 
-  // Perform rotation
+  /* Perform rotation */
   y->left = x;
   x->right = T2;
 
-  // Update heights
+  /* Update heights */
   x->height = max( height( x->left ), height( x->right ) ) +1;
   y->height = max( height( y->left ), height( y->right ) ) +1;
 
-  //Return new root
+  /* Return new root */
   return y;
 }
 
@@ -84,40 +85,41 @@ static int getAvlBalance ( struct avlTree *node ){
 }
 
 struct avlTree* insertInAvlTree ( struct avlTree* insertTree, char* key){
+  int compareValue, balance;
   if (insertTree == NULL){
     return ( newNode( key ) );
   }
-  int compareValue = strcmp ( key , insertTree->key_value ); 
+  compareValue = strcmp ( key , insertTree->key_value );
+  printf("%s, %s\n", key, insertTree->key_value );
   if( compareValue < 0 ){
     insertTree->left = insertInAvlTree ( insertTree->left, key );
   }
   if( compareValue > 0 ){
     insertTree->right = insertInAvlTree ( insertTree->right , key);
   }
-  // 2. Update Height of this ancestor node 
+  /* 2. Update Height of this ancestor node */
   insertTree->height = max ( getHeightOfAvlTree ( insertTree->left ), getHeightOfAvlTree ( insertTree->right ) ) + 1;
 
-  // 3. Get the balance factor of this ancestor node to check whetherthis node became unbalanced
-  int balance;
+  /* 3. Get the balance factor of this ancestor node to check whetherthis node became unbalanced */
   balance = getAvlBalance ( insertTree );
 
-  // If this node becomes unbalanced, then there are 4 cases
-  // Left Left Case
+  /* If this node becomes unbalanced, then there are 4 cases */
+  /* Left Left Case */
   if (balance > 1 && ( strcmp ( key , insertTree->left->key_value) == -1 ))
     return rightRotate( insertTree );
 
-  // Right Right Case
+  /* Right Right Case */
   if (balance < -1 && ( strcmp ( key , insertTree->right->key_value) == 1 ))
     return leftRotate( insertTree );
 
-  // Left Right Case
+  /* Left Right Case */
   if (balance > 1 && ( strcmp ( key , insertTree->left->key_value) == 1 ))
   {
     insertTree->left =  leftRotate( insertTree->left );
     return rightRotate( insertTree );
   }
 
-  // Right Left Case
+  /* Right Left Case */
   if (balance < -1 && ( strcmp ( key , insertTree->right->key_value) == -1 ))
   {
     insertTree->right = rightRotate( insertTree->right );

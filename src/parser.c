@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "ClientCatalog.h"
 #include "accounting.h"
 #include "parser.h"
 
@@ -184,15 +185,16 @@ int readFileProducts(char* filename){
   return totalCount;
 }
 
-int readFileClients(char* filename){
+int readFileClients( char* filename, ClientCatalog clCat ){
   FILE *fp;
   volatile int totalCount=0;
   volatile int correctCount=0;
   volatile int errorCount=0;
   volatile int error = 0;
   volatile int tokenPosition = 0;
-  char buf[32];
   volatile int maxSize=0;
+  char clientToken[6];
+  char buf[32];
   char* tk;
   fp = fopen(filename,"r");
   while( fgets (buf, sizeof buf, fp) != NULL){
@@ -201,6 +203,8 @@ int readFileClients(char* filename){
     tk = strtok(buf, "\r");
     clientOk(tk) == 0  ? tokenPosition++ : error++;
     if(error==0){
+      strcpy ( clientToken, tk );
+      addClientToCatalog ( clCat , clientToken );
       correctCount++;
     }
     else{
