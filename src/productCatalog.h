@@ -9,7 +9,7 @@
 
 typedef struct productCatalog * ProductCatalog;
 
-ClientCatalog newProductCatalog ( void );
+ProductCatalog newProductCatalog ( void );
 
 void initProductCatalog ( ProductCatalog );
 

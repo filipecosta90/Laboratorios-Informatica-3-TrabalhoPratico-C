@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "productCatalog.h"
 #include "clientCatalog.h"
 #include "accounting.h"
 #include "parser.h"
@@ -13,10 +14,13 @@
 int main (int argc, char *argv[] ){
   Accounting acBook;
   ClientCatalog clCat;
-  int flagReadingSales, flagReadingClients;
+  ProductCatalog prCat;
+  int flagReadingSales, flagReadingClients, flagReadingProducts;
   acBook = newAccounting();
   clCat = newClientCatalog();
+  prCat = newProductCatalog();
   initAccounting (acBook);
+  flagReadingProducts = readFileProducts ( "../files/FichProdutos.txt" , prCat );
   flagReadingClients = readFileClients ( "../files/FichClientes.txt" , clCat );
   flagReadingSales = readFileSales( "../files/Compras.txt" , acBook );
   printf("flag sales:%d\n", flagReadingSales);
@@ -37,8 +41,8 @@ int main (int argc, char *argv[] ){
   printf("%s\n",getCsvMonth(acBook, 12));
   printf("flag clients:%d\n", flagReadingClients);
   printf("Total Client of letter A: %d\n", getTotalClientsByLetter ( clCat, 'A' ));
-printf("Total Client of letter B: %d\n", getTotalClientsByLetter ( clCat, 'B' ));
-printf("Total Client of letter D: %d\n", getTotalClientsByLetter ( clCat, 'd' ));
-return 0;
+  printf("Total Client of letter B: %d\n", getTotalClientsByLetter ( clCat, 'B' ));
+  printf("Total Client of letter D: %d\n", getTotalClientsByLetter ( clCat, 'd' ));
+  return 0;
 }
 

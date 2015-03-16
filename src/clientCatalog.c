@@ -30,7 +30,6 @@ void addClientToCatalog ( struct clientCatalog* clCat, char* clientCode ) {
 int getTotalClientsByLetter ( struct clientCatalog* clCat, char clientInitial ) {
   int position, totalClients;
   position = getClientArrayPosition( &clientInitial );
-  printf ("position: %d\n", position);
   totalClients = getSizeOfAvlTree ( clCat->lettersArray[position] );
   return totalClients;
 }

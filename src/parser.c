@@ -3,7 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "ClientCatalog.h"
+#include "productCatalog.h"
+#include "clientCatalog.h"
 #include "accounting.h"
 #include "parser.h"
 
@@ -158,7 +159,7 @@ int readFileSales(char* filename, Accounting acBook){
   return totalCount;
 }
 
-int readFileProducts(char* filename){
+int readFileProducts(char* filename, ProductCatalog prCat ){
   FILE *fp;
   volatile int totalCount=0;
   volatile int correctCount=0;
@@ -166,8 +167,9 @@ int readFileProducts(char* filename){
   volatile int error = 0;
   volatile int tokenPosition = 0;
   char buf[32];
-  volatile int maxSize=0;  
+  volatile int maxSize=0;
   char* tk;
+  char productToken[7];
   fp = fopen(filename,"r");
   while( fgets (buf, sizeof buf, fp) != NULL){
     totalCount++;
@@ -175,6 +177,8 @@ int readFileProducts(char* filename){
     tk = strtok(buf, "\r");
     productOk(tk) == 0  ? tokenPosition++ : error++;
     if(error==0){
+      strcpy ( productToken, tk );
+      addProductToCatalog ( prCat , productToken );
       correctCount++;
     }
     else{

@@ -9,7 +9,9 @@
 
 int readFileSales ( char* , Accounting );
 
-int readFileClients ( char*, ClientCatalog );
+int readFileClients ( char* , ClientCatalog );
+
+int readFileProducts ( char* , ProductCatalog );
 
 #endif /* _PARSER_H_INCLUDED_ */
 
