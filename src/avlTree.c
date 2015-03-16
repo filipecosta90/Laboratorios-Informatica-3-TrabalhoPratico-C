@@ -17,114 +17,160 @@ static struct avlTree*  newNode ( char * key ){
   strcpy( newNode->key_value , key );
   newNode->left = NULL;
   newNode->right = NULL;
-  newNode->height = 1;
+  newNode->height = 0;
   return (newNode);
 }
 
+static struct avlTree* allocateMemory (){
+  struct avlTree* newNode = ( struct avlTree* ) malloc ( sizeof (  struct avlTree ) );
+  newNode->left = NULL;
+  newNode->right = NULL;
+  newNode->height = 0;
+  newNode = NULL;
+  return ( newNode );
+}
+
 static int height(struct avlTree* node){
-  if (node == NULL)
-    return 0;
-  else
-    return node->height;
-}
-
-static int max( int a, int b ){
-  return (a > b)? a : b;
-}
-
-static struct avlTree* rightRotate ( struct avlTree *y ) {
-  struct avlTree *x ;
-  struct avlTree *T2;
-  x = y->left;
-  T2 = x->right;
-
-  /* Perform rotation */
-  x->right = y;
-  y->left = T2;
-
-  /* Update heights */
-  y->height = max( height( y->left ), height( y->right ) ) +1;
-  x->height = max( height( x->left ), height( x->right ) ) +1;
-
-  /* Return new root */
-  return x;
-}
-
-static struct avlTree* leftRotate ( struct avlTree *x ) {
-  struct avlTree *y = x->right;
-  struct avlTree *T2 = y->left;
-
-  /* Perform rotation */
-  y->left = x;
-  x->right = T2;
-
-  /* Update heights */
-  x->height = max( height( x->left ), height( x->right ) ) +1;
-  y->height = max( height( y->left ), height( y->right ) ) +1;
-
-  /* Return new root */
-  return y;
-}
-
-int getHeightOfAvlTree ( struct avlTree *getAvl ){
-  if( getAvl == NULL ){
-    return 0;
+  int leftHeight, rightHeight, returningHeight;
+  leftHeight = 0;
+  rightHeight = 0;
+  if (node == NULL){
+    returningHeight = 0;
   }
   else{
-    return getAvl->height;
+    if ( node->left == NULL )
+      leftHeight=0;
+    else
+      leftHeight = 1 + node->left->height;
+    if ( node->right == NULL )
+      rightHeight=0;
+    else
+      rightHeight = 1 + node->right->height;
   }
+  if ( leftHeight > rightHeight )
+    returningHeight = leftHeight;
+  else
+    returningHeight = rightHeight;
+  return returningHeight;
+}
+
+static struct avlTree* rightRotate ( struct avlTree *root ) {
+
+  struct avlTree *rightPointer;
+  rightPointer = root->left;
+
+  if(rightPointer->right == NULL )
+    rightPointer->right = allocateMemory();
+
+  /* Perform rotation */
+  root->left =rightPointer->right;
+  rightPointer->right = root;
+
+  /* Update heights */
+  root->height = height ( root );
+  rightPointer->height = height ( rightPointer );
+
+  /* Return new root */
+  return rightPointer;
+}
+
+static struct avlTree* leftRotate ( struct avlTree *root ) {
+
+  struct avlTree *leftPointer;
+  leftPointer = root->right;
+
+  if (leftPointer->left == NULL)
+    leftPointer->left = allocateMemory();
+  /* Perform rotation */
+  root->right = leftPointer->left;
+  leftPointer->left = root;
+
+  /* Update heights */
+  root->height = height( root);
+  leftPointer->height = height( leftPointer);
+
+  /* Return new root */
+  return leftPointer;
+}
+
+static struct avlTree* RightRight ( struct avlTree* root ){
+  root = leftRotate ( root );
+  return ( root );
+}
+
+static struct avlTree* LeftLeft  ( struct avlTree* root ){
+  root = rightRotate ( root );
+  return ( root );
+}
+
+static struct avlTree* LeftRight ( struct avlTree* root ){
+  root->left = leftRotate ( root->left );
+  root = rightRotate ( root );
+  return ( root );
+}
+
+static struct avlTree* RightLeft ( struct avlTree* root ){
+  root->right = rightRotate ( root->right );
+  root = leftRotate ( root );
+  return ( root );
 }
 
 static int getAvlBalance ( struct avlTree *node ){
-  if( node == NULL){
-    return 0;
+  int leftBalance, rightBalance, returningBalance;
+  leftBalance = 0;
+  rightBalance = 0;
+  if( node == NULL ){
+    returningBalance = 0;
   }
-  else {
-    return getHeightOfAvlTree ( node->left ) - getHeightOfAvlTree ( node->right );
+  else{
+    if ( node->left == NULL){
+      leftBalance = 0;
+    }
+    else {
+      leftBalance = 1 + node->left->height;
+    }
+    if ( node->right == NULL) {
+      rightBalance = 0;
+    }
+    else {
+      rightBalance = 1 + node->right->height;
+    }
+    returningBalance = leftBalance - rightBalance;
   }
+  return returningBalance;
 }
 
 struct avlTree* insertInAvlTree ( struct avlTree* insertTree, char* key){
-  int compareValue, balance;
+  int compareValue;
   if (insertTree == NULL){
     return ( newNode( key ) );
   }
   compareValue = strcmp ( key , insertTree->key_value );
-  printf("%s, %s\n", key, insertTree->key_value );
   if( compareValue < 0 ){
     insertTree->left = insertInAvlTree ( insertTree->left, key );
+    if ( getAvlBalance ( insertTree ) == -2 ){
+      if ( strcmp ( key , insertTree->right->key_value )  == 1 ){
+        insertTree = RightRight ( insertTree );
+      }
+      else{
+        insertTree = RightLeft ( insertTree );
+      }
+    }
   }
   if( compareValue > 0 ){
     insertTree->right = insertInAvlTree ( insertTree->right , key);
+    if ( getAvlBalance ( insertTree ) == 2 ){
+      if ( strcmp ( key , insertTree->left->key_value ) == -1 ){
+        insertTree = LeftLeft ( insertTree );
+      }
+      else{
+        insertTree = LeftRight ( insertTree );
+      }
+    }
   }
   /* 2. Update Height of this ancestor node */
-  insertTree->height = max ( getHeightOfAvlTree ( insertTree->left ), getHeightOfAvlTree ( insertTree->right ) ) + 1;
+  insertTree->height = height ( insertTree );
 
-  /* 3. Get the balance factor of this ancestor node to check whetherthis node became unbalanced */
-  balance = getAvlBalance ( insertTree );
-
-  /* If this node becomes unbalanced, then there are 4 cases */
-  /* Left Left Case */
-  if (balance > 1 && ( strcmp ( key , insertTree->left->key_value) == -1 ))
-    return rightRotate( insertTree );
-
-  /* Right Right Case */
-  if (balance < -1 && ( strcmp ( key , insertTree->right->key_value) == 1 ))
-    return leftRotate( insertTree );
-
-  /* Left Right Case */
-  if (balance > 1 && ( strcmp ( key , insertTree->left->key_value) == 1 ))
-  {
-    insertTree->left =  leftRotate( insertTree->left );
-    return rightRotate( insertTree );
-  }
-
-  /* Right Left Case */
-  if (balance < -1 && ( strcmp ( key , insertTree->right->key_value) == -1 ))
-  {
-    insertTree->right = rightRotate( insertTree->right );
-    return leftRotate( insertTree );
-  }
   return insertTree;
 }
 
