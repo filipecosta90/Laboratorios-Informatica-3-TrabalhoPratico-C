@@ -3,183 +3,209 @@
 #include "avlTree.h"
 #include <stdio.h>
 
-struct avlTree {
-  char* key_value;
-  struct avlTree *left;
-  struct avlTree *right;
-  int height;
+struct avlNode {
+  struct avlNode *left;
+  struct avlNode *right;
+  char *key;
 };
 
-static struct avlTree*  newNode ( char * key ){
-  struct avlTree* newNode = ( struct avlTree* ) malloc ( sizeof (  struct avlTree ) );
+struct avlTree {
+  struct avlNode *root;
+};
+
+static struct avlNode*  createNode ( char * key ){
+  struct avlNode* newNode = ( struct avlNode* ) malloc ( sizeof (  struct avlNode ) );
   int sizeToAllocate = strlen (key) +1;
-  newNode->key_value = (char*) malloc ( sizeToAllocate * sizeof ( char ) );
-  strcpy( newNode->key_value , key );
+  newNode->key = (char*) malloc ( sizeToAllocate * sizeof ( char ) );
+  strcpy( newNode->key , key );
   newNode->left = NULL;
   newNode->right = NULL;
-  newNode->height = 0;
   return (newNode);
 }
 
-static struct avlTree* allocateMemory (){
-  struct avlTree* newNode = ( struct avlTree* ) malloc ( sizeof (  struct avlTree ) );
-  newNode->left = NULL;
-  newNode->right = NULL;
-  newNode->height = 0;
-  newNode = NULL;
-  return ( newNode );
-}
-
-static int height(struct avlTree* node){
-  int leftHeight, rightHeight, returningHeight;
-  leftHeight = 0;
-  rightHeight = 0;
-  if (node == NULL){
-    returningHeight = 0;
+struct avlTree *createTree (){
+  struct avlTree *newTree = NULL;
+  if ( ( newTree = malloc ( sizeof ( struct avlTree ) ) ) == NULL ) {
+    return NULL;
   }
   else{
-    if ( node->left == NULL )
-      leftHeight=0;
-    else
-      leftHeight = 1 + node->left->height;
-    if ( node->right == NULL )
-      rightHeight=0;
-    else
-      rightHeight = 1 + node->right->height;
+    newTree->root = NULL;
+    return newTree;
   }
-  if ( leftHeight > rightHeight )
-    returningHeight = leftHeight;
-  else
-    returningHeight = rightHeight;
-  return returningHeight;
 }
 
-static struct avlTree* rightRotate ( struct avlTree *root ) {
+/* Find the height of an AVL node recursively */
+static int avlNodeHeight( struct avlNode *node ) {
+  int heightLeft = 0;
+  int heightRight = 0;
 
-  struct avlTree *rightPointer;
-  rightPointer = root->left;
-
-  if(rightPointer->right == NULL )
-    rightPointer->right = allocateMemory();
-
-  /* Perform rotation */
-  root->left =rightPointer->right;
-  rightPointer->right = root;
-
-  /* Update heights */
-  root->height = height ( root );
-  rightPointer->height = height ( rightPointer );
-
-  /* Return new root */
-  return rightPointer;
-}
-
-static struct avlTree* leftRotate ( struct avlTree *root ) {
-
-  struct avlTree *leftPointer;
-  leftPointer = root->right;
-
-  if (leftPointer->left == NULL)
-    leftPointer->left = allocateMemory();
-  /* Perform rotation */
-  root->right = leftPointer->left;
-  leftPointer->left = root;
-
-  /* Update heights */
-  root->height = height( root);
-  leftPointer->height = height( leftPointer);
-
-  /* Return new root */
-  return leftPointer;
-}
-
-static struct avlTree* RightRight ( struct avlTree* root ){
-  root = leftRotate ( root );
-  return ( root );
-}
-
-static struct avlTree* LeftLeft  ( struct avlTree* root ){
-  root = rightRotate ( root );
-  return ( root );
-}
-
-static struct avlTree* LeftRight ( struct avlTree* root ){
-  root->left = leftRotate ( root->left );
-  root = rightRotate ( root );
-  return ( root );
-}
-
-static struct avlTree* RightLeft ( struct avlTree* root ){
-  root->right = rightRotate ( root->right );
-  root = leftRotate ( root );
-  return ( root );
-}
-
-static int getAvlBalance ( struct avlTree *node ){
-  int leftBalance, rightBalance, returningBalance;
-  leftBalance = 0;
-  rightBalance = 0;
-  if( node == NULL ){
-    returningBalance = 0;
+  if( node->left ){
+    heightLeft = avlNodeHeight( node->left );
   }
-  else{
-    if ( node->left == NULL){
-      leftBalance = 0;
+  if( node->right ){
+    heightRight = avlNodeHeight( node->right );
+  }
+  return heightRight > heightLeft ? ++heightRight : ++heightLeft;
+}
+
+/* Find the balance of an AVL node */
+static int avlBalanceFactor( struct avlNode *node ) {
+  int balanceFactor = 0;
+
+  if( node->left  ){
+    balanceFactor += avlNodeHeight( node->left );
+  }
+  if( node->right ){ 
+    balanceFactor -= avlNodeHeight( node->right );
+  }
+  return balanceFactor ;
+}
+
+/* Left Left Rotate */
+struct avlNode* avlRotateLeftLeft( struct avlNode *node ) {
+  struct avlNode *a = node;
+  struct avlNode *b = a->left;
+
+  a->left = b->right;
+  b->right = a;
+
+  return( b );
+}
+
+/* Left Right Rotate */
+struct avlNode* avlRotateLeftRight( struct avlNode *node ) {
+  struct avlNode *a = node;
+  struct avlNode *b = a->left;
+  struct avlNode *c = b->right;
+
+  a->left = c->right;
+  b->right = c->left; 
+  c->left = b;
+  c->right = a;
+
+  return( c );
+}
+
+/* Right Left Rotate */
+struct avlNode* avlRotateRightLeft( struct avlNode *node ) {
+  struct avlNode *a = node;
+  struct avlNode *b = a->right;
+  struct avlNode *c = b->left;
+
+  a->right = c->left;
+  b->left = c->right; 
+  c->right = b;
+  c->left = a;
+
+  return( c );
+}
+
+/* Right Right Rotate */
+struct avlNode *avlRotateRightRight( struct avlNode *node ) {
+  struct avlNode *a = node;
+  struct avlNode *b = a->right;
+
+  a->right = b->left;
+  b->left = a; 
+
+  return( b );
+}
+
+
+/* Balance a Node */
+struct avlNode* avlBalanceNode ( struct avlNode* node ){
+  struct avlNode *newRoot = NULL;
+  int balanceFactor;
+
+  /* Balance the children, if they exist. */
+  if( node->left ){
+    node->left  = avlBalanceNode ( node->left  );
+  }
+  if( node->right ) {
+    node->right = avlBalanceNode ( node->right );
+  }
+  balanceFactor = avlBalanceFactor ( node );
+  /* Left Heavy */
+  if( balanceFactor >= 2 ) { 
+    if( avlBalanceFactor( node->left ) <= -1 ){
+      newRoot = avlRotateLeftRight( node );
     }
     else {
-      leftBalance = 1 + node->left->height;
-    }
-    if ( node->right == NULL) {
-      rightBalance = 0;
+      newRoot = avlRotateLeftLeft( node );
+    } 
+  }
+  /* Right Heavy */
+  else if( balanceFactor <= -2 ) {
+    if( avlBalanceFactor( node->right ) >= 1 ){
+      newRoot = avlRotateRightLeft( node );
     }
     else {
-      rightBalance = 1 + node->right->height;
+      newRoot = avlRotateRightRight( node );
     }
-    returningBalance = leftBalance - rightBalance;
+  } else {
+    /* This node is balanced. There are no changes to be made. */
+    newRoot = node;
   }
-  return returningBalance;
+  return( newRoot );
 }
 
-struct avlTree* insertInAvlTree ( struct avlTree* insertTree, char* key){
-  int compareValue;
-  if (insertTree == NULL){
-    return ( newNode( key ) );
+/* Balance a Tree */
+void avlBalanceTree ( struct avlTree *tree ){
+  struct avlNode *newRoot;
+  newRoot = NULL;
+  newRoot = avlBalanceNode ( tree->root );
+  if ( newRoot != tree->root ) {
+    tree->root = newRoot;
   }
-  compareValue = strcmp ( key , insertTree->key_value );
-  if( compareValue < 0 ){
-    insertTree->left = insertInAvlTree ( insertTree->left, key );
-    if ( getAvlBalance ( insertTree ) == -2 ){
-      if ( strcmp ( key , insertTree->right->key_value )  == 1 ){
-        insertTree = RightRight ( insertTree );
-      }
-      else{
-        insertTree = RightLeft ( insertTree );
-      }
-    }
-  }
-  if( compareValue > 0 ){
-    insertTree->right = insertInAvlTree ( insertTree->right , key);
-    if ( getAvlBalance ( insertTree ) == 2 ){
-      if ( strcmp ( key , insertTree->left->key_value ) == -1 ){
-        insertTree = LeftLeft ( insertTree );
-      }
-      else{
-        insertTree = LeftRight ( insertTree );
-      }
-    }
-  }
-  /* 2. Update Height of this ancestor node */
-  insertTree->height = height ( insertTree );
-
-  return insertTree;
 }
 
-int getSizeOfAvlTree ( AvlTree tree ) {
-  if ( tree == NULL) {
-    return 0;
+void avlInsert ( struct avlTree *tree, char * newKey ) {
+  int comparedValue;
+  struct avlNode *node = NULL;
+  struct avlNode *next = NULL;
+  struct avlNode *last = NULL;
+
+  /* No root */
+  if ( tree->root == NULL ){
+    node = createNode ( newKey );
+    tree->root = node;
   }
+  /* Already Have root*/
   else{
-    return 1 + getSizeOfAvlTree (tree->left) + getSizeOfAvlTree (tree->right);
+    next = tree->root;
+    while ( next != NULL ){
+      last = next;
+      comparedValue = strcmp ( newKey , next->key);
+      if ( comparedValue < 0 ) {
+        next = next->left;
+      }
+      else if ( comparedValue > 0 ) {
+        next = next->right;
+      }
+    }
+    node = createNode ( newKey );
+    comparedValue = strcmp ( newKey , last->key );
+    if ( comparedValue < 0 ) last->left = node;
+    if ( comparedValue > 0 ) last->right = node;
   }
+  avlBalanceTree ( tree );
+}
+
+int avlNodeSize ( struct avlNode* node ){
+  if ( node == NULL ){
+    return ( 0 );
+  }
+  else {
+    return 1 + avlNodeSize ( node->left ) + avlNodeSize ( node->right );
+  }
+}
+
+int avlSize ( struct avlTree *tree ) {
+  if( tree != NULL) {
+    if ( tree->root != NULL ){
+      return avlNodeSize ( tree->root );
+    }
+  }
+  return ( 0 );
 }
 

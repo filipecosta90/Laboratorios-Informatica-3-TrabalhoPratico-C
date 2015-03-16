@@ -9,6 +9,10 @@ struct productCatalog {
 
 struct productCatalog* newProductCatalog ( void ){
   struct productCatalog* newPrCat = ( struct productCatalog* ) malloc ( sizeof (struct productCatalog) );
+  int i = 0;
+  for( ; i<26; i++){
+    newPrCat->lettersArray[i] = createTree();
+  }
   return newPrCat;
 }
 
@@ -24,13 +28,14 @@ static int getProductArrayPosition ( char* productCode ) {
 void addProductToCatalog ( struct productCatalog* prCat, char* productCode ) {
   int position;
   position = getProductArrayPosition( productCode );
-  prCat->lettersArray[position] = insertInAvlTree ( prCat->lettersArray[position] , productCode );
+  avlInsert ( prCat->lettersArray[position] , productCode );
+  printf("product inserted:%s\n", productCode);
 }
 
 int getTotalProductByLetter ( struct productCatalog* prCat, char productInitial ) {
   int position, totalProducts;
   position = getProductArrayPosition( &productInitial );
-  totalProducts = getSizeOfAvlTree ( prCat->lettersArray[position] );
+  totalProducts = avlSize ( prCat->lettersArray[position] );
   return totalProducts;
 }
 

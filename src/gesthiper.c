@@ -20,7 +20,7 @@ int main (int argc, char *argv[] ){
   clCat = newClientCatalog();
   prCat = newProductCatalog();
   initAccounting (acBook);
-  flagReadingProducts = readFileProducts ( "../files/FichProdutos.txt" , prCat );
+  /*flagReadingProducts = readFileProducts ( "../files/FichProdutos.txt" , prCat );*/
   flagReadingClients = readFileClients ( "../files/FichClientes.txt" , clCat );
   flagReadingSales = readFileSales( "../files/Compras.txt" , acBook );
   printf("flag sales:%d\n", flagReadingSales);
@@ -42,7 +42,30 @@ int main (int argc, char *argv[] ){
   printf("flag clients:%d\n", flagReadingClients);
   printf("Total Client of letter A: %d\n", getTotalClientsByLetter ( clCat, 'A' ));
   printf("Total Client of letter B: %d\n", getTotalClientsByLetter ( clCat, 'B' ));
-  printf("Total Client of letter D: %d\n", getTotalClientsByLetter ( clCat, 'd' ));
+  printf("Total Client of letter C: %d\n", getTotalClientsByLetter ( clCat, 'C' ));
+  printf("Total Client of letter D: %d\n", getTotalClientsByLetter ( clCat, 'D' ));
+  printf("Total Client of letter E: %d\n", getTotalClientsByLetter ( clCat, 'E' ));
+  printf("Total Client of letter F: %d\n", getTotalClientsByLetter ( clCat, 'F' ));
+  printf("Total Client of letter G: %d\n", getTotalClientsByLetter ( clCat, 'G' ));
+  printf("Total Client of letter H: %d\n", getTotalClientsByLetter ( clCat, 'H' ));
+  printf("Total Client of letter I: %d\n", getTotalClientsByLetter ( clCat, 'I' ));
+  printf("Total Client of letter J: %d\n", getTotalClientsByLetter ( clCat, 'J' ));
+  printf("Total Client of letter K: %d\n", getTotalClientsByLetter ( clCat, 'K' ));
+  printf("Total Client of letter L: %d\n", getTotalClientsByLetter ( clCat, 'L' ));
+  printf("Total Client of letter M: %d\n", getTotalClientsByLetter ( clCat, 'M' ));
+  printf("Total Client of letter N: %d\n", getTotalClientsByLetter ( clCat, 'N' ));
+  printf("Total Client of letter O: %d\n", getTotalClientsByLetter ( clCat, 'O' ));
+  printf("Total Client of letter P: %d\n", getTotalClientsByLetter ( clCat, 'P' ));
+  printf("Total Client of letter Q: %d\n", getTotalClientsByLetter ( clCat, 'Q' ));
+  printf("Total Client of letter R: %d\n", getTotalClientsByLetter ( clCat, 'R' ));
+  printf("Total Client of letter S: %d\n", getTotalClientsByLetter ( clCat, 'S' ));
+  printf("Total Client of letter T: %d\n", getTotalClientsByLetter ( clCat, 'T' ));
+  printf("Total Client of letter U: %d\n", getTotalClientsByLetter ( clCat, 'U' ));
+  printf("Total Client of letter V: %d\n", getTotalClientsByLetter ( clCat, 'V' ));
+  printf("Total Client of letter X: %d\n", getTotalClientsByLetter ( clCat, 'X' ));
+  printf("Total Client of letter W: %d\n", getTotalClientsByLetter ( clCat, 'W' ));
+  printf("Total Client of letter Y: %d\n", getTotalClientsByLetter ( clCat, 'Y' ));
+  printf("Total Client of letter Z: %d\n", getTotalClientsByLetter ( clCat, 'Z' ));
   return 0;
 }
 

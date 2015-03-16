@@ -9,6 +9,10 @@ struct clientCatalog {
 
 struct clientCatalog* newClientCatalog ( void ){
   struct clientCatalog* newClCat = ( struct clientCatalog* ) malloc ( sizeof (struct clientCatalog) );
+  int i = 0;
+  for( ; i<26; i++){
+    newClCat->lettersArray[i] = createTree();
+  }
   return newClCat;
 }
 
@@ -24,13 +28,13 @@ static int getClientArrayPosition ( char* clientCode ) {
 void addClientToCatalog ( struct clientCatalog* clCat, char* clientCode ) {
   int position; 
   position = getClientArrayPosition( clientCode );
-  clCat->lettersArray[position] = insertInAvlTree ( clCat->lettersArray[position] , clientCode );
+  avlInsert ( clCat->lettersArray[position] , clientCode );
 }
 
 int getTotalClientsByLetter ( struct clientCatalog* clCat, char clientInitial ) {
   int position, totalClients;
   position = getClientArrayPosition( &clientInitial );
-  totalClients = getSizeOfAvlTree ( clCat->lettersArray[position] );
+  totalClients = avlSize ( clCat->lettersArray[position] );
   return totalClients;
 }
 
