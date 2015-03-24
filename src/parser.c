@@ -119,7 +119,7 @@ int readFileSales(char* filename, Accounting acBook , ClientCatalog clCat, Produ
     productOk(tk) == 0  ? tokenPosition++ : error++;
     if(!error){
       strcpy ( productToken , tk );
-      if ( containsProductCode ( prCat , productToken ) == 0 ){ error++; }
+      if ( containsProductCode ( prCat , productToken ) == 0 ){ error++; printf("product %s does not exits!\n", productToken);}
       if(!error){
         tk = strtok(NULL, " ");
         priceOk(tk) == 0? tokenPosition++ : error++;
@@ -137,7 +137,8 @@ int readFileSales(char* filename, Accounting acBook , ClientCatalog clCat, Produ
               clientOk(tk) == 0? tokenPosition ++ : error++;
               if(!error){
                 strcpy ( clientToken, tk );
-                if ( containsClientCode( clCat, clientToken ) == 0 ){ error++; }
+                if ( containsClientCode( clCat, clientToken ) == 0 ){ error++; printf("client %s does not exits!\n", clientToken);}
+
                 if(!error){
                   tk = strtok(NULL, " ");
                   monthOk(tk) == 0 ? tokenPosition ++ : error++;
