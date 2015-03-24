@@ -13,7 +13,7 @@ ClientCatalog newClientCatalog ( void );
 
 void addClientToCatalog ( ClientCatalog , char* );
 
-int contaisClientCode ( ClientCatalog, char* );
+int containsClientCode ( ClientCatalog, char* );
 
 int getTotalClientsByLetter ( ClientCatalog, char );
 

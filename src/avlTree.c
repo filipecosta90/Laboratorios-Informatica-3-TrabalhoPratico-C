@@ -209,3 +209,28 @@ int avlSize ( struct avlTree *tree ) {
   return ( 0 );
 }
 
+static int avlNodeContains ( struct avlNode * node , char* containsKey ){
+  int comparedValue;
+  int returningValue = 0;
+  if ( node != NULL ){
+    comparedValue = strcmp ( node->key , containsKey );
+    if ( comparedValue == 0 ){
+      returningValue = 1;
+    }
+    else{
+      returningValue = avlNodeContains ( node->left , containsKey ) + avlNodeContains ( node->right , containsKey );
+    }
+  }
+  return returningValue;
+}
+
+int avlContains ( struct avlTree *tree , char* containsKey ) {
+  int returningValue = 0;
+  if( tree != NULL ) {
+    if( tree->root != NULL ){
+      returningValue = avlNodeContains ( tree->root , containsKey );  
+    }
+  }
+  return returningValue; 
+}
+

@@ -15,7 +15,7 @@ void initProductCatalog ( ProductCatalog );
 
 void addProductToCatalog ( ProductCatalog , char* );
 
-int contaisProductCode ( ProductCatalog, char* );
+int containsProductCode ( ProductCatalog, char* );
 
 void deleteProductCatalog ( ProductCatalog );
 

@@ -95,7 +95,7 @@ static int monthOk(char* buf){
   return result;
 }
 
-int readFileSales(char* filename, Accounting acBook){
+int readFileSales(char* filename, Accounting acBook , ClientCatalog clCat, ProductCatalog prCat ){
   FILE *fp;
   volatile int totalCount=0;
   volatile int correctCount=0;
@@ -119,33 +119,39 @@ int readFileSales(char* filename, Accounting acBook){
     productOk(tk) == 0  ? tokenPosition++ : error++;
     if(!error){
       strcpy ( productToken , tk );
-      tk = strtok(NULL, " ");
-      priceOk(tk) == 0? tokenPosition++ : error++;
+      if ( containsProductCode ( prCat , productToken ) == 0 ){ error++; }
       if(!error){
-        priceToken = atof( tk );
         tk = strtok(NULL, " ");
-        unitOk(tk) == 0 ? tokenPosition++ : error++;
+        priceOk(tk) == 0? tokenPosition++ : error++;
         if(!error){
-          unitToken=atoi( tk );
+          priceToken = atof( tk );
           tk = strtok(NULL, " ");
-          salesTypeOk(tk) == 0? tokenPosition ++ : error++;
+          unitOk(tk) == 0 ? tokenPosition++ : error++;
           if(!error){
-            modeToken = tk[0];
+            unitToken=atoi( tk );
             tk = strtok(NULL, " ");
-            clientOk(tk) == 0? tokenPosition ++ : error++;
+            salesTypeOk(tk) == 0? tokenPosition ++ : error++;
             if(!error){
-              strcpy ( clientToken, tk );
+              modeToken = tk[0];
               tk = strtok(NULL, " ");
-              monthOk(tk) == 0 ? tokenPosition ++ : error++;
-              if(error==0){
-                monthToken = atoi ( tk );
-                correctCount++;
-                addSale( acBook, monthToken  );
-                addClient( acBook, monthToken );
-                addBill( acBook, monthToken, priceToken );
-              }
-              else{
-                errorCount++;
+              clientOk(tk) == 0? tokenPosition ++ : error++;
+              if(!error){
+                strcpy ( clientToken, tk );
+                if ( containsClientCode( clCat, clientToken ) == 0 ){ error++; }
+                if(!error){
+                  tk = strtok(NULL, " ");
+                  monthOk(tk) == 0 ? tokenPosition ++ : error++;
+                  if(error==0){
+                    monthToken = atoi ( tk );
+                    correctCount++;
+                    addSale( acBook, monthToken  );
+                    addClient( acBook, monthToken );
+                    addBill( acBook, monthToken, priceToken );
+                  }
+                  else{
+                    errorCount++;
+                  }
+                }
               }
             }
           }
@@ -156,7 +162,7 @@ int readFileSales(char* filename, Accounting acBook){
     tokenPosition=0;
   }
   fclose(fp);
-  return totalCount;
+  return correctCount;
 }
 
 int readFileProducts(char* filename, ProductCatalog prCat ){
@@ -186,7 +192,7 @@ int readFileProducts(char* filename, ProductCatalog prCat ){
     }
   }
   fclose(fp);
-  return totalCount;
+  return correctCount;
 }
 
 int readFileClients( char* filename, ClientCatalog clCat ){
@@ -216,6 +222,6 @@ int readFileClients( char* filename, ClientCatalog clCat ){
     }
   }
   fclose(fp);
-  return totalCount;
+  return correctCount;
 }
 

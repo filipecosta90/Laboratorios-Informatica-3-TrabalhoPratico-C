@@ -38,6 +38,12 @@ int getTotalClientsByLetter ( struct clientCatalog* clCat, char clientInitial ) 
   return totalClients;
 }
 
+int containsClientCode ( struct clientCatalog* clCat, char* clientCode ){
+  int position;
+  position = getClientArrayPosition ( clientCode );
+  return avlContains ( clCat->lettersArray[position] , clientCode );
+}
+
 /* 
    void deleteClientCatalog ( struct clientCatalog* clCat ) {
    int i = 0;

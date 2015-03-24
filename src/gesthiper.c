@@ -20,9 +20,9 @@ int main (int argc, char *argv[] ){
   clCat = newClientCatalog();
   prCat = newProductCatalog();
   initAccounting (acBook);
-  /*flagReadingProducts = readFileProducts ( "../files/FichProdutos.txt" , prCat );*/
+  flagReadingProducts = readFileProducts ( "../files/FichProdutos.txt" , prCat );
   flagReadingClients = readFileClients ( "../files/FichClientes.txt" , clCat );
-  flagReadingSales = readFileSales( "../files/Compras.txt" , acBook );
+  flagReadingSales = readFileSales( "../files/Compras.txt" , acBook , clCat , prCat );
   printf("flag sales:%d\n", flagReadingSales);
   printf("get interval total sales result: %d\n", getIntervalTotalSales( acBook, 1, 12));
   printf("get interval total billed result: %f\n", getIntervalTotalBilled( acBook, 1, 12));

@@ -1,7 +1,6 @@
 #include "productCatalog.h"
 #include "avlTree.h"
 #include <stdlib.h>
-#include <stdio.h>
 
 struct productCatalog {
   AvlTree lettersArray[26];
@@ -29,7 +28,6 @@ void addProductToCatalog ( struct productCatalog* prCat, char* productCode ) {
   int position;
   position = getProductArrayPosition( productCode );
   avlInsert ( prCat->lettersArray[position] , productCode );
-  printf("product inserted:%s\n", productCode);
 }
 
 int getTotalProductByLetter ( struct productCatalog* prCat, char productInitial ) {
@@ -48,4 +46,10 @@ int getTotalProductByLetter ( struct productCatalog* prCat, char productInitial 
    free (clCat);
    } 
    */
+
+int containsProductCode ( struct productCatalog* prCat, char* productCode ){
+  int position;
+  position = getProductArrayPosition ( productCode );
+  return avlContains ( prCat->lettersArray[position] , productCode );
+}
 
