@@ -3,41 +3,42 @@
 #include "accountingProduct.h"
 
 struct accountingProduct {
-  int NSales;
-  float NBilled;
-  int PSales;
-  float PBilled;
+  int nSales;
+  float nBilled;
+  int pSales;
+  float pBilled;
 };
 
-Accounting newAccountingProduct ( void ){
+AccountingProduct newAccountingProduct ( void ){
   AccountingProduct accountingProductNew = ( AccountingProduct ) malloc ( sizeof ( struct accountingProduct ));
   memset ( (accountingProductNew), '\0', ( sizeof ( struct accountingProduct)) );
   return ( accountingProductNew );
 }
 
 void setAccountingProduct ( AccountingProduct acProdToSet, int n_Sales, float n_Billed, int p_Sales, float p_Billed ){
-  clientToSet->firstLetter=fstLetter;
-  clientToSet->secondLetter=sndLetter;
-  strcpy ( clientToSet->numbers , setNumbers );
+  acProdToSet->nSales = n_Sales;
+  acProdToSet->nBilled = n_Billed;
+  acProdToSet->pSales = p_Sales;
+  acProdToSet->nBilled = p_Billed;
 }
 
 int getNSales ( AccountingProduct getAccountingProduct ) {
-  return ( getAccountingProduct->Nsales );
+  return ( getAccountingProduct->nSales );
 }
 
 int getPSales ( AccountingProduct getAccountingProduct ) {
-  return ( getAccountingProduct->PSales );
+  return ( getAccountingProduct->pSales );
 }
 
 float getNBilled ( AccountingProduct getAccountingProduct ) {
-  return ( getAccountingProduct->NBilled );
+  return ( getAccountingProduct->nBilled );
 }
 
 float getPBilled ( AccountingProduct getAccountingProduct ) {
-  return ( getAccountingProduct->PBilled );
+  return ( getAccountingProduct->pBilled );
 }
 
 float getTotalBilled ( AccountingProduct getAccountingProduct ) {
-  return ( getAccountingProduct->NBilled + getAccountingProduct->PBilled );
+  return ( getAccountingProduct->nBilled + getAccountingProduct->nBilled );
 }
 
