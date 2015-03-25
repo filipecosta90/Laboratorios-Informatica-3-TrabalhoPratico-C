@@ -1,7 +1,7 @@
-#include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #include "productCatalog.h"
 #include "clientCatalog.h"
@@ -95,13 +95,15 @@ static int monthOk(char* buf){
   return result;
 }
 
-int readFileSales(char* filename, Accounting acBook , ClientCatalog clCat, ProductCatalog prCat ){
+int readFileSales(char* filename, Accounting acBook , ClientCatalog clCat, int* clientErrorCount,  ProductCatalog prCat , int* productErrorCount ){
   FILE *fp;
   volatile int totalCount=0;
   volatile int correctCount=0;
   volatile int errorCount=0;
   volatile int error = 0;
   volatile int tokenPosition = 0;
+  volatile int clientError=0;
+  volatile int productError=0;
   char buf[32];
   volatile int maxSize=0;
   char* tk;
@@ -119,7 +121,7 @@ int readFileSales(char* filename, Accounting acBook , ClientCatalog clCat, Produ
     productOk(tk) == 0  ? tokenPosition++ : error++;
     if(!error){
       strcpy ( productToken , tk );
-      if ( containsProductCode ( prCat , productToken ) == 0 ){ error++; printf("product %s does not exits!\n", productToken);}
+      if ( containsProductCode ( prCat , productToken ) == 0 ){ error++; productError++;}
       if(!error){
         tk = strtok(NULL, " ");
         priceOk(tk) == 0? tokenPosition++ : error++;
@@ -137,7 +139,7 @@ int readFileSales(char* filename, Accounting acBook , ClientCatalog clCat, Produ
               clientOk(tk) == 0? tokenPosition ++ : error++;
               if(!error){
                 strcpy ( clientToken, tk );
-                if ( containsClientCode( clCat, clientToken ) == 0 ){ error++; printf("client %s does not exits!\n", clientToken);}
+                if ( containsClientCode( clCat, clientToken ) == 0 ){ error++; clientError++;}
 
                 if(!error){
                   tk = strtok(NULL, " ");
@@ -162,11 +164,13 @@ int readFileSales(char* filename, Accounting acBook , ClientCatalog clCat, Produ
     error=0;
     tokenPosition=0;
   }
+  *clientErrorCount = clientError;
+  *productErrorCount = productError;
   fclose(fp);
   return correctCount;
 }
 
-int readFileProducts(char* filename, ProductCatalog prCat ){
+int readFileProducts(char* filename, ProductCatalog prCat , int* errorFlagCount ){
   FILE *fp;
   volatile int totalCount=0;
   volatile int correctCount=0;
@@ -192,11 +196,12 @@ int readFileProducts(char* filename, ProductCatalog prCat ){
       errorCount++;
     }
   }
+  *errorFlagCount = errorCount;
   fclose(fp);
   return correctCount;
 }
 
-int readFileClients( char* filename, ClientCatalog clCat ){
+int readFileClients( char* filename, ClientCatalog clCat, int* errorFlagCount ){
   FILE *fp;
   volatile int totalCount=0;
   volatile int correctCount=0;
@@ -222,6 +227,7 @@ int readFileClients( char* filename, ClientCatalog clCat ){
       errorCount++;
     }
   }
+  *errorFlagCount = errorCount;
   fclose(fp);
   return correctCount;
 }
