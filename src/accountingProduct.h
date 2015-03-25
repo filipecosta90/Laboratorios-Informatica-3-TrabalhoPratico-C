@@ -17,9 +17,11 @@ int getNSales ( AccountingProduct );
 
 int getPSales ( AccountingProduct );
 
-float getTotalBilled ( AccountingProduct );
+float getNBilled ( AccountingProduct );
 
-int equals ( Client, Client );
+float getPBilled ( AccountingProduct );
+
+float getTotalBilled ( AccountingProduct );
 
 #endif /* _CLIENT_H_INCLUDED_ */
 
