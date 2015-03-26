@@ -10,6 +10,7 @@
 #include "clientCatalog.h"
 #include "accounting.h"
 #include "parser.h"
+#include "genLinkedList.h"
 
 int main (int argc, char *argv[] ){
   Accounting acBook;

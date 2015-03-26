@@ -10,9 +10,9 @@ typedef struct salesProductLinker*  SalesProductLinker;
 
 SalesProductLinker newSalesProductLinker ( void );
 
-int getClientsWhoBoughtProductLinkedList  ( SalesProductLinker , char* , GenericLinkedList );
+int getClientsWhoBoughtProduct__LinkedList  ( SalesProductLinker , char* , GenericLinkedList );
 
-int getTopNMostSoldProducts ( SalesProductLinker , int , GenericLinkedList , int* , int* );
+int getTopNMostSoldProducts__LinkedList ( SalesProductLinker , int , GenericLinkedList , int* , int* );
 
 int getNumberOfIdleProducts ( SalesProductLinker );
 
