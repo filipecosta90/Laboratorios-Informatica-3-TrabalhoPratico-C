@@ -10,6 +10,9 @@ genLinkedList.o: genLinkedList.c
 avlTree.o: avlTree.c
 	$(CC) -c -o $@ $< $(CFLAGS)
 
+binarySearchTree.o: binarySearchTree.c
+	$(CC) -c -o $@ $< $(CFLAGS)
+
 month.o: month.c 
 	$(CC) -c -o $@ $< $(CFLAGS)
 
@@ -22,7 +25,7 @@ clientCatalog.o: clientCatalog.c avlTree.c
 productCatalog.o: productCatalog.c avlTree.c
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-salesProductLinker.o: salesProductLinker.c avlTree.c genLinkedList.c
+salesProductLinker.o: salesProductLinker.c avlTree.c genLinkedList.c binarySearchTree.c
 
 parser.o: parser.c accounting.c productCatalog.c clientCatalog.c month.c
 	$(CC) -c -o $@ $< $(CFLAGS)

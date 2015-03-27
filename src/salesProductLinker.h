@@ -8,11 +8,11 @@
 
 typedef struct salesProductLinker*  SalesProductLinker;
 
-SalesProductLinker newSalesProductLinker ( void );
+SalesProductLinker newSalesProductLinker ( int ( *cmp) ( void* , void* ) );
 
-int getClientsWhoBoughtProduct__LL  ( SalesProductLinker , char* , List );
+int getClientsWhoBoughtProduct__LL  ( struct salesProductLinker* salesPrLinker , char* prCode , struct list* returnLL );
 
-int getTopNMostSoldProducts__LL ( SalesProductLinker , int , List , int* , int* );
+int getTopNMostSoldProducts__LL ( SalesProductLinker , int , struct list* , int* , int* );
 
 int getNumberOfIdleProducts ( SalesProductLinker );
 
