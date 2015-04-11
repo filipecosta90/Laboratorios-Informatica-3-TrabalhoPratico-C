@@ -9,11 +9,13 @@
 
 typedef struct clientCatalog * ClientCatalog;
 
+typedef char* ClientCode;
+
 ClientCatalog newClientCatalog ( void );
 
-void addClientToCatalog ( ClientCatalog , char* );
+void addClientToCatalog ( ClientCatalog , ClientCode );
 
-int containsClientCode ( ClientCatalog, char* );
+int containsClientCode ( ClientCatalog, ClientCode );
 
 int getTotalClientsByLetter ( ClientCatalog, char );
 
