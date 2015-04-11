@@ -50,14 +50,21 @@ void addSalesLineToSPL ( struct salesProductLinker* salesPrLinker , char* produc
   }
 }
 
-int getClientsWhoBoughtProduct__LL ( struct salesProductLinker* salesPrLinker , char* prCode , struct list* returnLL ){
+List getClientsWhoBoughtProduct__LL ( struct salesProductLinker* salesPrLinker , char* prCode ){
+  List returnLL;
 
+  return returnLL;
 }
 
-int getTopNMostSoldProducts__LL ( struct salesProductLinker* salesPrLinker , int nMost , struct List returnLL , int* totalClients , int* numberUnitsSold ){
+List getTopNMostSoldProducts__LL ( struct salesProductLinker* salesPrLinker , int nMost , int* totalClients , int* numberUnitsSold ){
+  List returnLL;
 
+  return returnLL;
 }
 
 int getNumberOfIdleProducts ( struct salesProductLinker* salesPrLiner ){
+  int idleCount;
+  idleCount = 0;
 
+  return idleCount;
 }
