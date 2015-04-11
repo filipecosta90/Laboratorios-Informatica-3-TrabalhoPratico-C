@@ -6,23 +6,25 @@
 #ifndef _ACCOUNTING_H_INCLUDED_
 #define _ACCOUNTING_H_INCLUDED_
 
+typedef int type_of_month;
+
 typedef struct accounting * Accounting;
 
 Accounting newAccounting ( void );
 
 void initAccounting ( Accounting );
 
-void addSale ( Accounting , int );
+void addSale ( Accounting , type_of_month );
 
-void addClient ( Accounting , int );
+void addClient ( Accounting , type_of_month );
 
-void addBill ( Accounting, int , float );
+void addBill ( Accounting, type_of_month , float );
 
-char* getCsvMonth ( Accounting, int );
+char* getCsvMonth ( Accounting, type_of_month );
 
-int getIntervalTotalSales ( Accounting, int, int );
+int getIntervalTotalSales ( Accounting, type_of_month , type_of_month );
 
-float getIntervalTotalBilled ( Accounting, int, int );
+float getIntervalTotalBilled ( Accounting, type_of_month , type_of_month );
 
 void deleteAccounting ( Accounting );
 
