@@ -9,13 +9,15 @@
 
 typedef struct productCatalog * ProductCatalog;
 
+typedef char* ProductCode;
+
 ProductCatalog newProductCatalog ( void );
 
 void initProductCatalog ( ProductCatalog );
 
-void addProductToCatalog ( ProductCatalog , char* );
+void addProductToCatalog ( ProductCatalog , ProductCode );
 
-int containsProductCode ( ProductCatalog, char* );
+int containsProductCode ( ProductCatalog, ProductCode );
 
 void deleteProductCatalog ( ProductCatalog );
 
