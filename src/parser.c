@@ -5,6 +5,7 @@
 
 #include "productCatalog.h"
 #include "clientCatalog.h"
+#include "salesProductLinker.h"
 #include "accounting.h"
 #include "parser.h"
 
@@ -95,7 +96,7 @@ static int monthOk(char* buf){
   return result;
 }
 
-int readFileSales(char* filename, Accounting acBook , ClientCatalog clCat, int* clientErrorCount,  ProductCatalog prCat , int* productErrorCount ){
+int readFileSales(char* filename, Accounting acBook , ClientCatalog clCat, ProductCatalog prCat, struct salesProductLinker* splProd , int* clientErrorCount , int* productErrorCount ){
   FILE *fp;
   volatile int totalCount=0;
   volatile int correctCount=0;
@@ -150,6 +151,7 @@ int readFileSales(char* filename, Accounting acBook , ClientCatalog clCat, int* 
                     addSale( acBook, monthToken  );
                     addClient( acBook, monthToken );
                     addBill( acBook, monthToken, priceToken );
+                    addSalesLineToSPL ( splProd , productToken , clientToken , modeToken , unitToken , priceToken );
                   }
                   else{
                     errorCount++;

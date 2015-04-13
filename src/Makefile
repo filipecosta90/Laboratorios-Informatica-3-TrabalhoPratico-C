@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -g -Wall -ansi -pedantic -O2
 
-gesthiper: gesthiper.o accounting.o clientCatalog.o productCatalog.o parser.o salesProductLinker.o productSPL.o binarySearchTree.o genLinkedList.o avlTree.o month.o clientSales.o
+gesthiper: gesthiper.o accounting.o clientCatalog.o productCatalog.o productSPL.o salesProductLinker.o parser.o binarySearchTree.o genLinkedList.o avlTree.o month.o clientSales.o
 	gcc -o $@ $^ $(CFLAGS)
 
 genLinkedList.o: genLinkedList.c
@@ -19,7 +19,7 @@ month.o: month.c
 clientSales.o: clientSales.c
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-productSPL.o: productSPL.c genLinkedList.c clientSales.c
+productSPL.o: productSPL.c genLinkedList.c clientSales.c binarySearchTree.c
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 accounting.o: accounting.c month.c
@@ -34,7 +34,7 @@ productCatalog.o: productCatalog.c avlTree.c
 salesProductLinker.o:  salesProductLinker.c productSPL.c clientSales.c avlTree.c genLinkedList.c binarySearchTree.c 
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-parser.o: parser.c accounting.c productCatalog.c clientCatalog.c month.c
+parser.o: parser.c accounting.c productCatalog.c clientCatalog.c salesProductLinker.c month.c
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 .PHONY: clean

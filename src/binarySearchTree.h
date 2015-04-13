@@ -6,19 +6,13 @@
 #ifndef _BINARY_SEARCH_TREE_H_INCLUDED_
 #define _BINARY_SEARCH_TREE_H_INCLUDED_
 
-typedef struct bstNode *BstNode;
+typedef struct bsTree* BSTree;
 
-struct bstNode* newNodeBst ( void* );
+struct bsTree* newBSTree( int ( *comparator ) (void *, void *) );
 
-void freeNode ( BstNode );
+void* searchBst ( BSTree , void* );
 
-struct bstNode** searchBst ( struct bstNode** , int ( *comparator ) (void *, void *) , void* );
-
-void insertBst ( struct bstNode** , int ( *comparator ) (void *, void *) , void* );
-
-void deleteBst ( struct bstNode** );
-
-void* getNodeBstData ( struct bstNode** );
+void insertBst ( BSTree , void* );
 
 #endif /* _BINARY_SEARCH_TREE_H_INCLUDED_ */
 

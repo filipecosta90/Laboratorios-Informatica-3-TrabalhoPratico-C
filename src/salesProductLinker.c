@@ -3,25 +3,26 @@
  *  * Copyright (C) Laboratórios Informática III, Universidade do Minho, 2015
  *  */
 
-#include "salesProductLinker.h"
+
 #include "genLinkedList.h"
 #include "avlTree.h"
 #include "binarySearchTree.h"
+#include "salesProductLinker.h"
 #include "productSPL.h"
+#include "clientSales.h"
+#include <stdio.h>
 
 #include <stdlib.h>
 
 struct salesProductLinker {
-  struct bstNode* lettersArray[26];
-  int ( *splComparator ) ( void* , void* );
+  struct bsTree* lettersArray[26];
 };
 
 struct salesProductLinker* newSalesProductLinker ( ) {
   struct salesProductLinker* newSPL = ( struct salesProductLinker* ) malloc ( sizeof (struct salesProductLinker ) );
   int i = 0;
-  newSPL->splComparator = &productSPLEquals;
   for( ; i<26; i++){
-    newSPL->lettersArray[i] = newNodeBst( NULL );
+    newSPL->lettersArray[i] = newBSTree ( &productSPLEquals );
   }
   return newSPL;
 }
@@ -37,23 +38,28 @@ static int getProductSPLArrayPosition ( char* productCode ) {
 
 void addSalesLineToSPL ( struct salesProductLinker* salesPrLinker , char* productCode, char* clientCode , char salesMode , int unitsSold , float sellingPrice ) {
   int position;
-  struct bstNode** searchResult = NULL;
-  struct productSPL* splProd;
+  ProductSPL searchResult = NULL;
+  ProductSPL splProd;
   position = getProductSPLArrayPosition( productCode );
   splProd = newProductSPL ( productCode );
-  searchResult = searchBst ( &salesPrLinker->lettersArray[position] , salesPrLinker->splComparator , splProd );
-  if ( *searchResult == NULL ){
+  printf("searching %s: \n", productCode );
+  searchResult = (ProductSPL) searchBst ( salesPrLinker->lettersArray[position], splProd );
+  if ( searchResult == NULL ){
+    printf("new productspl\n");
     splProd = addSaleSPL ( splProd , clientCode , salesMode , unitsSold , sellingPrice );
-    insertBst ( &salesPrLinker->lettersArray[position] , salesPrLinker->splComparator , splProd );
+    insertBst ( salesPrLinker->lettersArray[position] , splProd );
   }
   else {
-    splProd = ( ProductSPL ) getNodeBstData ( searchResult );
-    splProd = addSaleSPL ( splProd , clientCode , salesMode , unitsSold , sellingPrice );
+    printf("already existed\n");
+    searchResult = addSaleSPL ( searchResult , clientCode , salesMode , unitsSold , sellingPrice );
   }
 }
 
 List getClientsWhoBoughtProduct__LL ( struct salesProductLinker* salesPrLinker , char* prCode ){
-
+  List returnLL;
+  returnLL = NULL;
+  newLL ( returnLL , sizeof ( ClientSales ) , &deleteClientSales );
+  return returnLL;
 }
 
 List getTopNMostSoldProducts__LL ( struct salesProductLinker* salesPrLinker , int nMost , int* totalClients , int* numberUnitsSold ){

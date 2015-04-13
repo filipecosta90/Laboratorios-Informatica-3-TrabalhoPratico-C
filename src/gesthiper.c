@@ -9,25 +9,29 @@
 #include "productCatalog.h"
 #include "clientCatalog.h"
 #include "accounting.h"
+#include "salesProductLinker.h"
 #include "parser.h"
 #include "genLinkedList.h"
+
 
 int main (int argc, char *argv[] ){
   Accounting acBook;
   ClientCatalog clCat;
   ProductCatalog prCat;
+  SalesProductLinker splProd;
   int flagReadingSales, flagReadingClients, flagReadingProducts, errorReadingProducts, errorReadingClients;
   errorReadingClients = 0;
   errorReadingProducts = 0;
   acBook = newAccounting();
   clCat = newClientCatalog();
   prCat = newProductCatalog();
+  splProd = newSalesProductLinker (); 
   initAccounting (acBook);
   flagReadingProducts = readFileProducts ( "../files/FichProdutos.txt" , prCat , &errorReadingProducts );
   flagReadingClients = readFileClients ( "../files/FichClientes.txt" , clCat , &errorReadingClients );
   errorReadingClients = 0;
   errorReadingProducts = 0;
-  flagReadingSales = readFileSales( "../files/Compras.txt" , acBook , clCat , &errorReadingProducts , prCat , &errorReadingClients );
+  flagReadingSales = readFileSales( "../files/Compras.txt" , acBook , clCat , prCat , splProd , &errorReadingProducts , &errorReadingClients );
   printf("flag sales:%d\n", flagReadingSales);
   printf("get interval total sales result: %d\n", getIntervalTotalSales( acBook, 1, 12));
   printf("get interval total billed result: %f\n", getIntervalTotalBilled( acBook, 1, 12));
@@ -72,6 +76,12 @@ int main (int argc, char *argv[] ){
   printf("Total Client of letter W: %d\n", getTotalClientsByLetter ( clCat, 'W' ));
   printf("Total Client of letter Y: %d\n", getTotalClientsByLetter ( clCat, 'Y' ));
   printf("Total Client of letter Z: %d\n", getTotalClientsByLetter ( clCat, 'Z' ));
+
+  List newLL = NULL;
+  newLL = getClientsWhoBoughtProduct__LL  ( splProd , "UH9277" );
+  printf("##\n##number of clients UH9277: %d\n", sizeLL ( newLL ));
+  newLL = getClientsWhoBoughtProduct__LL  ( splProd , "GV4379" );
+  printf("##\n##number of clients GV4379: %d\n", sizeLL ( newLL ));
   return 0;
 }
 

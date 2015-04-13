@@ -38,10 +38,17 @@ ClientSales addUnitClientSales ( ClientSales c1 , int addUnit ){
 int equalsClientSales ( void* isEqual1, void* isEqual2 ){
   ClientSales c1, c2;
   int returningValue = -1;
-  assert ( isEqual1 != NULL && isEqual2 != NULL );
+  assert ( isEqual1 != NULL );
+  assert ( isEqual2 != NULL );
   c1 = ( ClientSales ) isEqual1;
   c2 = ( ClientSales ) isEqual2;
   returningValue = strcmp ( c1->clientCode , c2->clientCode );
   return returningValue;
 }
 
+void deleteClientSales ( void* delete1 ){
+    ClientSales d1;
+    assert ( delete1 !=  NULL );
+    d1 = ( ClientSales ) delete1;
+    free ( d1 );
+}

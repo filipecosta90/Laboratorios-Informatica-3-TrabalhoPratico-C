@@ -7,17 +7,17 @@
 #ifndef _CLIENT_SALES_H_INCLUDED_
 #define _CLIENT_SALES_H_INCLUDED_
 
-typedef char* ClientCode;
+typedef struct clientSales* ClientSales;
 
-typedef struct clientSales*  ClientSales;
-
-ClientSales newClientSales ( ClientCode );
+ClientSales newClientSales ( char* ClientCode );
 
 int getClientSalesUnitsSold ( ClientSales );
 
-ClientSales addUnitClientSales ( ClientSales , int );
+ClientSales addUnitClientSales (  ClientSales , int );
 
 int equalsClientSales ( void* , void* );
+
+void deleteClientSales ( void* );
 
 #endif /* _CLIENT_SALES_H_INCLUDED_ */
 

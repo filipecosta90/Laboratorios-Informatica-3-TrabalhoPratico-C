@@ -6,7 +6,7 @@
 #ifndef _SALES_PRODUCT_LINKER_H_INCLUDED_
 #define _SALES_PRODUCT_LINKER_H_INCLUDED_
 
-typedef char* productCode; 
+typedef char* productCode;
 
 typedef struct salesProductLinker*  SalesProductLinker;
 
@@ -14,7 +14,9 @@ SalesProductLinker newSalesProductLinker ( );
 
 struct list* getClientsWhoBoughtProduct__LL  ( SalesProductLinker , productCode );
 
-struct list* getTopNMostSoldProducts__LL ( SalesProductLinker , int ,  int* , int* );
+void addSalesLineToSPL ( struct salesProductLinker* salesPrLinker , char* productCode, char* clientCode , char salesMode , int unitsSold , float sellingPrice );
+
+struct list* getTopNMostSoldProducts__LL ( SalesProductLinker , int nMost ,  int* totalClients , int* numberUnitsSold );
 
 int getNumberOfIdleProducts ( SalesProductLinker );
 

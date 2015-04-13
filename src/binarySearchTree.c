@@ -12,8 +12,16 @@ struct bstNode {
   struct bstNode* right;
 };
 
+typedef struct bstNode* BstNode;
+
+struct bsTree {
+  BstNode root;
+  int ( *comparator ) (void *, void *) ;
+};
+
+
 struct bstNode* newNodeBst ( void* data ) {
-  struct bstNode* result;
+  BstNode result;
   result = malloc ( sizeof ( struct bstNode ) );
   result->data = data;
   result->left = NULL;
@@ -21,65 +29,80 @@ struct bstNode* newNodeBst ( void* data ) {
   return result;
 }
 
-void* getNodeBstData ( struct bstNode** node ){
-  return (*node)->data;
+struct bsTree* newBSTree ( int ( *newComparator ) (void *, void *) ){
+  struct bsTree *newTree = NULL;
+  if ( ( newTree = malloc ( sizeof ( struct bsTree ) ) ) == NULL ) {
+    return NULL;
+  }
+  else{
+    newTree->root = NULL;
+    newTree->comparator = newComparator;
+    return newTree;
+  }
 }
 
-void freeNodeBst ( struct bstNode* node ) {
-  free ( node );
-}
-
-struct bstNode** searchBst ( struct bstNode** root , int ( *comparator ) (void *, void *) , void* data ) {
-  struct bstNode** node = root;
-  int compareResult;
-  while ( *node != NULL ) {
-    compareResult = comparator ( data, (*node)->data );
-    if ( compareResult < 0 ){
-      node = &( *node )->left;
+void* searchBstNode ( int ( *comparator ) (void *, void *) , BstNode node , void* data ){
+  int comparedValue;
+  BstNode actual;
+  void* returningValue = NULL;
+  actual = node;
+  while ( actual != NULL ){
+    comparedValue = comparator ( data, actual->data );
+    if ( comparedValue == 0 ){
+      returningValue = actual->data ;
     }
-    else {
-      if ( compareResult > 0 ){
-        node = &( *node )->right;
+    else{
+      if (comparedValue < 0 ){
+        actual = actual->left;
       }
-      else {
-        break;
+      if ( comparedValue > 0 ){
+        actual = actual->right;
       }
     }
   }
-  return node;
+  return returningValue;
 }
 
-void insertBst ( struct bstNode** root , int ( *comparator ) (void *, void *) , void* data ) {
-  struct bstNode** node = searchBst ( root , comparator , data );
-  if ( *node == NULL ) {
-    *node = newNodeBst ( data );
+void* searchBst ( BSTree tree , void* containsKey ) {
+  void* returningValue;
+  if( tree->root == NULL ){
+    returningValue =  NULL;
   }
-}
-
-void deleteBst ( struct bstNode** node ) {
-  void *temp;
-  struct bstNode* oldNode = *node;
-  if ( (*node)->left == NULL ) {
-    *node = (*node)->right;
-    freeNodeBst ( oldNode );
-  }
-  else if ( (*node)->right == NULL ) {
-    *node = (*node)->left;
-    freeNodeBst ( oldNode );
-  } 
-  else {
-    struct bstNode** pred;
-    pred = &(*node)->left;
-    while ( (*pred)->right != NULL ) {
-      pred = &(*pred)->right;
+  if( tree != NULL ) {
+    if( tree->root != NULL ){
+      returningValue = searchBstNode ( tree->comparator , tree->root , containsKey );
     }
+  }
+  return returningValue;
+}
 
-    /* Swap values */
-    temp = (*pred)->data;
-    (*pred)->data = (*node)->data;
-    (*node)->data = temp;
+void insertBst ( BSTree tree , void* data ) {
+  int comparedValue;
+  BstNode node = NULL;
+  BstNode next = NULL;
+  BstNode last = NULL;
 
-    deleteBst ( pred );
+  /* No root */
+  if ( tree->root == NULL ){
+    node = newNodeBst ( data );
+    tree->root = node;
+  }
+  /* Already Have root*/
+  else{
+    next = tree->root;
+    while ( next != NULL ){
+      last = next;
+      comparedValue = tree->comparator ( data, next->data );
+      if ( comparedValue < 0 ) {
+        next = next->left;
+      }
+      else if ( comparedValue > 0 ) {
+        next = next->right;
+      }
+    }
+    node = newNodeBst ( data );
+    if ( comparedValue < 0 ) last->left = node;
+    if ( comparedValue > 0 ) last->right = node;
   }
 }
 
