@@ -9,7 +9,7 @@
 
 typedef struct productSPL* ProductSPL;
 
-typedef enum { N , P } SaleType;
+typedef char SaleType;
 
 typedef int UnitType;
 
@@ -31,7 +31,7 @@ int getTotalClientsSPL ( ProductSPL );
 
 UnitType getTotalUnitsSoldSPL ( ProductSPL );
 
-int equals ( ProductSPL , ProductSPL );
+int productSPLEquals ( void* , void* );
 
 void destroyProductSPL ( ProductSPL );
 

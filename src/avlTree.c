@@ -234,3 +234,20 @@ int avlContains ( struct avlTree *tree , char* containsKey ) {
   return returningValue; 
 }
 
+void avlFreeNode ( struct avlNode *node ) {
+    if ( node->left != NULL ) {
+        avlFreeNode ( node->left );
+    }
+    if ( node->right != NULL ) {
+        avlFreeNode ( node->right );
+    }
+    free ( node );
+}
+
+void avlFree ( AvlTree freeTree ) {
+    if ( freeTree->root != NULL ) {
+        avlFreeNode ( freeTree->root );
+    }
+}
+
+

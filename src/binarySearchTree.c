@@ -29,11 +29,11 @@ void freeNodeBst ( struct bstNode* node ) {
   free ( node );
 }
 
-struct bstNode** searchBst ( struct bstNode** root , Comparator compare , void* data ) {
+struct bstNode** searchBst ( struct bstNode** root , int ( *comparator ) (void *, void *) , void* data ) {
   struct bstNode** node = root;
   int compareResult;
   while ( *node != NULL ) {
-    compareResult = compare ( data, (*node)->data );
+    compareResult = comparator ( data, (*node)->data );
     if ( compareResult < 0 ){
       node = &( *node )->left;
     }
@@ -49,22 +49,23 @@ struct bstNode** searchBst ( struct bstNode** root , Comparator compare , void* 
   return node;
 }
 
-void insertBst ( struct bstNode** root , Comparator compare , void* data ) {
-  struct bstNode** node = searchBst ( root , compare , data );
+void insertBst ( struct bstNode** root , int ( *comparator ) (void *, void *) , void* data ) {
+  struct bstNode** node = searchBst ( root , comparator , data );
   if ( *node == NULL ) {
     *node = newNodeBst ( data );
   }
 }
 
 void deleteBst ( struct bstNode** node ) {
+  void *temp;
   struct bstNode* oldNode = *node;
   if ( (*node)->left == NULL ) {
     *node = (*node)->right;
-    freeNode ( oldNode );
+    freeNodeBst ( oldNode );
   }
   else if ( (*node)->right == NULL ) {
     *node = (*node)->left;
-    freeNode ( oldNode );
+    freeNodeBst ( oldNode );
   } 
   else {
     struct bstNode** pred;
@@ -74,7 +75,6 @@ void deleteBst ( struct bstNode** node ) {
     }
 
     /* Swap values */
-    void* temp;
     temp = (*pred)->data;
     (*pred)->data = (*node)->data;
     (*node)->data = temp;

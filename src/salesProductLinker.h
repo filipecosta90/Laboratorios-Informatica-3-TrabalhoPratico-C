@@ -10,7 +10,7 @@ typedef char* productCode;
 
 typedef struct salesProductLinker*  SalesProductLinker;
 
-SalesProductLinker newSalesProductLinker ( int ( *cmp) ( void* , void* ) );
+SalesProductLinker newSalesProductLinker ( );
 
 struct list* getClientsWhoBoughtProduct__LL  ( SalesProductLinker , productCode );
 
@@ -18,5 +18,5 @@ struct list* getTopNMostSoldProducts__LL ( SalesProductLinker , int ,  int* , in
 
 int getNumberOfIdleProducts ( SalesProductLinker );
 
-#endif /* _CLIENT_H_INCLUDED_ */
+#endif /* _SALES_PRODUCT_LINKER_H_INCLUDED_ */
 

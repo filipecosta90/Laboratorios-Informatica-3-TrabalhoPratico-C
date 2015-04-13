@@ -16,10 +16,10 @@ struct salesProductLinker {
   int ( *splComparator ) ( void* , void* );
 };
 
-struct salesProductLinker* newSalesProductLinker ( int ( *cmp) ( void* , void* ) ){
+struct salesProductLinker* newSalesProductLinker ( ) {
   struct salesProductLinker* newSPL = ( struct salesProductLinker* ) malloc ( sizeof (struct salesProductLinker ) );
   int i = 0;
-  newSPL->splComparator = cmp;
+  newSPL->splComparator = &productSPLEquals;
   for( ; i<26; i++){
     newSPL->lettersArray[i] = newNodeBst( NULL );
   }
@@ -41,10 +41,10 @@ void addSalesLineToSPL ( struct salesProductLinker* salesPrLinker , char* produc
   struct productSPL* splProd;
   position = getProductSPLArrayPosition( productCode );
   splProd = newProductSPL ( productCode );
-  searchResult = searchBst ( &(salesPrLinker->lettersArray[position]) , salesPrLinker->splComparator , splProd );
+  searchResult = searchBst ( &salesPrLinker->lettersArray[position] , salesPrLinker->splComparator , splProd );
   if ( *searchResult == NULL ){
     splProd = addSaleSPL ( splProd , clientCode , salesMode , unitsSold , sellingPrice );
-    insertBst ( &(salesPrLinker->lettersArray[position]) , salesPrLinker->splComparator , splProd );
+    insertBst ( &salesPrLinker->lettersArray[position] , salesPrLinker->splComparator , splProd );
   }
   else {
     splProd = ( ProductSPL ) getNodeBstData ( searchResult );
@@ -53,11 +53,11 @@ void addSalesLineToSPL ( struct salesProductLinker* salesPrLinker , char* produc
 }
 
 List getClientsWhoBoughtProduct__LL ( struct salesProductLinker* salesPrLinker , char* prCode ){
-  
+
 }
 
 List getTopNMostSoldProducts__LL ( struct salesProductLinker* salesPrLinker , int nMost , int* totalClients , int* numberUnitsSold ){
-  
+
 }
 
 int getNumberOfIdleProducts ( struct salesProductLinker* salesPrLiner ){
