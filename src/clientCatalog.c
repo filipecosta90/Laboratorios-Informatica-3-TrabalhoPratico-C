@@ -44,13 +44,12 @@ int containsClientCode ( struct clientCatalog* clCat, char* clientCode ){
   return avlContains ( clCat->lettersArray[position] , clientCode );
 }
 
-/* 
-   void deleteClientCatalog ( struct clientCatalog* clCat ) {
-   int i = 0;
-   for( ; i<26; i++){
-   freeAvlTree ( clCat->lettersArray[i]);
-   }
-   free (clCat);
-   } 
-   */
+
+void deleteClientCatalog ( struct clientCatalog* clCat ) {
+  int i = 0;
+  for( ; i<26; i++){
+    avlFree ( clCat->lettersArray[i]);
+  }
+  free (clCat);
+}
 

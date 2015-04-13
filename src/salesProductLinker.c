@@ -7,6 +7,8 @@
 #include "genLinkedList.h"
 #include "avlTree.h"
 #include "binarySearchTree.h"
+#include "productSPL.h"
+
 #include <stdlib.h>
 
 struct salesProductLinker {
@@ -36,30 +38,26 @@ static int getProductSPLArrayPosition ( char* productCode ) {
 void addSalesLineToSPL ( struct salesProductLinker* salesPrLinker , char* productCode, char* clientCode , char salesMode , int unitsSold , float sellingPrice ) {
   int position;
   struct bstNode** searchResult = NULL;
-  struct ProductSPL splProd;
+  struct productSPL* splProd;
   position = getProductSPLArrayPosition( productCode );
   splProd = newProductSPL ( productCode );
-  searchResult = searchBst ( salesPrLinker->lettersArray[position] , salesPrLinker->splComparator , splProd );
+  searchResult = searchBst ( &(salesPrLinker->lettersArray[position]) , salesPrLinker->splComparator , splProd );
   if ( *searchResult == NULL ){
-    setProductSPL ( splProd , clientCode , salesMode , unitsSold , sellingPrice );
-    insertBst ( salesPrLinker->lettersArray[position] , salesPrLinker->splComparator , splProd );
+    splProd = addSaleSPL ( splProd , clientCode , salesMode , unitsSold , sellingPrice );
+    insertBst ( &(salesPrLinker->lettersArray[position]) , salesPrLinker->splComparator , splProd );
   }
   else {
     splProd = ( ProductSPL ) getNodeBstData ( searchResult );
-    increaseProductSPL ( splProd , clientCode , salesMode , unitsSold , sellingPrice );
+    splProd = addSaleSPL ( splProd , clientCode , salesMode , unitsSold , sellingPrice );
   }
 }
 
 List getClientsWhoBoughtProduct__LL ( struct salesProductLinker* salesPrLinker , char* prCode ){
-  List returnLL;
-
-  return returnLL;
+  
 }
 
 List getTopNMostSoldProducts__LL ( struct salesProductLinker* salesPrLinker , int nMost , int* totalClients , int* numberUnitsSold ){
-  List returnLL;
-
-  return returnLL;
+  
 }
 
 int getNumberOfIdleProducts ( struct salesProductLinker* salesPrLiner ){
