@@ -5,6 +5,8 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
+#include "genLinkedList.h"
 #include "binarySearchTree.h"
 #include "productSPL.h"
 #include "clientSales.h"
@@ -44,7 +46,7 @@ ProductSPL addSaleSPL ( ProductSPL splProd , char* ClientCode , char SaleType , 
   client1 = newClientSales ( ClientCode );
   searchResultNormal = NULL;
   searchResultPromotion = NULL;
-
+  splProd->unitsSold += UnitType;
   searchResultNormal = (ClientSales) searchBst ( splProd->normalBST , client1 );
   searchResultPromotion = (ClientSales) searchBst ( splProd->promotionBST , client1 );
 
@@ -70,7 +72,7 @@ ProductSPL addSaleSPL ( ProductSPL splProd , char* ClientCode , char SaleType , 
       searchResultPromotion = addUnitClientSales ( searchResultPromotion , UnitType );
     }
   }
-return splProd;
+  return splProd;
 }
 
 int productSPLEquals ( void *isEqual1, void* isEqual2 ){
@@ -85,5 +87,42 @@ int productSPLEquals ( void *isEqual1, void* isEqual2 ){
     returningValue = strcmp ( p1->productCode , p2->productCode );
   }
   return returningValue;
+}
+
+List productSPLGetNormalClients__LL ( ProductSPL splProd ){
+  List returningList;
+  returningList = NULL;
+  newLL ( returningList , sizeof ( ClientSales ) , &deleteClientSales );
+  returningList = BSTreeToLL ( splProd->normalBST , sizeof ( ClientSales ) , &deleteClientSales  );
+  return returningList;
+}
+
+List productSPLGetPromotionClients__LL ( ProductSPL splProd ){
+  List returningList;
+  returningList = NULL;
+  newLL ( returningList , sizeof ( ClientSales ) , &deleteClientSales );
+  returningList = BSTreeToLL ( splProd->promotionBST , sizeof ( ClientSales ) , &deleteClientSales );
+  return returningList;
+}
+
+char* productSPLToString ( ProductSPL sp1 ){
+  int length, lengthUnitsSold, lengthDistinctClients;
+  char buffer1[20], buffer2[20];
+  char* newString;
+  length = strlen ( sp1->productCode );
+  sprintf(buffer1, "%d", sp1->unitsSold);
+  lengthUnitsSold = strlen ( buffer1 );
+  length += lengthUnitsSold;
+  sprintf(buffer2, "%d", sp1->distinctClients);
+  lengthDistinctClients = strlen ( buffer2 );
+  length += lengthDistinctClients;
+  newString = ( char* ) malloc ( ( length +1+13+19+1 ) * sizeof ( char ));
+  strcpy ( newString , sp1->productCode );
+  strcat ( newString , "\tUNITS SOLD: ");
+  strcat ( newString , buffer1 );
+  strcat ( newString , "\tDISTINCT CLIENTS: " );
+  strcat ( newString , buffer2 );
+  strcat ( newString , "\n" );
+  return newString;
 }
 

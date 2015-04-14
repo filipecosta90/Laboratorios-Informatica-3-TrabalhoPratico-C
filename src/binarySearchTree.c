@@ -5,6 +5,7 @@
 
 #include <stdlib.h>
 #include "binarySearchTree.h"
+#include "genLinkedList.h"
 
 struct bstNode {
   void* data;
@@ -43,13 +44,16 @@ struct bsTree* newBSTree ( int ( *newComparator ) (void *, void *) ){
 
 void* searchBstNode ( int ( *comparator ) (void *, void *) , BstNode node , void* data ){
   int comparedValue;
+  int found;
   BstNode actual;
   void* returningValue = NULL;
   actual = node;
-  while ( actual != NULL ){
+  found = 0;
+  while ( actual != NULL && found != 1){
     comparedValue = comparator ( data, actual->data );
     if ( comparedValue == 0 ){
       returningValue = actual->data ;
+      found = 1;
     }
     else{
       if (comparedValue < 0 ){
@@ -104,5 +108,32 @@ void insertBst ( BSTree tree , void* data ) {
     if ( comparedValue < 0 ) last->left = node;
     if ( comparedValue > 0 ) last->right = node;
   }
+}
+
+List BstNodeToLL ( List ll , BstNode b1 ){
+  if( b1 != NULL){
+    prependLL ( ll , b1->data );
+    if( b1->left != NULL ){
+      ll = BstNodeToLL ( ll , b1->left );
+    }
+    if ( b1->right != NULL ){
+      ll = BstNodeToLL ( ll, b1->right );
+    }
+  }
+  return ll;
+}
+
+List BSTreeToLL ( BSTree tree , int sizeStruct,  void ( *destroyer ) (void *) ){
+  List returningLL;
+  returningLL = NULL;
+  newLL ( returningLL , sizeStruct , destroyer );
+  /* No root */
+  if ( tree->root == NULL ){
+    return returningLL;
+  }
+  else{
+    returningLL = BstNodeToLL ( returningLL , tree->root );
+  }
+  return returningLL;
 }
 

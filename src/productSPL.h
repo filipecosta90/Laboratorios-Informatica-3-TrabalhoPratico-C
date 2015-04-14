@@ -33,6 +33,12 @@ UnitType getTotalUnitsSoldSPL ( ProductSPL );
 
 int productSPLEquals ( void* , void* );
 
+char* productSPLToString ( ProductSPL );
+
+List productSPLGetNormalClients__LL ( ProductSPL );
+
+List productSPLGetPromotionClients__LL ( ProductSPL );
+
 void destroyProductSPL ( ProductSPL );
 
 #endif /* _PRODUCT_SPL_H_INCLUDED_ */

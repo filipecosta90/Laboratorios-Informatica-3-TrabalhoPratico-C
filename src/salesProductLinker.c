@@ -3,15 +3,14 @@
  *  * Copyright (C) Laboratórios Informática III, Universidade do Minho, 2015
  *  */
 
-
 #include "genLinkedList.h"
 #include "avlTree.h"
 #include "binarySearchTree.h"
 #include "salesProductLinker.h"
 #include "productSPL.h"
 #include "clientSales.h"
-#include <stdio.h>
 
+#include <stdio.h>
 #include <stdlib.h>
 
 struct salesProductLinker {
@@ -42,23 +41,26 @@ void addSalesLineToSPL ( struct salesProductLinker* salesPrLinker , char* produc
   ProductSPL splProd;
   position = getProductSPLArrayPosition( productCode );
   splProd = newProductSPL ( productCode );
-  printf("searching %s: \n", productCode );
   searchResult = (ProductSPL) searchBst ( salesPrLinker->lettersArray[position], splProd );
   if ( searchResult == NULL ){
-    printf("new productspl\n");
     splProd = addSaleSPL ( splProd , clientCode , salesMode , unitsSold , sellingPrice );
     insertBst ( salesPrLinker->lettersArray[position] , splProd );
   }
   else {
-    printf("already existed\n");
     searchResult = addSaleSPL ( searchResult , clientCode , salesMode , unitsSold , sellingPrice );
   }
 }
 
-List getClientsWhoBoughtProduct__LL ( struct salesProductLinker* salesPrLinker , char* prCode ){
+List getClientsWhoBoughtProduct__LL ( struct salesProductLinker* salesPrLinker , char* productCode ){
   List returnLL;
-  returnLL = NULL;
-  newLL ( returnLL , sizeof ( ClientSales ) , &deleteClientSales );
+  int position;
+  ProductSPL searchResult;
+  ProductSPL splProd;
+  returnLL = ( List ) malloc ( sizeof ( List ) );
+  position = getProductSPLArrayPosition( productCode );
+  splProd = newProductSPL ( productCode );
+  searchResult = (ProductSPL) searchBst ( salesPrLinker->lettersArray[position], splProd );
+  returnLL = productSPLGetNormalClients__LL ( searchResult );
   return returnLL;
 }
 
