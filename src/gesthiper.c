@@ -13,13 +13,23 @@
 #include "parser.h"
 #include "genLinkedList.h"
 
+void handleStrings ( List strings ){
+  void* handler;
+  handler = NULL;
+  while ( sizeLL (strings) > 0 ){
+    headLL ( strings , handler , TRUE );
+        printf( "string: %s" , (char*) handler );
+  }
+}
 
 int main (int argc, char *argv[] ){
   Accounting acBook;
   ClientCatalog clCat;
   ProductCatalog prCat;
   SalesProductLinker splProd;
+  List listStrings;
   int flagReadingSales, flagReadingClients, flagReadingProducts, errorReadingProducts, errorReadingClients;
+  listStrings = NULL;
   errorReadingClients = 0;
   errorReadingProducts = 0;
   acBook = newAccounting();
@@ -77,11 +87,11 @@ int main (int argc, char *argv[] ){
   printf("Total Client of letter Y: %d\n", getTotalClientsByLetter ( clCat, 'Y' ));
   printf("Total Client of letter Z: %d\n", getTotalClientsByLetter ( clCat, 'Z' ));
 
-  List newLL = NULL;
-  newLL = getClientsWhoBoughtProduct__LL  ( splProd , "UH9277" );
-  printf("##\n##number of clients UH9277: %d\n", sizeLL ( newLL ));
-  newLL = getClientsWhoBoughtProduct__LL  ( splProd , "GV4379" );
-  printf("##\n##number of clients GV4379: %d\n", sizeLL ( newLL ));
+  listStrings = getNormalClientsWhoBoughtProduct__LL_STRINGS  ( splProd , "UH9277" );
+  printf("##\n##number of clients UH9277: %d\n", sizeLL ( listStrings ));
+  handleStrings ( listStrings );
+  listStrings = getNormalClientsWhoBoughtProduct__LL_STRINGS  ( splProd , "GV4379" );
+  printf("##\n##number of clients GV4379: %d\n", sizeLL ( listStrings ));
   return 0;
 }
 

@@ -16,5 +16,7 @@ void insertBst ( BSTree , void* );
 
 struct list* BSTreeToLL ( BSTree tree , int sizeStruct,  void ( *destroyer ) (void *) );
 
+struct list* BSTreeToLL_ToString ( BSTree tree, int sizeStruct , void ( *destroyer ) ( void* ) , char* ( *toStringer ) ( void* ) );
+
 #endif /* _BINARY_SEARCH_TREE_H_INCLUDED_ */
 

@@ -51,7 +51,7 @@ void addSalesLineToSPL ( struct salesProductLinker* salesPrLinker , char* produc
   }
 }
 
-List getClientsWhoBoughtProduct__LL ( struct salesProductLinker* salesPrLinker , char* productCode ){
+List getNormalClientsWhoBoughtProduct__LL_STRINGS ( struct salesProductLinker* salesPrLinker , char* productCode ){
   List returnLL;
   int position;
   ProductSPL searchResult;
@@ -60,12 +60,29 @@ List getClientsWhoBoughtProduct__LL ( struct salesProductLinker* salesPrLinker ,
   position = getProductSPLArrayPosition( productCode );
   splProd = newProductSPL ( productCode );
   searchResult = (ProductSPL) searchBst ( salesPrLinker->lettersArray[position], splProd );
-  returnLL = productSPLGetNormalClients__LL ( searchResult );
+  returnLL = productSPLGetNormalClients__LL_STRINGS ( searchResult );
+  printf("returning list of strings pSPLNormal\n");
   return returnLL;
 }
 
-List getTopNMostSoldProducts__LL ( struct salesProductLinker* salesPrLinker , int nMost , int* totalClients , int* numberUnitsSold ){
+List getPromotionClientsWhoBoughtProduct__LL_STRINGS ( struct salesProductLinker* salesPrLinker , char* productCode ){
+  List returnLL;
+  int position;
+  ProductSPL searchResult;
+  ProductSPL splProd;
+  returnLL = ( List ) malloc ( sizeof ( List ) );
+  position = getProductSPLArrayPosition( productCode );
+  splProd = newProductSPL ( productCode );
+  searchResult = (ProductSPL) searchBst ( salesPrLinker->lettersArray[position], splProd );
+  returnLL = productSPLGetPromotionClients__LL_STRINGS ( searchResult );
+  return returnLL;
+}
 
+List getTopNMostSoldProducts__LL_STRINGS ( struct salesProductLinker* salesPrLinker , int nMost ){
+ List returnLL;
+ returnLL = ( List ) malloc ( sizeof ( List ) );
+ /*returnLL = productSPLTopNMostSoldProducts__LL_STRINGS ( salesPrLinker , nMost );*/
+ return returnLL;
 }
 
 int getNumberOfIdleProducts ( struct salesProductLinker* salesPrLiner ){

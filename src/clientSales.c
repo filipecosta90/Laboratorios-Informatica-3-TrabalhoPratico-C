@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "assert.h"
-
+#include <stdio.h>
 #include "clientSales.h"
 
 
@@ -47,8 +47,27 @@ int equalsClientSales ( void* isEqual1, void* isEqual2 ){
 }
 
 void deleteClientSales ( void* delete1 ){
-    ClientSales d1;
-    assert ( delete1 !=  NULL );
-    d1 = ( ClientSales ) delete1;
-    free ( d1 );
+  ClientSales d1;
+  assert ( delete1 !=  NULL );
+  d1 = ( ClientSales ) delete1;
+  free ( d1 );
+}
+
+char* toStringClientSales ( void* toString ){
+  ClientSales c1;
+  int length, lengthUnitsSold;
+  char buffer1[20];
+  char* newString;
+  assert( toString != NULL );
+  c1 = ( ClientSales ) toString;
+  length = strlen ( c1->clientCode );
+  sprintf(buffer1, "%d", c1->unitsSold);
+  lengthUnitsSold = strlen ( buffer1 );
+  length += lengthUnitsSold;
+  newString = ( char* ) malloc ( ( length +1+13+1 ) * sizeof ( char ));
+  strcpy ( newString , c1->clientCode );
+  strcat ( newString , "\tUNITS SOLD: ");
+  strcat ( newString , buffer1 );
+  strcat ( newString , "\n" );
+  return newString;
 }

@@ -12,11 +12,13 @@ typedef struct salesProductLinker*  SalesProductLinker;
 
 SalesProductLinker newSalesProductLinker ( );
 
-struct list* getClientsWhoBoughtProduct__LL  ( SalesProductLinker , productCode );
+struct list* getNormalClientsWhoBoughtProduct__LL_STRINGS  ( SalesProductLinker , productCode );
+
+struct list* getPromotionCLientsWhoBoughtProduct__LL_STRINGS ( SalesProductLinker , productCode );
 
 void addSalesLineToSPL ( struct salesProductLinker* salesPrLinker , char* productCode, char* clientCode , char salesMode , int unitsSold , float sellingPrice );
 
-struct list* getTopNMostSoldProducts__LL ( SalesProductLinker , int nMost ,  int* totalClients , int* numberUnitsSold );
+struct list* getTopNMostSoldProducts__LL_STRINGS ( SalesProductLinker , int nMost );
 
 int getNumberOfIdleProducts ( SalesProductLinker );
 

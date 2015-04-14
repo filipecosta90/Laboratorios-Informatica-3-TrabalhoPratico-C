@@ -89,19 +89,19 @@ int productSPLEquals ( void *isEqual1, void* isEqual2 ){
   return returningValue;
 }
 
-List productSPLGetNormalClients__LL ( ProductSPL splProd ){
+List productSPLGetNormalClients__LL_STRINGS ( ProductSPL splProd ){
   List returningList;
   returningList = NULL;
-  newLL ( returningList , sizeof ( ClientSales ) , &deleteClientSales );
-  returningList = BSTreeToLL ( splProd->normalBST , sizeof ( ClientSales ) , &deleteClientSales  );
+  newLL ( returningList , sizeof ( char ) , &free );
+  returningList = BSTreeToLL_ToString ( splProd->normalBST , sizeof ( char ) , &free, &toStringClientSales  );
   return returningList;
 }
 
-List productSPLGetPromotionClients__LL ( ProductSPL splProd ){
+List productSPLGetPromotionClients__LL_STRINGS ( ProductSPL splProd ){
   List returningList;
   returningList = NULL;
-  newLL ( returningList , sizeof ( ClientSales ) , &deleteClientSales );
-  returningList = BSTreeToLL ( splProd->promotionBST , sizeof ( ClientSales ) , &deleteClientSales );
+  newLL ( returningList , sizeof ( char ) , &free );
+  returningList = BSTreeToLL_ToString ( splProd->promotionBST , sizeof ( char ) , &free , &toStringClientSales );
   return returningList;
 }
 
