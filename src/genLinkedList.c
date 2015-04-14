@@ -22,7 +22,14 @@ struct list {
   freeFunction freeFn;
 };
 
+struct list* initLL (){
+  struct list* newLL;
+  newLL = ( struct list* ) malloc ( sizeof ( struct list ) );
+  return newLL;
+}
+
 void newLL ( struct list* list , int elementSize , void ( *freeFunc ) ( void* ) ){
+  assert(list != NULL);
   assert( elementSize > 0 );
   list->logicalLength = 0;
   list->elementSize = elementSize;

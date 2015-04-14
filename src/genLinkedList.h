@@ -17,6 +17,8 @@ typedef bool ( *listIterator ) ( void * );
 
 typedef void ( *freeFunction ) ( void* );
 
+struct list* initLL ();
+
 void newLL ( List , int , freeFunction );
 
 void destroyLL ( List );

@@ -89,19 +89,29 @@ int productSPLEquals ( void *isEqual1, void* isEqual2 ){
   return returningValue;
 }
 
+void myFreeChar ( void* myfree ){
+  char* stringF;
+  stringF = NULL;
+  assert ( myfree != NULL );
+  stringF = ( char* ) myfree;
+  free ( stringF );
+}
+
 List productSPLGetNormalClients__LL_STRINGS ( ProductSPL splProd ){
   List returningList;
-  returningList = NULL;
-  newLL ( returningList , sizeof ( char ) , &free );
-  returningList = BSTreeToLL_ToString ( splProd->normalBST , sizeof ( char ) , &free, &toStringClientSales  );
+  returningList = initLL ( ) ;
+  assert ( splProd != NULL );
+  newLL ( returningList , sizeof ( char* ) , &myFreeChar );
+  returningList = BSTreeToLL_ToString ( splProd->normalBST , sizeof ( char* ) , &myFreeChar, &toStringClientSales  );
   return returningList;
 }
 
 List productSPLGetPromotionClients__LL_STRINGS ( ProductSPL splProd ){
   List returningList;
-  returningList = NULL;
-  newLL ( returningList , sizeof ( char ) , &free );
-  returningList = BSTreeToLL_ToString ( splProd->promotionBST , sizeof ( char ) , &free , &toStringClientSales );
+  returningList = initLL ( ) ;
+  assert ( splProd != NULL );
+  newLL ( returningList , sizeof ( char* ) , &myFreeChar );
+  returningList = BSTreeToLL_ToString ( splProd->promotionBST , sizeof ( char* ) , &myFreeChar , &toStringClientSales );
   return returningList;
 }
 
@@ -109,6 +119,7 @@ char* productSPLToString ( ProductSPL sp1 ){
   int length, lengthUnitsSold, lengthDistinctClients;
   char buffer1[20], buffer2[20];
   char* newString;
+  assert ( sp1 != NULL );
   length = strlen ( sp1->productCode );
   sprintf(buffer1, "%d", sp1->unitsSold);
   lengthUnitsSold = strlen ( buffer1 );
