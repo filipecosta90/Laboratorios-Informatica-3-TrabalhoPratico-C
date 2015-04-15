@@ -19,7 +19,7 @@ int equalsClientSales ( void* , void* );
 
 void deleteClientSales ( void* );
 
-char* toStringClientSales ( void* );
+void* toStringClientSales ( void* );
 
 #endif /* _CLIENT_SALES_H_INCLUDED_ */
 

@@ -17,7 +17,7 @@ void handleStrings ( List strings ){
   char* handler;
   handler = NULL;
   while ( sizeLL (strings) > 0 ){
-    handler =  (char*) headLL ( strings );
+    handler = headLL ( strings );
     printf( "string: %s" , handler );
   }
 }

@@ -123,7 +123,7 @@ List BstNodeToLL ( List ll , BstNode b1 ){
   return ll;
 }
 
-List BstNodeToLL_ToString ( List ll , BstNode b1 , char* ( *toStringer ) ( void*) ){
+List BstNodeToLL_ToString ( List ll , BstNode b1 , void* ( *toStringer ) ( void*) ){
   if( b1 != NULL){
     appendLL ( ll , toStringer ( b1->data ) );
     if( b1->left != NULL ){
@@ -150,7 +150,7 @@ List BSTreeToLL ( BSTree tree , int sizeStruct,  void ( *destroyer ) (void *) ){
   return returningLL;
 }
 
-struct list* BSTreeToLL_ToString ( BSTree tree, int sizeStruct , void ( *destroyer ) ( void* ) , char* ( *toStringer ) ( void* ) ){
+struct list* BSTreeToLL_ToString ( BSTree tree, int sizeStruct , void ( *destroyer ) ( void* ) , void* ( *toStringer ) ( void* ) ){
   List returningLL;
   returningLL = initLL();
   newLL ( returningLL , sizeStruct , destroyer );

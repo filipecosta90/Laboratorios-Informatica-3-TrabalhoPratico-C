@@ -61,7 +61,6 @@ List getNormalClientsWhoBoughtProduct__LL_STRINGS ( struct salesProductLinker* s
   splProd = newProductSPL ( productCode );
   searchResult = (ProductSPL) searchBst ( salesPrLinker->lettersArray[position], splProd );
   returnLL = productSPLGetNormalClients__LL_STRINGS ( searchResult );
-  printf("returning list of strings pSPLNormal\n");
   return returnLL;
 }
 
@@ -79,10 +78,10 @@ List getPromotionClientsWhoBoughtProduct__LL_STRINGS ( struct salesProductLinker
 }
 
 List getTopNMostSoldProducts__LL_STRINGS ( struct salesProductLinker* salesPrLinker , int nMost ){
- List returnLL;
- returnLL = ( List ) malloc ( sizeof ( List ) );
- /*returnLL = productSPLTopNMostSoldProducts__LL_STRINGS ( salesPrLinker , nMost );*/
- return returnLL;
+  List returnLL;
+  returnLL = ( List ) malloc ( sizeof ( List ) );
+  /*returnLL = productSPLTopNMostSoldProducts__LL_STRINGS ( salesPrLinker , nMost );*/
+  return returnLL;
 }
 
 int getNumberOfIdleProducts ( struct salesProductLinker* salesPrLiner ){

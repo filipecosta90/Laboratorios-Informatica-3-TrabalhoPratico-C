@@ -53,8 +53,7 @@ void destroyLL ( struct list* list ){
 
 void prependLL ( struct list *list , void *element ){
   struct listNode* node = malloc( sizeof ( struct listNode ) );
-  node->data = malloc ( list->elementSize );
-  memcpy( node->data , element , list->elementSize );
+  node->data = element;
   node->next = list->head;
   list->head = node;
   /* First Node */
@@ -66,9 +65,8 @@ void prependLL ( struct list *list , void *element ){
 
 void appendLL ( struct list *list , void *element ){
   struct listNode *node = malloc ( sizeof ( struct listNode ) );
-  node->data = malloc( list->elementSize );
   node->next = NULL;
-  memcpy( node->data , element , list->elementSize );
+  node->data = element;
   if( list->logicalLength == 0 ) {
     list->head = list->tail = node;
   } else {
@@ -79,9 +77,7 @@ void appendLL ( struct list *list , void *element ){
 }
 
 void*  headLL ( struct list *list ){
-  struct listNode *node = malloc ( sizeof ( struct listNode ) );
-  node->data = malloc( list->elementSize );
-  node->next = NULL;
+  struct listNode *node; 
   node = list->head;
   assert( list->head != NULL );
   list->head = node->next;
