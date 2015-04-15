@@ -14,11 +14,11 @@
 #include "genLinkedList.h"
 
 void handleStrings ( List strings ){
-  void* handler;
+  char* handler;
   handler = NULL;
   while ( sizeLL (strings) > 0 ){
-    headLL ( strings , handler , TRUE );
-        printf( "string: %s" , (char*) handler );
+    handler =  headLL ( strings );
+    printf( "string: %s" , (char*) handler );
   }
 }
 
@@ -90,7 +90,7 @@ int main (int argc, char *argv[] ){
   listStrings = getNormalClientsWhoBoughtProduct__LL_STRINGS  ( splProd , "UH9277" );
   printf("##\n##number of clients UH9277: %d\n", sizeLL ( listStrings ));
   handleStrings ( listStrings );
-  listStrings = getNormalClientsWhoBoughtProduct__LL_STRINGS  ( splProd , "GV4379" );
+  listStrings = getPromotionClientsWhoBoughtProduct__LL_STRINGS  ( splProd , "UH9277" );
   printf("##\n##number of clients GV4379: %d\n", sizeLL ( listStrings ));
   return 0;
 }

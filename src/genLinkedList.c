@@ -78,29 +78,15 @@ void appendLL ( struct list *list , void *element ){
   list->logicalLength++;
 }
 
-void forEachLL ( struct list *list, listIterator iterator ){
-  struct listNode *node;
-  bool result;
-  assert( iterator != NULL );
-  node = list->head;
-  result = TRUE;
-  while( node != NULL && result ) {
-    result = iterator( node->data );
-    node = node->next;
-  }
-}
-
-void headLL ( struct list *list , void *element , bool removeFromList ){
-  struct listNode *node;
+void*  headLL ( struct list *list ){
+  struct listNode *node = malloc ( sizeof ( struct listNode ) );
+  node->data = malloc( list->elementSize );
+  node->next = NULL;
   node = list->head;
   assert( list->head != NULL );
-  memcpy( element , node->data , list->elementSize );
-  if( removeFromList ) {
-    list->head = node->next;
-    list->logicalLength--;
-    free(node->data);
-    free(node);
-  }
+  list->head = node->next;
+  list->logicalLength--;
+  return node->data;
 }
 
 void tailLL ( struct list *list, void *element ){

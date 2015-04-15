@@ -10,11 +10,6 @@ typedef struct listNode*  ListNode;
 
 typedef struct list* List;
 
-/* http://stackoverflow.com/questions/1921539/using-boolean-values-in-c */
-typedef enum { FALSE , TRUE } bool;
-
-typedef bool ( *listIterator ) ( void * );
-
 typedef void ( *freeFunction ) ( void* );
 
 struct list* initLL ();
@@ -29,9 +24,7 @@ void appendLL ( List , void* );
 
 int sizeLL ( List );
 
-void forEachLL ( List , listIterator );
-
-void headLL ( List , void* , bool );
+void*  headLL ( List );
 
 void tailLL ( List , void * );
 

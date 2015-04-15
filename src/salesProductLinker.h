@@ -14,7 +14,7 @@ SalesProductLinker newSalesProductLinker ( );
 
 struct list* getNormalClientsWhoBoughtProduct__LL_STRINGS  ( SalesProductLinker , productCode );
 
-struct list* getPromotionCLientsWhoBoughtProduct__LL_STRINGS ( SalesProductLinker , productCode );
+struct list* getPromotionClientsWhoBoughtProduct__LL_STRINGS ( SalesProductLinker , productCode );
 
 void addSalesLineToSPL ( struct salesProductLinker* salesPrLinker , char* productCode, char* clientCode , char salesMode , int unitsSold , float sellingPrice );
 
