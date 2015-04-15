@@ -69,5 +69,6 @@ char* toStringClientSales ( void* toString ){
   strcat ( newString , "\tUNITS SOLD: ");
   strcat ( newString , buffer1 );
   strcat ( newString , "\n" );
+  printf("returning string: %s" , newString );
   return newString;
 }

@@ -110,7 +110,7 @@ List productSPLGetPromotionClients__LL_STRINGS ( ProductSPL splProd ){
   List returningList;
   returningList = initLL ( ) ;
   assert ( splProd != NULL );
-  newLL ( returningList , sizeof ( char* ) , &myFreeChar );
+  newLL ( returningList , sizeof ( char ) , &myFreeChar );
   returningList = BSTreeToLL_ToString ( splProd->promotionBST , sizeof ( char* ) , &myFreeChar , &toStringClientSales );
   return returningList;
 }

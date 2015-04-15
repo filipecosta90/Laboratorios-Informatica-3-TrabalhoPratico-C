@@ -125,7 +125,7 @@ List BstNodeToLL ( List ll , BstNode b1 ){
 
 List BstNodeToLL_ToString ( List ll , BstNode b1 , char* ( *toStringer ) ( void*) ){
   if( b1 != NULL){
-    appendLL ( ll , b1->data );
+    appendLL ( ll , toStringer ( b1->data ) );
     if( b1->left != NULL ){
       ll = BstNodeToLL_ToString ( ll , b1->left , toStringer );
     }

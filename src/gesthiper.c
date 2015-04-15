@@ -17,8 +17,8 @@ void handleStrings ( List strings ){
   char* handler;
   handler = NULL;
   while ( sizeLL (strings) > 0 ){
-    handler =  headLL ( strings );
-    printf( "string: %s" , (char*) handler );
+    handler =  (char*) headLL ( strings );
+    printf( "string: %s" , handler );
   }
 }
 
@@ -92,6 +92,7 @@ int main (int argc, char *argv[] ){
   handleStrings ( listStrings );
   listStrings = getPromotionClientsWhoBoughtProduct__LL_STRINGS  ( splProd , "UH9277" );
   printf("##\n##number of clients GV4379: %d\n", sizeLL ( listStrings ));
+  handleStrings ( listStrings );
   return 0;
 }
 
