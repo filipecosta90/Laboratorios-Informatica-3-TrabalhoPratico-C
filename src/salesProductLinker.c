@@ -84,9 +84,13 @@ List getTopNMostSoldProducts__LL_STRINGS ( struct salesProductLinker* salesPrLin
   return returnLL;
 }
 
-int getNumberOfIdleProducts ( struct salesProductLinker* salesPrLiner ){
-  int idleCount;
-  idleCount = 0;
-
-  return idleCount;
+int getGlobalNumberProducts ( struct salesProductLinker* salesPrLinker ){
+  int globalCount;
+  int i;
+  globalCount = 0;
+  i = 0;
+  for( ; i<26; i++){
+    globalCount += BSTreeSize ( salesPrLinker->lettersArray[i]);
+  }
+  return globalCount;
 }

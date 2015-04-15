@@ -20,7 +20,7 @@ void addSalesLineToSPL ( struct salesProductLinker* salesPrLinker , char* produc
 
 struct list* getTopNMostSoldProducts__LL_STRINGS ( SalesProductLinker , int nMost );
 
-int getNumberOfIdleProducts ( SalesProductLinker );
+int getGlobalNumberProducts ( struct salesProductLinker* salesPrLinker );
 
 #endif /* _SALES_PRODUCT_LINKER_H_INCLUDED_ */
 

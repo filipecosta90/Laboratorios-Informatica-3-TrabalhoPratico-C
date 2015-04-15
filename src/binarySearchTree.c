@@ -164,3 +164,20 @@ struct list* BSTreeToLL_ToString ( BSTree tree, int sizeStruct , void ( *destroy
   return returningLL;
 }
 
+int BSTNodeSize ( BstNode node ){
+  if ( node == NULL ){
+    return ( 0 );
+  }
+  else {
+    return 1 + BSTNodeSize ( node->left ) + BSTNodeSize ( node->right );
+  }
+}
+
+int BSTreeSize ( BSTree tree ) {
+  if( tree != NULL) {
+    if ( tree->root != NULL ){
+      return BSTNodeSize ( tree->root );
+    }
+  }
+  return ( 0 );
+}

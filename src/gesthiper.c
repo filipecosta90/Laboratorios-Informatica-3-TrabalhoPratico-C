@@ -28,8 +28,11 @@ int main (int argc, char *argv[] ){
   ProductCatalog prCat;
   SalesProductLinker splProd;
   List listStrings;
-  int flagReadingSales, flagReadingClients, flagReadingProducts, errorReadingProducts, errorReadingClients;
+  int flagReadingSales, flagReadingClients, flagReadingProducts, errorReadingProducts, errorReadingClients, idleProd, totalProdCatalogNumber, totalSPLProdNumber;
   listStrings = NULL;
+  idleProd = 0; 
+  totalProdCatalogNumber = 0; 
+  totalSPLProdNumber = 0;
   errorReadingClients = 0;
   errorReadingProducts = 0;
   acBook = newAccounting();
@@ -93,6 +96,10 @@ int main (int argc, char *argv[] ){
   listStrings = getPromotionClientsWhoBoughtProduct__LL_STRINGS  ( splProd , "UH9277" );
   printf("##\n##number of clients GV4379: %d\n", sizeLL ( listStrings ));
   handleStrings ( listStrings );
+  totalSPLProdNumber = getGlobalNumberProducts ( splProd );
+  totalProdCatalogNumber = flagReadingProducts - errorReadingProducts;
+  idleProd = totalProdCatalogNumber - totalSPLProdNumber;
+  printf ( "Number of idle produts ( %d - %d ) = %d \n" , totalProdCatalogNumber , totalSPLProdNumber , idleProd ); 
   return 0;
 }
 
