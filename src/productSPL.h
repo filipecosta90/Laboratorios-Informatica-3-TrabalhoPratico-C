@@ -28,6 +28,8 @@ UnitType getTotalUnitsSoldSPL ( ProductSPL );
 
 int productSPLEquals ( void* , void* );
 
+int productSPLUnitComparator ( void* comp1 , void* comp2 );
+
 char* productSPLToString ( ProductSPL );
 
 struct list* productSPLGetNormalClients__LL_STRINGS ( ProductSPL );

@@ -89,6 +89,23 @@ int productSPLEquals ( void *isEqual1, void* isEqual2 ){
   return returningValue;
 }
 
+int productSPLUnitComparator ( void* comp1 , void* comp2 ){
+  ProductSPL p1, p2;
+  int returningValue;
+  if ( comp1 == NULL || comp2 == NULL ){
+    returningValue = 0;
+  }
+  else{
+    p1 = ( ProductSPL ) comp1;
+    p2 = ( ProductSPL ) comp2;
+    returningValue = p1->unitsSold - p2->unitsSold;
+    if ( returningValue == 0 ){
+      returningValue = strcmp ( p1->productCode , p2->productCode );
+    }
+  }
+  return returningValue;
+}
+
 void myFreeChar ( void* myfree ){
   char* stringF;
   stringF = NULL;

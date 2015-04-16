@@ -22,6 +22,8 @@ void prependLL ( List , void* );
 
 void appendLL ( List , void* );
 
+void orderedInsertLL ( struct list *list , void * element , int ( *comparatorFunc ) ( void* , void* ) );
+
 int sizeLL ( List );
 
 void*  headLL ( List );
