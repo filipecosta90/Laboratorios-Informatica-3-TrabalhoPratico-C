@@ -47,8 +47,9 @@ int main (int argc, char *argv[] ){
   flagReadingClients = readFileClients ( "../files/FichClientes.txt" , clCat , &errorReadingClients );
   errorReadingClients = 0;
   errorReadingProducts = 0;
-  /*
+  
      flagReadingSales = readFileSales( "../files/Compras.txt" , acBook , clCat , prCat , splProd , &errorReadingProducts , &errorReadingClients );
+     /*
      printf("flag sales:%d\n", flagReadingSales);
      printf("get interval total sales result: %d\n", getIntervalTotalSales( acBook, 1, 12));
      printf("get interval total billed result: %f\n", getIntervalTotalBilled( acBook, 1, 12));
@@ -108,7 +109,7 @@ int main (int argc, char *argv[] ){
      handleStrings ( listStrings );
      i*/
   end = time(NULL);
-  printf("%.2f\n", (double)(end - start));
+  printf("%.5f\n", (double)(end - start));
   return 0;
 }
 

@@ -14,19 +14,24 @@
 #include <stdlib.h>
 
 struct salesProductLinker {
-  struct bsTree* lettersArray[26];
+  struct bsTree* lettersArray[26][26];
 };
 
 struct salesProductLinker* newSalesProductLinker ( ) {
   struct salesProductLinker* newSPL = ( struct salesProductLinker* ) malloc ( sizeof (struct salesProductLinker ) );
-  int i = 0;
-  for( ; i<26; i++){
-    newSPL->lettersArray[i] = newBSTree ( &productSPLEquals );
+  int out , in;
+  in = 0;
+  out = 0;
+  for( ; out<26; out++){
+    in = 0;
+    for ( ; in<26; in++ ){
+      newSPL->lettersArray[out][in] = newBSTree ( &productSPLEquals );
+    }
   }
   return newSPL;
 }
 
-static int getProductSPLArrayPosition ( char* productCode ) {
+static int getProductSPLArrayOutPosition ( char* productCode ) {
   int position;
   position = (int) productCode[0];
   if ( position >= 65 && position <= 90 ) { position -= 65; }
@@ -35,16 +40,26 @@ static int getProductSPLArrayPosition ( char* productCode ) {
   return position;
 }
 
-void addSalesLineToSPL ( struct salesProductLinker* salesPrLinker , char* productCode, char* clientCode , char salesMode , int unitsSold , float sellingPrice ) {
+static int getProductSPLArrayInPosition ( char* productCode ) {
   int position;
+  position = (int) productCode[1];
+  if ( position >= 65 && position <= 90 ) { position -= 65; } 
+  else if ( position >= 97 && position <= 122 ) { position -= 97; }
+  else { position = -1; }
+  return position;
+}
+
+void addSalesLineToSPL ( struct salesProductLinker* salesPrLinker , char* productCode, char* clientCode , char salesMode , int unitsSold , float sellingPrice ) {
+  int outPosition, inPosition;
   ProductSPL searchResult = NULL;
   ProductSPL splProd;
-  position = getProductSPLArrayPosition( productCode );
+  outPosition = getProductSPLArrayOutPosition( productCode );
+  inPosition = getProductSPLArrayInPosition ( productCode );
   splProd = newProductSPL ( productCode );
-  searchResult = (ProductSPL) searchBst ( salesPrLinker->lettersArray[position], splProd );
+  searchResult = (ProductSPL) searchBst ( salesPrLinker->lettersArray[outPosition][inPosition], splProd );
   if ( searchResult == NULL ){
     splProd = addSaleSPL ( splProd , clientCode , salesMode , unitsSold , sellingPrice );
-    insertBst ( salesPrLinker->lettersArray[position] , splProd );
+    insertBst ( salesPrLinker->lettersArray[outPosition][inPosition] , splProd );
   }
   else {
     searchResult = addSaleSPL ( searchResult , clientCode , salesMode , unitsSold , sellingPrice );
@@ -53,26 +68,28 @@ void addSalesLineToSPL ( struct salesProductLinker* salesPrLinker , char* produc
 
 List getNormalClientsWhoBoughtProduct__LL_STRINGS ( struct salesProductLinker* salesPrLinker , char* productCode ){
   List returnLL;
-  int position;
+  int inPosition, outPosition;
   ProductSPL searchResult;
   ProductSPL splProd;
   returnLL = ( List ) malloc ( sizeof ( List ) );
-  position = getProductSPLArrayPosition( productCode );
+  outPosition = getProductSPLArrayOutPosition( productCode );
+  inPosition = getProductSPLArrayInPosition ( productCode );
   splProd = newProductSPL ( productCode );
-  searchResult = (ProductSPL) searchBst ( salesPrLinker->lettersArray[position], splProd );
+  searchResult = (ProductSPL) searchBst ( salesPrLinker->lettersArray[outPosition][inPosition], splProd );
   returnLL = productSPLGetNormalClients__LL_STRINGS ( searchResult );
   return returnLL;
 }
 
 List getPromotionClientsWhoBoughtProduct__LL_STRINGS ( struct salesProductLinker* salesPrLinker , char* productCode ){
   List returnLL;
-  int position;
+  int outPosition, inPosition;
   ProductSPL searchResult;
   ProductSPL splProd;
   returnLL = ( List ) malloc ( sizeof ( List ) );
-  position = getProductSPLArrayPosition( productCode );
+  outPosition = getProductSPLArrayOutPosition( productCode );
+  inPosition = getProductSPLArrayInPosition( productCode );
   splProd = newProductSPL ( productCode );
-  searchResult = (ProductSPL) searchBst ( salesPrLinker->lettersArray[position], splProd );
+  searchResult = (ProductSPL) searchBst ( salesPrLinker->lettersArray[outPosition][inPosition], splProd );
   returnLL = productSPLGetPromotionClients__LL_STRINGS ( searchResult );
   return returnLL;
 }
@@ -83,7 +100,7 @@ List getTopNMostSoldProducts__LL_STRINGS ( struct salesProductLinker* salesPrLin
   returningLL = initLL();
   newLL ( returningLL , sizeof ( ProductSPL ) , &destroyProductSPL );
   for( ; i<26; i++){
-  returningLL = BSTreeToOrderedLL( salesPrLinker->lettersArray[i] , returningLL , &productSPLUnitComparator );
+    //returningLL = BSTreeToOrderedLL( salesPrLinker->lettersArray[i] , returningLL , &productSPLUnitComparator );
     returningLL = limitLL ( returningLL , nMost );
   }
   returningLL = convertLLtoStringer ( returningLL , &productSPLToString );
@@ -92,11 +109,16 @@ List getTopNMostSoldProducts__LL_STRINGS ( struct salesProductLinker* salesPrLin
 
 int getGlobalNumberProducts ( struct salesProductLinker* salesPrLinker ){
   int globalCount;
-  int i;
+  int out , in;
   globalCount = 0;
-  i = 0;
-  for( ; i<26; i++){
-    globalCount += BSTreeSize ( salesPrLinker->lettersArray[i]);
+  in = 0;
+  out = 0;
+  for( ; out<26; out++){
+    in = 0;
+    for ( ; in < 26; in++ ){
+      globalCount += BSTreeSize ( salesPrLinker->lettersArray[out][in]);
+    }
   }
   return globalCount;
 }
+
