@@ -76,9 +76,9 @@ void appendLL ( struct list *list , void *element ){
   list->logicalLength++;
 }
 
-void orderedInsertLL ( struct list *list , void * element , int ( *comparatorFunc ) ( void* , void* ) ) {
+void orderedInsertLLWithLimit ( struct list *list , void * element , int ( *comparatorFunc ) ( void* , void* ) , int limit) {
   struct listNode *node;
-  struct listNode *temp; 
+  struct listNode *temp;
   struct listNode *previous;
 
   node = malloc ( sizeof ( struct listNode ) );
@@ -86,6 +86,7 @@ void orderedInsertLL ( struct list *list , void * element , int ( *comparatorFun
   node->data = element;
   if( list->logicalLength == 0 ) {
     list->head = list->tail = node;
+    list->logicalLength ++;    
   } else {
     previous = list->head;
     temp = list->head;
@@ -96,7 +97,35 @@ void orderedInsertLL ( struct list *list , void * element , int ( *comparatorFun
     }
     node->next = temp;
     previous->next = node;
+    list->logicalLength++;                    
   }
+  list = limitLL ( list , limit );
+}
+
+void orderedInsertLL ( struct list *list , void * element , int ( *comparatorFunc ) ( void* , void* ) ) {
+  struct listNode *node;
+  struct listNode *temp; 
+  struct listNode *previous;
+
+  node = malloc ( sizeof ( struct listNode ) );
+  node->next = NULL;
+  node->data = element;
+  if( list->logicalLength == 0 ) {
+    list->head = list->tail = node;
+    list->logicalLength ++;
+  } else {
+    previous = list->head;
+    temp = list->head;
+
+    while ( temp->next != NULL && comparatorFunc ( node->data , temp->data ) < 0 ){
+      previous = temp;
+      temp = temp->next;
+    }
+    node->next = temp;
+    previous->next = node;
+    list->logicalLength++;
+  }
+
 }
 
 void*  headLL ( struct list *list ){

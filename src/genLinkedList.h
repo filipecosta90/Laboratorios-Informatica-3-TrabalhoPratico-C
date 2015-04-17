@@ -24,6 +24,8 @@ void appendLL ( List , void* );
 
 void orderedInsertLL ( struct list *list , void * element , int ( *comparatorFunc ) ( void* , void* ) );
 
+void orderedInsertLLWithLimit ( struct list *list , void * element , int ( *comparatorFunc ) ( void* , void* ) , int limit );
+
 int sizeLL ( List );
 
 void*  headLL ( List );

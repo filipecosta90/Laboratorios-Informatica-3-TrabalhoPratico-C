@@ -51,20 +51,24 @@ int getTotalProductByLetter ( struct productCatalog* prCat, char productInitial 
   inPosition = 0;
   totalProducts = 0;
   for ( ; inPosition < 26 ; inPosition++){
-  totalProducts += avlSize ( prCat->lettersArray[outPosition][inPosition] );
+    totalProducts += avlSize ( prCat->lettersArray[outPosition][inPosition] );
   }
   return totalProducts;
 }
 
-/* 
-   void deleteClientCatalog ( struct clientCatalog* clCat ) {
-   int i = 0;
-   for( ; i<26; i++){
-   freeAvlTree ( clCat->lettersArray[i]);
-   }
-   free (clCat);
-   } 
-   */
+int getProductCatalogSize ( struct productCatalog* prCat ) {
+  int outPosition, inPosition, totalProducts;
+  outPosition = 0;
+  inPosition = 0;
+  totalProducts = 0;
+  for( ; outPosition<26; outPosition++){
+    inPosition = 0;
+    for ( ; inPosition < 26; inPosition++ ){
+      totalProducts += avlSize ( prCat->lettersArray[outPosition][inPosition] );
+    }
+  }
+  return totalProducts;
+}
 
 int containsProductCode ( struct productCatalog* prCat, char* productCode ){
   int outPosition, inPosition;

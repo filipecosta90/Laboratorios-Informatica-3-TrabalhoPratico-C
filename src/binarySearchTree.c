@@ -150,26 +150,26 @@ List BSTreeToLL ( BSTree tree , int sizeStruct,  void ( *destroyer ) (void *) ){
   return returningLL;
 }
 
-List BstNodeToOrderedLL ( List ll , BstNode b1 , int ( *orderer ) ( void* , void* ) ){
+List BstNodeToOrderedLLWithLimit ( List ll , BstNode b1 , int ( *orderer ) ( void* , void* ) , int limit ){
   if( b1 != NULL){
-    orderedInsertLL ( ll , b1->data , orderer );
+    orderedInsertLLWithLimit ( ll , b1->data , orderer, limit );
     if( b1->left != NULL ){
-      ll = BstNodeToLL ( ll , b1->left );
+      ll = BstNodeToOrderedLLWithLimit ( ll , b1->left, orderer , limit );
     }
     if ( b1->right != NULL ){
-      ll = BstNodeToLL ( ll, b1->right );
+      ll = BstNodeToOrderedLLWithLimit ( ll, b1->right , orderer , limit );
     }
   }
   return ll;
 }
 
-struct list* BSTreeToOrderedLL ( BSTree tree , List returningLL, int ( *orderer ) ( void* , void* ) ){
+struct list* BSTreeToOrderedLLWithLimit ( BSTree tree , List returningLL, int ( *orderer ) ( void* , void* ) , int limit ){
   /* No root */
   if ( tree->root == NULL ){
     return returningLL;
   }
   else{
-    returningLL = BstNodeToOrderedLL ( returningLL , tree->root , orderer );
+    returningLL = BstNodeToOrderedLLWithLimit ( returningLL , tree->root , orderer , limit );
   }
   return returningLL;
 }

@@ -21,5 +21,7 @@ int containsProductCode ( ProductCatalog, ProductCode );
 
 void deleteProductCatalog ( ProductCatalog );
 
+int getProductCatalogSize ( ProductCatalog );
+
 #endif /* _PRODUCT_CATALOG_H_INCLUDED_ */
 

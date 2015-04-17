@@ -18,7 +18,7 @@ struct list* BSTreeToLL ( BSTree tree , int sizeStruct,  void ( *destroyer ) (vo
 
 struct list* BSTreeToLL_ToString ( BSTree tree, int sizeStruct , void ( *destroyer ) ( void* ) , void* ( *toStringer ) ( void* ) );
 
-struct list* BSTreeToOrderedLL ( BSTree tree , struct list* returningLL, int ( *orderer ) ( void* , void* ) );
+struct list* BSTreeToOrderedLLWithLimit ( BSTree tree , struct list* returningLL, int ( *orderer ) ( void* , void* ) , int limit );
 
 int BSTreeSize ( BSTree tree );
 
