@@ -30,5 +30,9 @@ void*  headLL ( List );
 
 void tailLL ( List , void * );
 
+struct list* limitLL ( struct list* list , int limit );
+
+struct list* convertLLtoStringer ( struct list* list , char* ( toStringer ) ( void* ) );
+
 #endif /* _GENERIC_LINKED_LIST_H_INCLUDED_ */
 

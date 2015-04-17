@@ -119,3 +119,39 @@ int sizeLL ( struct list *list ){
   return list->logicalLength;
 }
 
+struct list* limitLL ( struct list* list , int number ){
+  struct listNode *current, *previous;
+  int i = 0;
+  current = list->head;
+  while( current != NULL && i < number  ) {
+    previous = current;
+    current = current->next; 
+    i++;
+    list->logicalLength--;
+  }
+  if ( i == number ){
+    list->logicalLength = number;
+    previous->next = NULL;
+  }
+  return list;
+}
+
+void myFreeChar1 ( void* myfree ){
+  char* stringF;
+  stringF = NULL;
+  assert ( myfree != NULL );
+  stringF = ( char* ) myfree;
+  free ( stringF );
+}
+
+struct list* convertLLtoStringer ( struct list* list  , char* ( toStringer ) ( void* ) ){
+  struct list* returningList;
+  struct listNode *current;
+  returningList = initLL ( ) ;
+  newLL ( returningList , sizeof ( char* ) , &myFreeChar1 );
+  current = list->head;
+  while( current != NULL  ) {
+    appendLL( returningList , toStringer ( current->data) );
+  }
+  return returningList;
+}

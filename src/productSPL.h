@@ -30,13 +30,13 @@ int productSPLEquals ( void* , void* );
 
 int productSPLUnitComparator ( void* comp1 , void* comp2 );
 
-char* productSPLToString ( ProductSPL );
+char* productSPLToString ( void* );
 
 struct list* productSPLGetNormalClients__LL_STRINGS ( ProductSPL );
 
 struct list* productSPLGetPromotionClients__LL_STRINGS ( ProductSPL );
 
-void destroyProductSPL ( ProductSPL );
+void destroyProductSPL ( void* );
 
 #endif /* _PRODUCT_SPL_H_INCLUDED_ */
 

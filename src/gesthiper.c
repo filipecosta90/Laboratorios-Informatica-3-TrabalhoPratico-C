@@ -99,7 +99,9 @@ int main (int argc, char *argv[] ){
   totalSPLProdNumber = getGlobalNumberProducts ( splProd );
   totalProdCatalogNumber = flagReadingProducts - errorReadingProducts;
   idleProd = totalProdCatalogNumber - totalSPLProdNumber;
-  printf ( "Number of idle produts ( %d - %d ) = %d \n" , totalProdCatalogNumber , totalSPLProdNumber , idleProd ); 
+  printf ( "Number of idle produts ( %d - %d ) = %d \n" , totalProdCatalogNumber , totalSPLProdNumber , idleProd );
+  listStrings = getTopNMostSoldProducts__LL_STRINGS ( splProd , 20 );
+  handleStrings ( listStrings );
   return 0;
 }
 

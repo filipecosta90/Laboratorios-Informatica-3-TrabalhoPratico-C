@@ -132,11 +132,14 @@ List productSPLGetPromotionClients__LL_STRINGS ( ProductSPL splProd ){
   return returningList;
 }
 
-char* productSPLToString ( ProductSPL sp1 ){
+char* productSPLToString ( void* toString ){
+  ProductSPL sp1;
+
   int length, lengthUnitsSold, lengthDistinctClients;
   char buffer1[20], buffer2[20];
   char* newString;
-  assert ( sp1 != NULL );
+  assert( toString != NULL );
+  sp1 = ( ProductSPL ) toString;
   length = strlen ( sp1->productCode );
   sprintf(buffer1, "%d", sp1->unitsSold);
   lengthUnitsSold = strlen ( buffer1 );
@@ -152,5 +155,13 @@ char* productSPLToString ( ProductSPL sp1 ){
   strcat ( newString , buffer2 );
   strcat ( newString , "\n" );
   return newString;
+}
+
+void destroyProductSPL ( void* myfree ){
+  ProductSPL mF;
+  mF = NULL;
+  assert ( myfree != NULL );
+  mF = ( ProductSPL ) myfree;
+  free ( mF );
 }
 

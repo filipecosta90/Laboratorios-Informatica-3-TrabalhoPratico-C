@@ -78,10 +78,16 @@ List getPromotionClientsWhoBoughtProduct__LL_STRINGS ( struct salesProductLinker
 }
 
 List getTopNMostSoldProducts__LL_STRINGS ( struct salesProductLinker* salesPrLinker , int nMost ){
-  List returnLL;
-  returnLL = ( List ) malloc ( sizeof ( List ) );
-  /*returnLL = productSPLTopNMostSoldProducts__LL_STRINGS ( salesPrLinker , nMost );*/
-  return returnLL;
+  List returningLL;
+  int i = 0;
+  returningLL = initLL();
+  newLL ( returningLL , sizeof ( ProductSPL ) , &destroyProductSPL );
+  for( ; i<26; i++){
+  returningLL = BSTreeToOrderedLL( salesPrLinker->lettersArray[i] , returningLL , &productSPLUnitComparator );
+    returningLL = limitLL ( returningLL , nMost );
+  }
+  returningLL = convertLLtoStringer ( returningLL , &productSPLToString );
+  return returningLL;
 }
 
 int getGlobalNumberProducts ( struct salesProductLinker* salesPrLinker ){

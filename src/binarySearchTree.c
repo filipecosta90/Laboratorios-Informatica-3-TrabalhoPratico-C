@@ -150,6 +150,30 @@ List BSTreeToLL ( BSTree tree , int sizeStruct,  void ( *destroyer ) (void *) ){
   return returningLL;
 }
 
+List BstNodeToOrderedLL ( List ll , BstNode b1 , int ( *orderer ) ( void* , void* ) ){
+  if( b1 != NULL){
+    orderedInsertLL ( ll , b1->data , orderer );
+    if( b1->left != NULL ){
+      ll = BstNodeToLL ( ll , b1->left );
+    }
+    if ( b1->right != NULL ){
+      ll = BstNodeToLL ( ll, b1->right );
+    }
+  }
+  return ll;
+}
+
+struct list* BSTreeToOrderedLL ( BSTree tree , List returningLL, int ( *orderer ) ( void* , void* ) ){
+  /* No root */
+  if ( tree->root == NULL ){
+    return returningLL;
+  }
+  else{
+    returningLL = BstNodeToOrderedLL ( returningLL , tree->root , orderer );
+  }
+  return returningLL;
+}
+
 struct list* BSTreeToLL_ToString ( BSTree tree, int sizeStruct , void ( *destroyer ) ( void* ) , void* ( *toStringer ) ( void* ) ){
   List returningLL;
   returningLL = initLL();
