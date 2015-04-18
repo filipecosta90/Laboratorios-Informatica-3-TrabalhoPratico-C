@@ -20,6 +20,8 @@ struct list* BSTreeToLL_ToString ( BSTree tree, int sizeStruct , void ( *destroy
 
 struct list* BSTreeToOrderedLLWithLimit ( BSTree tree , struct list* returningLL, int ( *orderer ) ( void* , void* ) , int limit );
 
+struct list* BSTreeToOrderedLL ( BSTree tree , struct list* returningLL, int ( *orderer ) ( void* , void* ) );
+
 int BSTreeSize ( BSTree tree );
 
 #endif /* _BINARY_SEARCH_TREE_H_INCLUDED_ */

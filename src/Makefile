@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -g -Wall -ansi -pedantic -O2
 
-gesthiper: gesthiper.o accounting.o clientCatalog.o productCatalog.o productSPL.o salesProductLinker.o parser.o binarySearchTree.o genLinkedList.o avlTree.o month.o clientSales.o
+gesthiper: gesthiper.o accounting.o clientCatalog.o productCatalog.o productSPL.o clientCPL.o clientProductLinker.o salesProductLinker.o parser.o binarySearchTree.o genLinkedList.o avlTree.o month.o clientSales.o productSales.o
 	gcc -o $@ $^ $(CFLAGS)
 
 genLinkedList.o: genLinkedList.c
@@ -19,6 +19,12 @@ month.o: month.c
 clientSales.o: clientSales.c
 	$(CC) -c -o $@ $< $(CFLAGS)
 
+productSales.o: productSales.c
+	$(CC) -c -o $@ $< $(CFLAGS)
+
+clientCPL.o: clientCPL.c genLinkedList.c productSales.c binarySearchTree.c
+	$(CC) -c -o $@ $< $(CFLAGS)
+
 productSPL.o: productSPL.c genLinkedList.c clientSales.c binarySearchTree.c
 	$(CC) -c -o $@ $< $(CFLAGS)
 
@@ -32,6 +38,9 @@ productCatalog.o: productCatalog.c avlTree.c
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 salesProductLinker.o:  salesProductLinker.c productSPL.c clientSales.c avlTree.c genLinkedList.c binarySearchTree.c 
+	$(CC) -c -o $@ $< $(CFLAGS)
+
+clientProductLinker.o: clientProductLinker.c clientCPL.c productSales.c avlTree.c genLinkedList.c binarySearchTree.c
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 parser.o: parser.c accounting.c productCatalog.c clientCatalog.c salesProductLinker.c month.c

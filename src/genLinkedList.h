@@ -34,7 +34,7 @@ void*  headLL ( List );
 
 void tailLL ( List , void * );
 
-struct list* convertLLtoStringer ( struct list* list , char* ( toStringer ) ( void* ) );
+struct list* convertLLtoStringer ( struct list* list , void* ( toStringer ) ( void* ) );
 
 #endif /* _GENERIC_LINKED_LIST_H_INCLUDED_ */
 

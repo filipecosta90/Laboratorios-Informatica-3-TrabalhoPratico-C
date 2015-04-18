@@ -174,6 +174,30 @@ struct list* BSTreeToOrderedLLWithLimit ( BSTree tree , List returningLL, int ( 
   return returningLL;
 }
 
+List BstNodeToOrderedLL ( List ll , BstNode b1 , int ( *orderer ) ( void* , void* ) ){
+  if( b1 != NULL){
+    ll = orderedInsertLL ( ll , b1->data , orderer );
+    if( b1->left != NULL ){
+      ll = BstNodeToOrderedLL ( ll , b1->left, orderer );
+    }
+    if ( b1->right != NULL ){
+      ll = BstNodeToOrderedLL ( ll, b1->right , orderer );
+    }
+  }
+  return ll;
+}
+
+struct list* BSTreeToOrderedLL ( BSTree tree , List returningLL, int ( *orderer ) ( void* , void* ) ){
+  /* No root */
+  if ( tree->root == NULL ){
+    return returningLL;
+  }
+  else{
+    returningLL = BstNodeToOrderedLL ( returningLL , tree->root , orderer );
+  }
+  return returningLL;
+}
+
 struct list* BSTreeToLL_ToString ( BSTree tree, int sizeStruct , void ( *destroyer ) ( void* ) , void* ( *toStringer ) ( void* ) ){
   List returningLL;
   returningLL = initLL();

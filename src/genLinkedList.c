@@ -195,7 +195,7 @@ void myFreeChar1 ( void* myfree ){
   free ( stringF );
 }
 
-struct list* convertLLtoStringer ( struct list* list  , char* ( toStringer ) ( void* ) ){
+struct list* convertLLtoStringer ( struct list* list  , void* ( toStringer ) ( void* ) ){
   struct list* returningList;
   struct listNode *current;
   returningList = initLL ( ) ;

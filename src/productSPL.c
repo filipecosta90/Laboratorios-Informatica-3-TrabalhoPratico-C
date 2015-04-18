@@ -149,7 +149,7 @@ List productSPLGetPromotionClients__LL_STRINGS ( ProductSPL splProd ){
   return returningList;
 }
 
-char* productSPLToString ( void* toString ){
+void* productSPLToString ( void* toString ){
   ProductSPL sp1;
 
   int length, lengthUnitsSold, lengthDistinctClients;
