@@ -13,5 +13,7 @@ struct clientProductLinker* newClientProductLinker ( );
 
 void addSalesLineToCPL ( struct clientProductLinker* clientPrLinker , char* productCode, char* clientCode , int unitsSold , int month );
 
+struct list* getClientOrderedProductListOfMonth__LL_STRINGS ( ClientProductLinker clientPrLinker , char* clientCode , int month );
+
 #endif /* _CLIENT_PRODUCT_LINKER_H_INCLUDED_ */
 

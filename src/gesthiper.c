@@ -117,9 +117,15 @@ printf("Total Products of letter A: %d\n", getTotalProductsByLetter ( prCat, 'A'
   printf ( "Number of idle produts ( %d - %d ) = %d \n" , totalProdCatalogNumber , totalSPLProdNumber , idleProd );
   listStrings = getTopNMostSoldProducts__LL_STRINGS ( splProd , 20 );
   handleStrings ( listStrings );
-  printf ( "total billed by XA1482 %f\n " , getTotalBilledByProductInMonth ( splProd , "XA1482" , 1 ) );
-  printf ( "total billed by XA1482 %f\n " , getTotalBilledByProductInMonth ( splProd , "XA1482" , 2 ) );
-  printf ( "total billed by XA1482 %f\n " , getTotalBilledByProductInMonth ( splProd , "XA1482" , 3 ) );
+  printf ( "total billed by XA1482 %f\n" , getTotalBilledByProductInMonth ( splProd , "XA1482" , 1 ) );
+  printf ( "total billed by XA1482 %f\n" , getTotalBilledByProductInMonth ( splProd , "XA1482" , 2 ) );
+  printf ( "total billed by XA1482 %f\n" , getTotalBilledByProductInMonth ( splProd , "XA1482" , 3 ) );
+  printf("querie 9 month 12 of BL139\n");
+  listStrings = getClientOrderedProductListOfMonth__LL_STRINGS ( cplClient , "BL139" , 12 );
+  handleStrings ( listStrings );
+  printf("querie 9 month 6 of BL139\n");
+  listStrings = getClientOrderedProductListOfMonth__LL_STRINGS ( cplClient , "BL139" , 6 );
+  handleStrings ( listStrings );
   end = time(NULL);
   printf("%.5f\n", (double)(end - start));
   return 0;

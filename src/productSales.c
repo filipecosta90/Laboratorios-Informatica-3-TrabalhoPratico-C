@@ -46,6 +46,26 @@ int equalsProductSales ( void* isEqual1, void* isEqual2 ){
   return returningValue;
 }
 
+int productSalesUnitComparator ( void* comp1 , void* comp2 ){
+  ProductSales p1, p2;
+  int returningValue;
+  if ( comp1 == NULL || comp2 == NULL ){
+    printf("returning 0 beacuse of null\n");
+    returningValue = 0;
+  }
+  else{
+    p1 = ( ProductSales ) comp1;
+    p2 = ( ProductSales ) comp2;
+    returningValue = p1->unitsSold - p2->unitsSold;
+    printf("returning %d from %s - %s \n" , returningValue , p1->productCode, p2->productCode);
+
+    if ( returningValue == 0 ){
+      returningValue = strcmp ( p2->productCode , p1->productCode );
+    }
+  }
+  return returningValue;
+}
+
 void deleteProductSales ( void* delete1 ){
   ProductSales d1;
   assert ( delete1 !=  NULL );

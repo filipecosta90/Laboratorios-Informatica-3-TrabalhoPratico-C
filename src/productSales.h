@@ -19,6 +19,8 @@ int equalsProductSales ( void* , void* );
 
 void deleteProductSales ( void* );
 
+int productSalesUnitComparator ( void* comp1 , void* comp2 );
+
 void* toStringProductSales ( void* );
 
 #endif /* _PRODUCT_SALES_H_INCLUDED_ */

@@ -69,3 +69,19 @@ void addSalesLineToCPL ( struct clientProductLinker* clientPrLinker , char* prod
     searchResult = addProductCPL ( searchResult , productCode , unitsSold );
   }
 }
+
+struct list* getClientOrderedProductListOfMonth__LL_STRINGS ( ClientProductLinker clientPrLinker , char* clientCode , int month ){
+  List returnLL;
+  int inPosition, outPosition;
+  ClientCPL searchResult;
+  ClientCPL cplClient;
+  returnLL = initLL ();
+  outPosition = getClientCPLArrayOutPosition( clientCode );
+  inPosition = getClientCPLArrayInPosition ( clientCode );
+  cplClient = newClientCPL ( clientCode );
+  searchResult = (ClientCPL) searchBst ( clientPrLinker->lettersArray[month-1][outPosition][inPosition], cplClient );
+  returnLL = clientCPLGetProduct__LL_STRINGS ( searchResult );
+  return returnLL;
+}
+
+

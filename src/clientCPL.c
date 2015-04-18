@@ -84,7 +84,7 @@ List clientCPLGetProduct__LL_STRINGS ( ClientCPL cplClient ){
   assert ( cplClient != NULL );
   newLL ( productLL , sizeof ( ProductSales ) , &deleteProductSales );
   newLL ( returningList , sizeof ( char* ) , &myFreeCharCPL );
-  productLL = BSTreeToOrderedLL ( cplClient->productBST , productLL , &equalsProductSales  );
+  productLL = BSTreeToOrderedLL ( cplClient->productBST , productLL , &productSalesUnitComparator  );
   returningList = convertLLtoStringer ( productLL , &toStringProductSales );
   return returningList;
 }

@@ -71,7 +71,7 @@ List getNormalClientsWhoBoughtProduct__LL_STRINGS ( struct salesProductLinker* s
   int inPosition, outPosition;
   ProductSPL searchResult;
   ProductSPL splProd;
-  returnLL = ( List ) malloc ( sizeof ( List ) );
+  returnLL = initLL ();
   outPosition = getProductSPLArrayOutPosition( productCode );
   inPosition = getProductSPLArrayInPosition ( productCode );
   splProd = newProductSPL ( productCode );
@@ -85,7 +85,7 @@ List getPromotionClientsWhoBoughtProduct__LL_STRINGS ( struct salesProductLinker
   int outPosition, inPosition;
   ProductSPL searchResult;
   ProductSPL splProd;
-  returnLL = ( List ) malloc ( sizeof ( List ) );
+  returnLL = initLL ();
   outPosition = getProductSPLArrayOutPosition( productCode );
   inPosition = getProductSPLArrayInPosition( productCode );
   splProd = newProductSPL ( productCode );
