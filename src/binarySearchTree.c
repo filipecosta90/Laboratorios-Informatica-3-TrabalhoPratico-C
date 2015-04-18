@@ -198,6 +198,30 @@ struct list* BSTreeToOrderedLL ( BSTree tree , List returningLL, int ( *orderer 
   return returningLL;
 }
 
+int BstNodeMapReduceInt ( BstNode b1 , int ( *mapper ) ( void* ) ){
+  int toReturn = 0;
+  if( b1 != NULL){
+    toReturn = mapper ( b1->data );
+    if( b1->left != NULL ){
+      toReturn = toReturn + BstNodeMapReduceInt ( b1->left , mapper );
+    }
+    if ( b1->right != NULL ){
+      toReturn = toReturn + BstNodeMapReduceInt ( b1->right , mapper );
+    }
+  }
+  return toReturn;
+}
+
+int BSTreeMapReduceInt ( BSTree tree  , int ( *mapper ) ( void* ) ){
+  int toReturn;
+  toReturn=-1;
+  /* No root */
+  if ( tree->root != NULL ){
+    toReturn = BstNodeMapReduceInt ( tree->root , mapper );
+  }
+  return toReturn;
+}
+
 struct list* BSTreeToLL_ToString ( BSTree tree, int sizeStruct , void ( *destroyer ) ( void* ) , void* ( *toStringer ) ( void* ) ){
   List returningLL;
   returningLL = initLL();

@@ -11,7 +11,7 @@ typedef struct productSales* ProductSales;
 
 ProductSales newProductSales ( char* ProductCode );
 
-int getClientSalesUnitsSold ( ProductSales );
+int getProductSalesUnitsSold ( void* );
 
 ProductSales addUnitProductSales (  ProductSales , int );
 

@@ -89,6 +89,15 @@ List clientCPLGetProduct__LL_STRINGS ( ClientCPL cplClient ){
   return returningList;
 }
 
+/* QUERIE 5 */
+int clientCPLGetTotalProduct ( ClientCPL cplClient ){
+  if (cplClient == NULL){
+    return ( 0 );
+  }
+  else {
+    return  BSTreeMapReduceInt ( cplClient->productBST , &getProductSalesUnitsSold );
+  }
+}
 
 char* clientCPLToString ( void* toString ){
   ClientCPL cp1;

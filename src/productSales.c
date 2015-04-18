@@ -24,9 +24,16 @@ ProductSales newProductSales ( char* ProductCode ){
   return productSalesNew;
 }
 
-int getProductSalesUnitsSold ( ProductSales p1 ){
-  assert ( p1 != NULL );
+int getProductSalesUnitsSold ( void* in  ){
+  ProductSales p1;
+  p1 = NULL;
+  if ( in == NULL ){
+    return ( 0 );
+  }
+  else {
+    p1 = ( ProductSales ) in;
   return p1->unitsSold;
+  }
 }
 
 ProductSales addUnitProductSales ( ProductSales p1 , int addUnit ){
@@ -57,8 +64,6 @@ int productSalesUnitComparator ( void* comp1 , void* comp2 ){
     p1 = ( ProductSales ) comp1;
     p2 = ( ProductSales ) comp2;
     returningValue = p1->unitsSold - p2->unitsSold;
-    printf("returning %d from %s - %s \n" , returningValue , p1->productCode, p2->productCode);
-
     if ( returningValue == 0 ){
       returningValue = strcmp ( p2->productCode , p1->productCode );
     }

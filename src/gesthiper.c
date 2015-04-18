@@ -20,7 +20,7 @@ void handleStrings ( List strings ){
   handler = NULL;
   while ( sizeLL (strings) > 0 ){
     handler = headLL ( strings );
-    printf( "string: %s" , handler );
+    printf( "%s" , handler );
   }
 }
 
@@ -97,7 +97,7 @@ int main (int argc, char *argv[] ){
   printf("Total Client of letter W: %d\n", getTotalClientsByLetter ( clCat, 'W' ));
   printf("Total Client of letter Y: %d\n", getTotalClientsByLetter ( clCat, 'Y' ));
   printf("Total Client of letter Z: %d\n", getTotalClientsByLetter ( clCat, 'Z' ));
-printf("Total Products of letter A: %d\n", getTotalProductsByLetter ( prCat, 'A' ));
+  printf("Total Products of letter A: %d\n", getTotalProductsByLetter ( prCat, 'A' ));
   printf("Total Products of letter B: %d\n", getTotalProductsByLetter ( prCat, 'B' ));
   printf("Total Products of letter C: %d\n", getTotalProductsByLetter ( prCat, 'C' ));
   printf("Total Products of letter D: %d\n", getTotalProductsByLetter ( prCat, 'D' ));
@@ -115,7 +115,7 @@ printf("Total Products of letter A: %d\n", getTotalProductsByLetter ( prCat, 'A'
   totalProdCatalogNumber = getProductCatalogSize ( prCat );
   idleProd = totalProdCatalogNumber - totalSPLProdNumber;
   printf ( "Number of idle produts ( %d - %d ) = %d \n" , totalProdCatalogNumber , totalSPLProdNumber , idleProd );
-  listStrings = getTopNMostSoldProducts__LL_STRINGS ( splProd , 20 );
+  listStrings = getTopNMostSoldProducts__LL_STRINGS ( splProd , 50 );
   handleStrings ( listStrings );
   printf ( "total billed by XA1482 %f\n" , getTotalBilledByProductInMonth ( splProd , "XA1482" , 1 ) );
   printf ( "total billed by XA1482 %f\n" , getTotalBilledByProductInMonth ( splProd , "XA1482" , 2 ) );
@@ -125,6 +125,10 @@ printf("Total Products of letter A: %d\n", getTotalProductsByLetter ( prCat, 'A'
   handleStrings ( listStrings );
   printf("querie 9 month 6 of BL139\n");
   listStrings = getClientOrderedProductListOfMonth__LL_STRINGS ( cplClient , "BL139" , 6 );
+  handleStrings ( listStrings );
+  listStrings = getClientProductTableByMonth__LL_STRINGS ( cplClient , "BL139" );
+  handleStrings ( listStrings );
+  listStrings = getClientProductTableByMonth__LL_STRINGS ( cplClient , "FP957" );
   handleStrings ( listStrings );
   end = time(NULL);
   printf("%.5f\n", (double)(end - start));

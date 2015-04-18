@@ -12,6 +12,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
+#include <string.h>
 
 struct clientProductLinker {
   struct bsTree* lettersArray[12][26][26];
@@ -25,12 +27,12 @@ struct clientProductLinker* newClientProductLinker ( ) {
   month = 0;
   for ( ; month < 12 ; month ++ ){
     out = 0;
-  for( ; out<26; out++){
-    in = 0;
-    for ( ; in<26; in++ ){
-      newCPL->lettersArray[month][out][in] = newBSTree ( &clientCPLEquals );
+    for( ; out<26; out++){
+      in = 0;
+      for ( ; in<26; in++ ){
+        newCPL->lettersArray[month][out][in] = newBSTree ( &clientCPLEquals );
+      }
     }
-  }
   }
   return newCPL;
 }
@@ -70,6 +72,59 @@ void addSalesLineToCPL ( struct clientProductLinker* clientPrLinker , char* prod
   }
 }
 
+void myFreeCharCPL1 ( void* myfree ){
+  char* stringF;
+  stringF = NULL;
+  assert ( myfree != NULL );
+  stringF = ( char* ) myfree;
+  free ( stringF );
+}
+
+/* QUERIE 5 */
+struct list* getClientProductTableByMonth__LL_STRINGS ( ClientProductLinker clientPrLinker , char* clientCode ){
+  List returnLL;
+  int inPosition, outPosition, month, unitsSold;
+  ClientCPL searchResult;
+  ClientCPL cplClient;
+  int length, lengthUnitsSold;
+  char buffer1[20], buffer2[20];
+  char* newString;
+  returnLL = initLL ();
+  outPosition = getClientCPLArrayOutPosition( clientCode );
+  inPosition = getClientCPLArrayInPosition ( clientCode );
+  cplClient = newClientCPL ( clientCode );
+  month = 0;
+  newLL ( returnLL , sizeof ( char* ) , &myFreeCharCPL1 );
+  length = strlen ( clientCode );
+  newString = ( char* ) malloc ( ( length +1+37+1 ) * sizeof ( char ));
+  strcat ( newString , "TOTAL BOUGTH PRODUCTS (BY MONTH) OF: ");
+  strcat ( newString , clientCode );
+  strcat ( newString , "\n");
+  appendLL ( returnLL , newString );
+  for ( ; month < 12 ; month++ ){
+    searchResult = (ClientCPL) searchBst ( clientPrLinker->lettersArray[month][outPosition][inPosition], cplClient );
+    if ( searchResult == NULL ){
+      unitsSold = 0;
+    }
+    else {
+      unitsSold = clientCPLGetTotalProduct  ( searchResult );
+    }
+    sprintf(buffer1, "%d", month+1);
+    sprintf(buffer2, "%d", unitsSold);
+    lengthUnitsSold = strlen ( buffer2 );
+    length += lengthUnitsSold;
+    newString = ( char* ) malloc ( ( length +9+16+1+1 ) * sizeof ( char ));
+    strcat ( newString , "\tMONTH: ");
+    strcat ( newString , buffer1 );
+    strcat ( newString , "\tUNITS BOUGHT: " );
+    strcat ( newString , buffer2 );
+    strcat ( newString , "\n" );
+    appendLL ( returnLL , newString );
+  }
+  return returnLL;
+}
+
+/* QUERIE 9 */
 struct list* getClientOrderedProductListOfMonth__LL_STRINGS ( ClientProductLinker clientPrLinker , char* clientCode , int month ){
   List returnLL;
   int inPosition, outPosition;
@@ -83,5 +138,3 @@ struct list* getClientOrderedProductListOfMonth__LL_STRINGS ( ClientProductLinke
   returnLL = clientCPLGetProduct__LL_STRINGS ( searchResult );
   return returnLL;
 }
-
-

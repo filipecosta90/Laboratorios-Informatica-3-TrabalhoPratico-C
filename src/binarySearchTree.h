@@ -22,6 +22,8 @@ struct list* BSTreeToOrderedLLWithLimit ( BSTree tree , struct list* returningLL
 
 struct list* BSTreeToOrderedLL ( BSTree tree , struct list* returningLL, int ( *orderer ) ( void* , void* ) );
 
+int BSTreeMapReduceInt ( BSTree tree  , int ( *mapper ) ( void* ) );
+
 int BSTreeSize ( BSTree tree );
 
 #endif /* _BINARY_SEARCH_TREE_H_INCLUDED_ */

@@ -20,6 +20,9 @@ ClientCPL addProductCPL ( ClientCPL , ProductCode , UnitType );
 
 struct list* clientCPLGetProduct__LL_STRINGS ( ClientCPL cplClient );
 
+/* QUERIE 5 */
+int clientCPLGetTotalProduct ( ClientCPL cplClient );
+
 int clientCPLEquals ( void* , void* );
 
 char* clientCPLToString ( void* );
