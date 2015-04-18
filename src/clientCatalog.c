@@ -1,7 +1,14 @@
+/*
+ *  * Copyright (C) Carlos Sá, Filipe Oliveira, Sérgio Caldas
+ *  * Copyright (C) Laboratórios Informática III, Universidade do Minho, 2015
+ *  */
+
+#include "genLinkedList.h"
 #include "clientCatalog.h"
 #include "avlTree.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <assert.h>
 
 struct clientCatalog {
   AvlTree lettersArray[26][26];
@@ -78,6 +85,31 @@ void deleteClientCatalog ( struct clientCatalog* clCat ) {
   free (clCat);
 }
 
+
+
+void myFreeCharclCat ( void* myfree ){
+  char* stringF;
+  stringF = NULL;
+  assert ( myfree != NULL );
+  stringF = ( char* ) myfree;
+  free ( stringF );
+}
+
+/* QUERIE 6 */
+struct list* getClientsByLetter__LL_strings ( struct clientCatalog* clCat , char clientInitial ){
+  int outPosition, inPosition;
+  struct list* returningLL;
+  returningLL = initLL ();
+  newLL ( returningLL , sizeof ( char* ) , &myFreeCharclCat );
+  inPosition = 0;
+  outPosition = getClientArrayOutPosition ( &clientInitial );
+  for ( ; inPosition < 26 ; inPosition++){
+    returningLL = avlToLL ( clCat->lettersArray[outPosition][inPosition] , returningLL  );
+  }
+  return returningLL;
+}
+
+/* QUERIE 10 AUXILIAR METHOD */
 struct list* getFullClients__LL_strings ( struct clientCatalog* clCat , struct list* returningLL ){
   int out , in;
   out = 0;

@@ -19,6 +19,9 @@ int getTotalClientsByLetter ( ClientCatalog, char );
 
 void deleteClientCatalog ( ClientCatalog );
 
+/* QUERIE 6 */
+struct list* getClientsByLetter__LL_strings ( struct clientCatalog* clCat , char letter );
+
 /* QUERIE 10 AUXILIAR METHOD */
 struct list* getFullClients__LL_strings ( struct clientCatalog* clCat , struct list* returningLL );
 

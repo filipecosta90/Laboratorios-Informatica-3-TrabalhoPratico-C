@@ -133,6 +133,10 @@ int main (int argc, char *argv[] ){
   handleStrings ( listStrings );
   listStrings = getClientsWhoBoughtEveryMonth__LL_STRINGS ( cplClient, clCat );
   printf("##\n##number of clients who bought every month: %d\n", sizeLL ( listStrings ));
+  listStrings = getClientsByLetter__LL_strings ( clCat , 'A' );
+  printf("##\n##number of clients of letter A: %d\n", sizeLL ( listStrings ));
+
+
   end = time(NULL);
   printf("%.5f\n", (double)(end - start));
   return 0;
