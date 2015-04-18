@@ -100,7 +100,7 @@ int productSPLUnitComparator ( void* comp1 , void* comp2 ){
     p2 = ( ProductSPL ) comp2;
     returningValue = p1->unitsSold - p2->unitsSold;
     if ( returningValue == 0 ){
-      returningValue = strcmp ( p1->productCode , p2->productCode );
+      returningValue = strcmp ( p2->productCode , p1->productCode );
     }
   }
   return returningValue;

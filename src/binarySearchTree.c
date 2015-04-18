@@ -152,7 +152,7 @@ List BSTreeToLL ( BSTree tree , int sizeStruct,  void ( *destroyer ) (void *) ){
 
 List BstNodeToOrderedLLWithLimit ( List ll , BstNode b1 , int ( *orderer ) ( void* , void* ) , int limit ){
   if( b1 != NULL){
-    orderedInsertLLWithLimit ( ll , b1->data , orderer, limit );
+    ll = orderedInsertLLWithLimit ( ll , b1->data , orderer, limit );
     if( b1->left != NULL ){
       ll = BstNodeToOrderedLLWithLimit ( ll , b1->left, orderer , limit );
     }

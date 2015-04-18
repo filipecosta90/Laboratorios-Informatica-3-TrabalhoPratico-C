@@ -22,17 +22,17 @@ void prependLL ( List , void* );
 
 void appendLL ( List , void* );
 
-void orderedInsertLL ( struct list *list , void * element , int ( *comparatorFunc ) ( void* , void* ) );
+struct list* limitLL ( struct list* list , int limit );
 
-void orderedInsertLLWithLimit ( struct list *list , void * element , int ( *comparatorFunc ) ( void* , void* ) , int limit );
+struct list* orderedInsertLL ( struct list *list , void * element , int ( *comparatorFunc ) ( void* , void* ) );
+
+struct list* orderedInsertLLWithLimit ( struct list *list , void * element , int ( *comparatorFunc ) ( void* , void* ) , int limit );
 
 int sizeLL ( List );
 
 void*  headLL ( List );
 
 void tailLL ( List , void * );
-
-struct list* limitLL ( struct list* list , int limit );
 
 struct list* convertLLtoStringer ( struct list* list , char* ( toStringer ) ( void* ) );
 

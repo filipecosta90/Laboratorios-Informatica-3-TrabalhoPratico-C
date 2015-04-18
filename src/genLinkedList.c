@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <stdio.h>
 
 #include "genLinkedList.h"
 
@@ -76,56 +77,77 @@ void appendLL ( struct list *list , void *element ){
   list->logicalLength++;
 }
 
-void orderedInsertLLWithLimit ( struct list *list , void * element , int ( *comparatorFunc ) ( void* , void* ) , int limit) {
-  struct listNode *node;
-  struct listNode *temp;
-  struct listNode *previous;
-
-  node = malloc ( sizeof ( struct listNode ) );
+struct list* orderedInsertLLWithLimit ( struct list *list , void * element , int ( *comparatorFunc ) ( void* , void* ) , int limit) {
+  struct listNode *current, *previous;
+  int bigger = 0;
+  struct listNode *node = malloc ( sizeof ( struct listNode ) );
   node->next = NULL;
   node->data = element;
   if( list->logicalLength == 0 ) {
     list->head = list->tail = node;
-    list->logicalLength ++;    
   } else {
-    previous = list->head;
-    temp = list->head;
-
-    while ( temp->next != NULL && comparatorFunc ( node->data , temp->data ) < 0 ){
-      previous = temp;
-      temp = temp->next;
+    current = list->head;
+    previous = NULL;
+    while( current->next != NULL && bigger == 0 ) {
+      if ( comparatorFunc ( element , current->data ) > 0 ){
+        bigger = 1;
+      }
+      else {
+        previous = current;
+        current = current->next;
+      }
     }
-    node->next = temp;
-    previous->next = node;
-    list->logicalLength++;                    
+    if (previous == NULL) {
+      node->next = list->head;
+      list->head = node;
+    }
+    else if ( current->next == NULL ){
+      current->next = node;
+    }
+    else if ( bigger == 1 ){
+      previous->next = node;
+      node->next=current;
+    }
   }
+  list->logicalLength++;
   list = limitLL ( list , limit );
+  return list;
 }
 
-void orderedInsertLL ( struct list *list , void * element , int ( *comparatorFunc ) ( void* , void* ) ) {
-  struct listNode *node;
-  struct listNode *temp; 
-  struct listNode *previous;
-
-  node = malloc ( sizeof ( struct listNode ) );
+struct list* orderedInsertLL ( struct list *list , void * element , int ( *comparatorFunc ) ( void* , void* ) ) {
+  struct listNode *current, *previous;
+  int bigger = 0;
+  struct listNode *node = malloc ( sizeof ( struct listNode ) );
   node->next = NULL;
   node->data = element;
   if( list->logicalLength == 0 ) {
     list->head = list->tail = node;
-    list->logicalLength ++;
   } else {
-    previous = list->head;
-    temp = list->head;
-
-    while ( temp->next != NULL && comparatorFunc ( node->data , temp->data ) < 0 ){
-      previous = temp;
-      temp = temp->next;
+    current = list->head;
+    previous = NULL;
+    while( current->next != NULL && bigger == 0 ) {
+      if ( comparatorFunc ( element , current->data ) > 0 ){
+        bigger = 1;
+      }
+      else {
+        previous = current;
+        current = current->next;
+      }
     }
-    node->next = temp;
-    previous->next = node;
-    list->logicalLength++;
+    if (previous == NULL) {
+      node->next = list->head;
+      list->head = node;
+    }
+    else if ( current->next == NULL ){
+      current->next = node;
+    }
+    else if ( bigger == 1 ){
+      previous->next = node;
+      node->next=current;
+    }
   }
-
+  list->logicalLength++;
+  return list;
 }
 
 void*  headLL ( struct list *list ){
@@ -152,16 +174,16 @@ struct list* limitLL ( struct list* list , int number ){
   struct listNode *current, *previous;
   int i = 0;
   current = list->head;
+  if ( list->logicalLength <= number ) {
+    return list;
+  }
   while( current != NULL && i < number  ) {
     previous = current;
     current = current->next; 
     i++;
-    list->logicalLength--;
   }
-  if ( i == number ){
-    list->logicalLength = number;
-    previous->next = NULL;
-  }
+  previous->next = NULL;
+  list->logicalLength = i;
   return list;
 }
 
@@ -181,6 +203,8 @@ struct list* convertLLtoStringer ( struct list* list  , char* ( toStringer ) ( v
   current = list->head;
   while( current != NULL  ) {
     appendLL( returningList , toStringer ( current->data) );
+    current = current->next;
   }
   return returningList;
 }
+
