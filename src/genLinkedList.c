@@ -88,7 +88,7 @@ struct list* orderedInsertLLWithLimit ( struct list *list , void * element , int
   } else {
     current = list->head;
     previous = NULL;
-    while( current->next != NULL && bigger == 0 ) {
+    while( current != NULL && bigger == 0 ) {
       if ( comparatorFunc ( element , current->data ) > 0 ){
         bigger = 1;
       }
@@ -97,18 +97,20 @@ struct list* orderedInsertLLWithLimit ( struct list *list , void * element , int
         current = current->next;
       }
     }
-    if (previous == NULL) {
+    if ( bigger == 1 && previous == NULL ) {
       node->next = list->head;
       list->head = node;
     }
-    else if ( current->next == NULL ){
-      current->next = node;
+    else if ( current == NULL && previous != NULL ){
+      previous->next = node;
+      node->next=current;
     }
-    else if ( bigger == 1 ){
+    else if ( bigger == 1 && previous != NULL ){
       previous->next = node;
       node->next=current;
     }
   }
+
   list->logicalLength++;
   list = limitLL ( list , limit );
   return list;
@@ -125,7 +127,7 @@ struct list* orderedInsertLL ( struct list *list , void * element , int ( *compa
   } else {
     current = list->head;
     previous = NULL;
-    while( current->next != NULL && bigger == 0 ) {
+    while( current != NULL && bigger == 0 ) {
       if ( comparatorFunc ( element , current->data ) > 0 ){
         bigger = 1;
       }
@@ -134,14 +136,15 @@ struct list* orderedInsertLL ( struct list *list , void * element , int ( *compa
         current = current->next;
       }
     }
-    if (previous == NULL) {
+    if ( bigger == 1 && previous == NULL ) {
       node->next = list->head;
       list->head = node;
     }
-    else if ( current->next == NULL ){
-      current->next = node;
+    else if ( current == NULL && previous != NULL ){
+      previous->next = node;
+      node->next=current;
     }
-    else if ( bigger == 1 ){
+    else if ( bigger == 1 && previous != NULL ){
       previous->next = node;
       node->next=current;
     }
