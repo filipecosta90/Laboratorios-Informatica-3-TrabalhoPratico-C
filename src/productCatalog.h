@@ -19,6 +19,8 @@ void addProductToCatalog ( ProductCatalog , ProductCode );
 
 int containsProductCode ( ProductCatalog, ProductCode );
 
+int getTotalProductsByLetter ( struct productCatalog* prCat, char productInitial );
+
 void deleteProductCatalog ( ProductCatalog );
 
 int getProductCatalogSize ( ProductCatalog );

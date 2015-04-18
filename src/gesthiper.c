@@ -11,6 +11,7 @@
 #include "clientCatalog.h"
 #include "accounting.h"
 #include "salesProductLinker.h"
+#include "clientProductLinker.h"
 #include "parser.h"
 #include "genLinkedList.h"
 
@@ -29,6 +30,7 @@ int main (int argc, char *argv[] ){
   ClientCatalog clCat;
   ProductCatalog prCat;
   SalesProductLinker splProd;
+  ClientProductLinker cplClient;
   List listStrings;
   int flagReadingSales, flagReadingClients, flagReadingProducts, errorReadingProducts, errorReadingClients, idleProd, totalProdCatalogNumber, totalSPLProdNumber;
   listStrings = NULL;
@@ -41,14 +43,15 @@ int main (int argc, char *argv[] ){
   acBook = newAccounting();
   clCat = newClientCatalog();
   prCat = newProductCatalog();
-  splProd = newSalesProductLinker (); 
+  splProd = newSalesProductLinker ();
+  cplClient = newClientProductLinker ();
   initAccounting (acBook);
   flagReadingProducts = readFileProducts ( "../files/FichProdutos.txt" , prCat , &errorReadingProducts );
   flagReadingClients = readFileClients ( "../files/FichClientes.txt" , clCat , &errorReadingClients );
   errorReadingClients = 0;
   errorReadingProducts = 0;
 
-  flagReadingSales = readFileSales( "../files/Compras.txt" , acBook , clCat , prCat , splProd , &errorReadingProducts , &errorReadingClients );
+  flagReadingSales = readFileSales( "../files/Compras.txt" , acBook , clCat , prCat , splProd , cplClient , &errorReadingProducts , &errorReadingClients );
 
   printf("flag sales:%d\n", flagReadingSales);
   printf("get interval total sales result: %d\n", getIntervalTotalSales( acBook, 1, 12));
@@ -94,6 +97,13 @@ int main (int argc, char *argv[] ){
   printf("Total Client of letter W: %d\n", getTotalClientsByLetter ( clCat, 'W' ));
   printf("Total Client of letter Y: %d\n", getTotalClientsByLetter ( clCat, 'Y' ));
   printf("Total Client of letter Z: %d\n", getTotalClientsByLetter ( clCat, 'Z' ));
+printf("Total Products of letter A: %d\n", getTotalProductsByLetter ( prCat, 'A' ));
+  printf("Total Products of letter B: %d\n", getTotalProductsByLetter ( prCat, 'B' ));
+  printf("Total Products of letter C: %d\n", getTotalProductsByLetter ( prCat, 'C' ));
+  printf("Total Products of letter D: %d\n", getTotalProductsByLetter ( prCat, 'D' ));
+  printf("Total Products of letter E: %d\n", getTotalProductsByLetter ( prCat, 'E' ));
+  printf("Total Products of letter F: %d\n", getTotalProductsByLetter ( prCat, 'F' ));
+  printf("Total Products of letter G: %d\n", getTotalProductsByLetter ( prCat, 'G' ));
 
   listStrings = getNormalClientsWhoBoughtProduct__LL_STRINGS  ( splProd , "UH9277" );
   printf("##\n##number of clients UH9277: %d\n", sizeLL ( listStrings ));

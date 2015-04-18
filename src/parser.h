@@ -6,7 +6,7 @@
 #ifndef _PARSER_H_INCLUDED_
 #define _PARSER_H_INCLUDED_
 
-int readFileSales ( char* , Accounting , ClientCatalog , ProductCatalog, SalesProductLinker ,  int*  , int* );
+int readFileSales ( char* , Accounting , ClientCatalog , ProductCatalog, SalesProductLinker ,  ClientProductLinker , int*  , int* );
 
 int readFileClients ( char* , ClientCatalog , int* );
 

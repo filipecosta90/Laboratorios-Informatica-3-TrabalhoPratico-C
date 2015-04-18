@@ -45,7 +45,7 @@ void addProductToCatalog ( struct productCatalog* prCat, char* productCode ) {
   avlInsert ( prCat->lettersArray[outPosition][inPosition] , productCode );
 }
 
-int getTotalProductByLetter ( struct productCatalog* prCat, char productInitial ) {
+int getTotalProductsByLetter ( struct productCatalog* prCat, char productInitial ) {
   int outPosition, inPosition, totalProducts;
   outPosition = getProductArrayOutPosition( &productInitial );
   inPosition = 0;
