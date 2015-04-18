@@ -18,4 +18,7 @@ int avlContains ( AvlTree , char* );
 
 void avlFree ( AvlTree );
 
+/* QUERIE 10 AUXILIAR METHOD */
+struct list* avlToLL ( struct avlTree* , struct list* returningLL );
+
 #endif /* _AVL_TREE_H_INCLUDED_ */

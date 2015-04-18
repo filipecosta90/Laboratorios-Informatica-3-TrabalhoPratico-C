@@ -7,19 +7,20 @@
 #ifndef _CLIENT_CATALOG_H_INCLUDED_
 #define _CLIENT_CATALOG_H_INCLUDED_
 
-typedef struct clientCatalog * ClientCatalog;
-
-typedef char* ClientCode;
+typedef struct clientCatalog* ClientCatalog;
 
 ClientCatalog newClientCatalog ( void );
 
-void addClientToCatalog ( ClientCatalog , ClientCode );
+void addClientToCatalog ( ClientCatalog , char* clientCode );
 
-int containsClientCode ( ClientCatalog, ClientCode );
+int containsClientCode ( ClientCatalog, char* clientCode );
 
 int getTotalClientsByLetter ( ClientCatalog, char );
 
 void deleteClientCatalog ( ClientCatalog );
+
+/* QUERIE 10 AUXILIAR METHOD */
+struct list* getFullClients__LL_strings ( struct clientCatalog* clCat , struct list* returningLL );
 
 #endif /* _CLIENT_CATALOG_H_INCLUDED_ */
 

@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "avlTree.h"
+#include "genLinkedList.h"
+
 #include <stdio.h>
 
 struct avlNode {
@@ -235,19 +237,53 @@ int avlContains ( struct avlTree *tree , char* containsKey ) {
 }
 
 void avlFreeNode ( struct avlNode *node ) {
-    if ( node->left != NULL ) {
-        avlFreeNode ( node->left );
-    }
-    if ( node->right != NULL ) {
-        avlFreeNode ( node->right );
-    }
-    free ( node );
+  if ( node->left != NULL ) {
+    avlFreeNode ( node->left );
+  }
+  if ( node->right != NULL ) {
+    avlFreeNode ( node->right );
+  }
+  free ( node );
 }
 
 void avlFree ( AvlTree freeTree ) {
-    if ( freeTree->root != NULL ) {
-        avlFreeNode ( freeTree->root );
-    }
+  if ( freeTree->root != NULL ) {
+    avlFreeNode ( freeTree->root );
+  }
 }
 
+void* toStringer ( struct avlNode * node ){
+  char* nKey;
+  int sizeToAllocate;
+  nKey = NULL;
+  sizeToAllocate = 0;
+  if( node != NULL ){
+  sizeToAllocate = strlen ( node->key );
+  nKey = (char*) malloc ( (sizeToAllocate+1) * sizeof ( char ) );
+  strcpy( nKey , node->key );
+  }
+  return nKey;
+}
+
+struct list* avlNodeToLL ( struct avlNode * node , struct list* listLL ){
+  if ( node != NULL ){
+    appendLL ( listLL , toStringer(node) );
+    if ( node->left != NULL ) {
+      avlNodeToLL( node->left , listLL );
+    }
+    if ( node->right != NULL ) {
+      avlNodeToLL( node->right , listLL );
+    }
+  }
+  return listLL;
+}
+
+struct list* avlToLL( struct avlTree *tree, struct list* returningLL ){
+  if( tree != NULL ) {
+    if( tree->root != NULL ){
+      returningLL = avlNodeToLL ( tree->root , returningLL );
+    }
+  }
+  return returningLL;
+}
 

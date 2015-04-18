@@ -78,3 +78,15 @@ void deleteClientCatalog ( struct clientCatalog* clCat ) {
   free (clCat);
 }
 
+struct list* getFullClients__LL_strings ( struct clientCatalog* clCat , struct list* returningLL ){
+  int out , in;
+  out = 0;
+  in = 0;
+  for ( ; out < 26 ; out++ ){
+    in = 0;
+    for( ; in<26; in++ ){
+      returningLL = avlToLL ( clCat->lettersArray[out][in] , returningLL  );
+    }
+  }
+  return returningLL;
+}

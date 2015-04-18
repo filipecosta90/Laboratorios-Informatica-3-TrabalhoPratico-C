@@ -16,8 +16,11 @@ void addSalesLineToCPL ( struct clientProductLinker* clientPrLinker , char* prod
 /* QUERIE 5 */
 struct list* getClientProductTableByMonth__LL_STRINGS ( ClientProductLinker clientPrLinker , char* clientCode );
 
-/* QUERIE 9*/
+/* QUERIE 9 */
 struct list* getClientOrderedProductListOfMonth__LL_STRINGS ( ClientProductLinker clientPrLinker , char* clientCode , int month );
+
+/* QUERIE 10 */
+struct list* getClientsWhoBoughtEveryMonth__LL_STRINGS ( ClientProductLinker clientPrLinker , struct clientCatalog* );
 
 /* QUERIE 11 */
 int  getCPLinkerMonthSize ( ClientProductLinker clientPrLinker , int month );
