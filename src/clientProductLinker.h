@@ -19,5 +19,8 @@ struct list* getClientProductTableByMonth__LL_STRINGS ( ClientProductLinker clie
 /* QUERIE 9*/
 struct list* getClientOrderedProductListOfMonth__LL_STRINGS ( ClientProductLinker clientPrLinker , char* clientCode , int month );
 
+/* QUERIE 11 */
+int  getCPLinkerMonthSize ( ClientProductLinker clientPrLinker , int month );
+
 #endif /* _CLIENT_PRODUCT_LINKER_H_INCLUDED_ */
 

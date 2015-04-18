@@ -20,7 +20,7 @@ void addClient ( Accounting , type_of_month );
 
 void addBill ( Accounting, type_of_month , float );
 
-char* getCsvMonth ( Accounting, type_of_month );
+int getMonthSales ( Accounting, type_of_month );
 
 int getIntervalTotalSales ( Accounting, type_of_month , type_of_month );
 

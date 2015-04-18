@@ -37,17 +37,10 @@ void addBill ( struct accounting* acBook, int month , float billedValue) {
   addBills ( acBook->monthsArray[position], billedValue );
 }
 
-char*  getCsvMonth ( struct accounting* acBook, int month ) {
-  char* lineToReturn;
-  char buffer[64];
-  int position, sizeToReturn;
+int getMonthSales ( struct accounting* acBook, int month ) {
+  int position;
   position = month -1;
-  sprintf( buffer, "\"%d\",\"%d\",\"%d\"", month , getNumberSales ( acBook->monthsArray[position] ) , getNumberClients ( acBook->monthsArray[position] ) );
-  sizeToReturn = strlen ( buffer ) + 1;
-  lineToReturn = (char*) malloc ( sizeToReturn * sizeof (char) );
-  strcpy( lineToReturn , buffer );
-  lineToReturn[sizeToReturn-1] = '\0';
-  return lineToReturn;
+  return getNumberSales ( acBook->monthsArray[position] );
 }
 
 int getIntervalTotalSales ( struct accounting* acBook, int initialMonth , int finalMonth ){

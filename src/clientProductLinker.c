@@ -138,3 +138,18 @@ struct list* getClientOrderedProductListOfMonth__LL_STRINGS ( ClientProductLinke
   returnLL = clientCPLGetProduct__LL_STRINGS ( searchResult );
   return returnLL;
 }
+
+/* QUERIE 11 */
+int  getCPLinkerMonthSize ( ClientProductLinker clientPrLinker , int month ) {
+  int out , in, returningValue ;
+  in = 0;
+  out = 0;
+  returningValue = 0;
+  for( ; out<26; out++){
+    in = 0;
+    for ( ; in<26; in++ ){
+      returningValue += BSTreeSize ( clientPrLinker->lettersArray[month-1][out][in] ) ;
+    }
+  }
+  return returningValue;
+}
