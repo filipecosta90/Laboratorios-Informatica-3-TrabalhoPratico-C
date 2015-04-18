@@ -107,6 +107,9 @@ int main (int argc, char *argv[] ){
   printf ( "Number of idle produts ( %d - %d ) = %d \n" , totalProdCatalogNumber , totalSPLProdNumber , idleProd );
   listStrings = getTopNMostSoldProducts__LL_STRINGS ( splProd , 20 );
   handleStrings ( listStrings );
+  printf ( "total billed by XA1482 %f\n " , getTotalBilledByProductInMonth ( splProd , "XA1482" , 1 ) );
+  printf ( "total billed by XA1482 %f\n " , getTotalBilledByProductInMonth ( splProd , "XA1482" , 2 ) );
+  printf ( "total billed by XA1482 %f\n " , getTotalBilledByProductInMonth ( splProd , "XA1482" , 3 ) );
   end = time(NULL);
   printf("%.5f\n", (double)(end - start));
   return 0;

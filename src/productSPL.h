@@ -20,7 +20,7 @@ typedef char* ProductCode;
 
 ProductSPL newProductSPL ( ProductCode );
 
-ProductSPL addSaleSPL ( ProductSPL , ClientCode , SaleType , UnitType , PriceType );
+ProductSPL addSaleSPL ( ProductSPL , ClientCode , SaleType , UnitType , PriceType , int month );
 
 int getTotalClientsSPL ( ProductSPL );
 
@@ -37,6 +37,12 @@ struct list* productSPLGetNormalClients__LL_STRINGS ( ProductSPL );
 struct list* productSPLGetPromotionClients__LL_STRINGS ( ProductSPL );
 
 void destroyProductSPL ( void* );
+
+int productSPLGetNormalClientsNumberInMonth ( ProductSPL , int month );
+
+int productSPLGetPromotionClientsNumberInMonth ( ProductSPL , int month );
+
+float productSPLGetTotalBilledInMonth ( ProductSPL , int month );
 
 #endif /* _PRODUCT_SPL_H_INCLUDED_ */
 

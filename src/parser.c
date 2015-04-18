@@ -151,7 +151,7 @@ int readFileSales(char* filename, Accounting acBook , ClientCatalog clCat, Produ
                     addSale( acBook, monthToken  );
                     addClient( acBook, monthToken );
                     addBill( acBook, monthToken, priceToken );
-                    addSalesLineToSPL ( splProd , productToken , clientToken , modeToken , unitToken , priceToken );
+                    addSalesLineToSPL ( splProd , productToken , clientToken , modeToken , unitToken , priceToken , monthToken );
                   }
                   else{
                     errorCount++;

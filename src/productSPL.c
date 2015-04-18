@@ -18,35 +18,50 @@ struct productSPL {
   int distinctClients;
   struct bsTree* normalBST;
   struct bsTree* promotionBST;
+  int normalSalesByMonth[12];
+  int promotionSalesByMonth[12];
+  float billedByMonth[12];
 };
 
 ProductSPL newProductSPL ( char* ProductCode ){
   int stringSize;
 
+  /* allocate memory for struct */
   ProductSPL productSPLNew = ( ProductSPL ) malloc ( sizeof ( struct productSPL ));
   memset ( ( productSPLNew ), '\0', ( sizeof ( struct productSPL ) ) );
 
+  /* string */
   stringSize = strlen ( ProductCode );
   productSPLNew->productCode = ( char* ) malloc ( ( stringSize +1 ) * sizeof ( char ) );
   strcpy ( productSPLNew->productCode , ProductCode );
 
+  /* counters */
   productSPLNew->unitsSold = 0;
   productSPLNew->distinctClients = 0;
 
+  /* BSTrees */
   productSPLNew->normalBST = newBSTree ( &equalsClientSales );
   productSPLNew->promotionBST = newBSTree ( equalsClientSales );
+
+  /* arrays by month */
+  memset( productSPLNew->normalSalesByMonth ,0,sizeof( productSPLNew->normalSalesByMonth ));
+  memset( productSPLNew->promotionSalesByMonth ,0,sizeof( productSPLNew->promotionSalesByMonth ));
+  memset( productSPLNew->billedByMonth ,0.0,sizeof( productSPLNew->billedByMonth ));
 
   return productSPLNew;
 }
 
-ProductSPL addSaleSPL ( ProductSPL splProd , char* ClientCode , char SaleType , int UnitType , float PriceType ){
+ProductSPL addSaleSPL ( ProductSPL splProd , char* ClientCode , char SaleType , int UnitType , float PriceType , int month ){
   ClientSales client1;
   ClientSales searchResultNormal, searchResultPromotion;
   assert ( splProd != NULL );
   client1 = newClientSales ( ClientCode );
   searchResultNormal = NULL;
   searchResultPromotion = NULL;
+  /* SPL counters */
   splProd->unitsSold += UnitType;
+  splProd->billedByMonth[month-1] += PriceType;
+
   searchResultNormal = (ClientSales) searchBst ( splProd->normalBST , client1 );
   searchResultPromotion = (ClientSales) searchBst ( splProd->promotionBST , client1 );
 
@@ -55,6 +70,7 @@ ProductSPL addSaleSPL ( ProductSPL splProd , char* ClientCode , char SaleType , 
   }
 
   if ( SaleType == 'N'){
+    splProd->normalSalesByMonth[month-1] += UnitType;
     if ( searchResultNormal == NULL ){
       client1 = addUnitClientSales ( client1 , UnitType );
       insertBst ( splProd->normalBST , client1 );
@@ -64,6 +80,7 @@ ProductSPL addSaleSPL ( ProductSPL splProd , char* ClientCode , char SaleType , 
     }
   }
   if ( SaleType == 'P' ){
+    splProd->promotionSalesByMonth[month-1] += UnitType;
     if( searchResultPromotion == NULL ){
       client1 = addUnitClientSales ( client1 , UnitType );
       insertBst ( splProd->promotionBST , client1 );
@@ -165,3 +182,15 @@ void destroyProductSPL ( void* myfree ){
   free ( mF );
 }
 
+int productSPLGetNormalClientsNumberInMonth ( ProductSPL splProd  , int month ){
+  return splProd->normalSalesByMonth[month-1];
+
+}
+
+int productSPLGetPromotionClientsNumberInMonth ( ProductSPL splProd , int month ){
+  return splProd->promotionSalesByMonth[month-1];
+}
+
+float productSPLGetTotalBilledInMonth ( ProductSPL splProd , int month ){
+  return splProd->billedByMonth[month-1];
+}

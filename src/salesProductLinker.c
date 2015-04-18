@@ -49,7 +49,7 @@ static int getProductSPLArrayInPosition ( char* productCode ) {
   return position;
 }
 
-void addSalesLineToSPL ( struct salesProductLinker* salesPrLinker , char* productCode, char* clientCode , char salesMode , int unitsSold , float sellingPrice ) {
+void addSalesLineToSPL ( struct salesProductLinker* salesPrLinker , char* productCode, char* clientCode , char salesMode , int unitsSold , float sellingPrice , int month ) {
   int outPosition, inPosition;
   ProductSPL searchResult = NULL;
   ProductSPL splProd;
@@ -58,11 +58,11 @@ void addSalesLineToSPL ( struct salesProductLinker* salesPrLinker , char* produc
   splProd = newProductSPL ( productCode );
   searchResult = (ProductSPL) searchBst ( salesPrLinker->lettersArray[outPosition][inPosition], splProd );
   if ( searchResult == NULL ){
-    splProd = addSaleSPL ( splProd , clientCode , salesMode , unitsSold , sellingPrice );
+    splProd = addSaleSPL ( splProd , clientCode , salesMode , unitsSold , sellingPrice , month );
     insertBst ( salesPrLinker->lettersArray[outPosition][inPosition] , splProd );
   }
   else {
-    searchResult = addSaleSPL ( searchResult , clientCode , salesMode , unitsSold , sellingPrice );
+    searchResult = addSaleSPL ( searchResult , clientCode , salesMode , unitsSold , sellingPrice, month );
   }
 }
 
@@ -127,3 +127,39 @@ int getGlobalNumberProducts ( struct salesProductLinker* salesPrLinker ){
   return globalCount;
 }
 
+int getPromotionClientsNumberWhoBoughtProductInMonth ( struct salesProductLinker* salesPrLinker , char* productCode , int month ){
+  int outPosition, inPosition , promotionClientsNumber;
+  ProductSPL searchResult;
+  ProductSPL splProd;
+  outPosition = getProductSPLArrayOutPosition( productCode );
+  inPosition = getProductSPLArrayInPosition( productCode );
+  splProd = newProductSPL ( productCode );
+  searchResult = (ProductSPL) searchBst ( salesPrLinker->lettersArray[outPosition][inPosition], splProd );
+  promotionClientsNumber = productSPLGetPromotionClientsNumberInMonth ( searchResult , month );
+  return promotionClientsNumber;
+}
+
+int getNormalClientsNumberWhoBoughtProductInMonth ( struct salesProductLinker* salesPrLinker , char* productCode , int month ){
+  int outPosition, inPosition , normalClientsNumber;
+  ProductSPL searchResult;
+  ProductSPL splProd;
+  outPosition = getProductSPLArrayOutPosition( productCode );
+  inPosition = getProductSPLArrayInPosition( productCode );
+  splProd = newProductSPL ( productCode );
+  searchResult = (ProductSPL) searchBst ( salesPrLinker->lettersArray[outPosition][inPosition], splProd );
+  normalClientsNumber = productSPLGetNormalClientsNumberInMonth ( searchResult , month );
+  return normalClientsNumber;
+}
+
+float getTotalBilledByProductInMonth ( struct salesProductLinker* salesPrLinker , char* productCode , int month ){
+  int outPosition, inPosition;
+  float billedValue;
+  ProductSPL searchResult;
+  ProductSPL splProd;
+  outPosition = getProductSPLArrayOutPosition( productCode );
+  inPosition = getProductSPLArrayInPosition( productCode );
+  splProd = newProductSPL ( productCode );
+  searchResult = (ProductSPL) searchBst ( salesPrLinker->lettersArray[outPosition][inPosition], splProd );
+  billedValue = productSPLGetTotalBilledInMonth ( searchResult , month );
+  return billedValue;
+}
