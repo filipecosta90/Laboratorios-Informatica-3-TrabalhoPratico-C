@@ -6,12 +6,15 @@
 #include "genLinkedList.h"
 #include "avlTree.h"
 #include "binarySearchTree.h"
-#include "salesProductLinker.h"
+#include "productCatalog.h"
 #include "productSPL.h"
 #include "clientSales.h"
+#include "salesProductLinker.h"
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
+#include <string.h>
 
 struct salesProductLinker {
   struct bsTree* lettersArray[26][26];
@@ -162,4 +165,65 @@ float getTotalBilledByProductInMonth ( struct salesProductLinker* salesPrLinker 
   searchResult = (ProductSPL) searchBst ( salesPrLinker->lettersArray[outPosition][inPosition], splProd );
   billedValue = productSPLGetTotalBilledInMonth ( searchResult , month );
   return billedValue;
+}
+
+void myFreeCharSPL1 ( void* myfree ){
+  char* stringF;
+  stringF = NULL;
+  assert ( myfree != NULL );
+  stringF = ( char* ) myfree;
+  free ( stringF );
+}
+
+/* QUERIE 4 AUXILIAR METHOD */
+static int thisProductWasNeverBought ( SalesProductLinker salesPrLinker , char* productCode ){
+  int inPosition, outPosition, month, flagJumpOf;
+  ProductSPL searchResult;
+  ProductSPL splProd;
+  outPosition = getProductSPLArrayOutPosition( productCode );
+  inPosition = getProductSPLArrayInPosition( productCode );
+  splProd = newProductSPL ( productCode );
+  month = 0;
+  flagJumpOf = 0;
+  searchResult = NULL;
+  for ( ; month < 12 ; month ++ ){
+    searchResult = (ProductSPL) searchBst ( salesPrLinker->lettersArray[outPosition][inPosition], splProd );
+    if ( searchResult != NULL ){
+      /* jump of cycle */
+      month = 12;
+      flagJumpOf = 1;
+    }
+  }
+  if ( flagJumpOf == 1 ) return 0;
+  else return 1;
+}
+
+/* QUERIE 4 */
+struct list* getProductsWhoWereNeverBought__LL_STRINGS ( SalesProductLinker salesPrLinker , ProductCatalog prCat ){
+  int out , in, month, sizeString;
+  struct list* productLL;
+  struct list* returnLL;
+  char* productCode;
+  char* toReturnString;
+  productCode = NULL;
+  in = 0;
+  out = 0;
+  month = 0;
+  sizeString = 0;
+  productLL = initLL ( );
+  newLL ( productLL , sizeof ( char* ) , &myFreeCharSPL1 );
+  productLL = getFullProducts__LL_strings ( prCat , productLL );
+  returnLL = initLL ();
+  newLL ( returnLL , sizeof ( char* ) , &myFreeCharSPL1 );
+  for ( ; sizeLL ( productLL ) > 0 ;  ){
+    productCode = (char*) headLL (productLL);
+    if ( thisProductWasNeverBought ( salesPrLinker , productCode ) ){
+      sizeString = strlen ( productCode );
+      toReturnString = ( char* ) malloc ( ( sizeString +1 ) * sizeof ( char ) );
+      strcat ( toReturnString , productCode);
+      strcat ( toReturnString , "\n\0");
+      appendLL ( returnLL , toReturnString );
+    }
+  }
+  return returnLL;
 }

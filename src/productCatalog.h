@@ -25,5 +25,11 @@ void deleteProductCatalog ( ProductCatalog );
 
 int getProductCatalogSize ( ProductCatalog );
 
+/* QUERIE 2 */
+struct list* getProductsByLetter__LL_strings ( struct productCatalog* prCat , char productInitial );
+
+/* QUERIE 4 AUXILIAR METHOD */
+struct list* getFullProducts__LL_strings ( struct productCatalog* prCat , struct list* returningLL );
+
 #endif /* _PRODUCT_CATALOG_H_INCLUDED_ */
 

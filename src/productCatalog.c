@@ -1,5 +1,13 @@
-#include "productCatalog.h"
+/*
+ *  * Copyright (C) Carlos Sá, Filipe Oliveira, Sérgio Caldas
+ *  * Copyright (C) Laboratórios Informática III, Universidade do Minho, 2015
+ *  */
+
+#include "genLinkedList.h"
 #include "avlTree.h"
+#include "productCatalog.h"
+
+#include <assert.h>
 #include <stdlib.h>
 
 struct productCatalog {
@@ -77,3 +85,38 @@ int containsProductCode ( struct productCatalog* prCat, char* productCode ){
   return avlContains ( prCat->lettersArray[outPosition][inPosition] , productCode );
 }
 
+void myFreeCharprCat ( void* myfree ){
+  char* stringF;
+  stringF = NULL;
+  assert ( myfree != NULL );
+  stringF = ( char* ) myfree;
+  free ( stringF );
+}
+
+/* QUERIE 2 */
+struct list* getProductsByLetter__LL_strings ( struct productCatalog* prCat , char productInitial ){
+  int outPosition, inPosition;
+  struct list* returningLL;
+  returningLL = initLL ();
+  newLL ( returningLL , sizeof ( char* ) , &myFreeCharprCat );
+  inPosition = 0;
+  outPosition = getProductArrayOutPosition ( &productInitial );
+  for ( ; inPosition < 26 ; inPosition++){
+    returningLL = avlToLL ( prCat->lettersArray[outPosition][inPosition] , returningLL  );
+  }
+  return returningLL;
+}
+
+/* QUERIE 4 AUXILIAR METHOD */
+struct list* getFullProducts__LL_strings ( struct productCatalog* prCat , struct list* returningLL ){
+  int out , in;
+  out = 0;
+  in = 0;
+  for ( ; out < 26 ; out++ ){
+    in = 0;
+    for( ; in<26; in++ ){
+      returningLL = avlToLL ( prCat->lettersArray[out][in] , returningLL  );
+    }
+  }
+  return returningLL;
+}

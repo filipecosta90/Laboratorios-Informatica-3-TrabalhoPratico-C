@@ -28,5 +28,8 @@ int getNormalClientsNumberWhoBoughtProductInMonth ( struct salesProductLinker* s
 
 float getTotalBilledByProductInMonth ( struct salesProductLinker* salesPrLinker , char* productCode , int month );
 
+/* QUERIE 4 */
+struct list* getProductsWhoWereNeverBought__LL_STRINGS ( SalesProductLinker salesPrLinker , ProductCatalog prCat );
+
 #endif /* _SALES_PRODUCT_LINKER_H_INCLUDED_ */
 

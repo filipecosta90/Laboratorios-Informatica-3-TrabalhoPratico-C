@@ -14,13 +14,9 @@ typedef int UnitType;
 
 typedef float PriceType;
 
-typedef char* ClientCode;
+ProductSPL newProductSPL ( char* productCode );
 
-typedef char* ProductCode;
-
-ProductSPL newProductSPL ( ProductCode );
-
-ProductSPL addSaleSPL ( ProductSPL , ClientCode , SaleType , UnitType , PriceType , int month );
+ProductSPL addSaleSPL ( ProductSPL , char* clientCode , SaleType , UnitType , PriceType , int month );
 
 int getTotalClientsSPL ( ProductSPL );
 

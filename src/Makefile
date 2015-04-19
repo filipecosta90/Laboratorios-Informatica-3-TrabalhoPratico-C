@@ -25,7 +25,7 @@ productSales.o: productSales.c
 clientProductLinker.o: clientProductLinker.c clientCatalog.c clientCPL.c clientProductLinker.c productSales.c avlTree.c genLinkedList.c binarySearchTree.c
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-clientCatalog.o: clientCatalog.c avlTree.c
+clientCatalog.o: clientCatalog.c avlTree.c genLinkedList.c
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 clientCPL.o: clientCPL.c clientCatalog.c genLinkedList.c productSales.c binarySearchTree.c

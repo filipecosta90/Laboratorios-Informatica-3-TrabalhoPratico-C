@@ -4,8 +4,9 @@
  *  */
 
 #include "genLinkedList.h"
-#include "clientCatalog.h"
 #include "avlTree.h"
+#include "clientCatalog.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
@@ -84,8 +85,6 @@ void deleteClientCatalog ( struct clientCatalog* clCat ) {
   }
   free (clCat);
 }
-
-
 
 void myFreeCharclCat ( void* myfree ){
   char* stringF;

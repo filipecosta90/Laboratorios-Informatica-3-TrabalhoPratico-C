@@ -135,10 +135,12 @@ int main (int argc, char *argv[] ){
   printf("##\n##number of clients who bought every month: %d\n", sizeLL ( listStrings ));
   listStrings = getClientsByLetter__LL_strings ( clCat , 'A' );
   printf("##\n##number of clients of letter A: %d\n", sizeLL ( listStrings ));
-
+  listStrings = getProductsByLetter__LL_strings ( prCat , 'B' );
+  printf("##\n##number of products of letter B: %d\n", sizeLL ( listStrings ));
+  listStrings = getProductsWhoWereNeverBought__LL_STRINGS ( splProd ,  prCat );
+  printf("##\n##number of products who where never bought: %d\n", sizeLL ( listStrings ));
 
   end = time(NULL);
   printf("%.5f\n", (double)(end - start));
   return 0;
 }
-
