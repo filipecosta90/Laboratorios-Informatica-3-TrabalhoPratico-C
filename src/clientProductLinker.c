@@ -207,3 +207,64 @@ int  getCPLinkerMonthSize ( ClientProductLinker clientPrLinker , int month ) {
   }
   return returningValue;
 }
+
+/* QUERIE 14 AUXILIAR METHOD */
+static int thisClientHasNeverBought ( ClientProductLinker clientPrLinker , char* clientCode ){
+  int inPosition, outPosition, month, flagJumpOf;
+  ClientCPL searchResult;
+  ClientCPL cplClient;
+  searchResult = NULL;
+  cplClient = newClientCPL ( clientCode );
+  month = 0;
+  flagJumpOf = 0;
+  outPosition = getClientCPLArrayOutPosition( clientCode );
+  inPosition = getClientCPLArrayInPosition ( clientCode );
+  for ( ; month < 12 ; month ++ ){
+    searchResult = (ClientCPL) searchBst ( clientPrLinker->lettersArray[month][outPosition][inPosition], cplClient );
+    if ( searchResult != NULL ){
+      /* jump of cycle */
+      month = 12;
+      flagJumpOf = 1;
+    }
+  }
+  if ( flagJumpOf == 1 ) return 0;
+  else return 1;
+}
+
+/* QUERIE 14.1 */
+struct list* getClientsWhoNeverBoughtProducts__LL_STRINGS ( ClientProductLinker clientPrLinker , ClientCatalog clCat ){
+  int out , in, month, sizeString;
+  struct list* clientLL;
+  struct list* returnLL;
+  char* clientCode;
+  char* toReturnString;
+  clientCode = NULL;
+  in = 0;
+  out = 0;
+  month = 0;
+  sizeString = 0;
+  clientLL = initLL ( );
+  newLL ( clientLL , sizeof ( char* ) , &myFreeCharCPL1 );
+  clientLL = getFullClients__LL_strings ( clCat , clientLL );
+  returnLL = initLL ();
+  newLL ( returnLL , sizeof ( char* ) , &myFreeCharCPL1 );
+  for ( ; sizeLL ( clientLL ) > 0 ;  ){
+    clientCode = (char*) headLL (clientLL);
+    if ( thisClientHasNeverBought ( clientPrLinker , clientCode ) ){
+      sizeString = strlen ( clientCode );
+      toReturnString = ( char* ) malloc ( ( sizeString +1 ) * sizeof ( char ) );
+      strcat ( toReturnString , clientCode);
+      strcat ( toReturnString , "\n\0");
+      appendLL ( returnLL , toReturnString );
+    }
+  }
+  printf("######size: %d\n", sizeLL ( returnLL));
+  return returnLL;
+}
+
+int getTotalClientsNumberWhoNeverBoughtProducts ( ClientProductLinker clientPrLinker , ClientCatalog clCat ){
+  struct list* returnLL;
+  returnLL = getClientsWhoNeverBoughtProducts__LL_STRINGS ( clientPrLinker , clCat );
+  return sizeLL ( returnLL );
+}
+

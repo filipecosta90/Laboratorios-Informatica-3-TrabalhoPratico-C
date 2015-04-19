@@ -139,6 +139,7 @@ int main (int argc, char *argv[] ){
   printf("##\n##number of products of letter B: %d\n", sizeLL ( listStrings ));
   listStrings = getProductsWhoWereNeverBought__LL_STRINGS ( splProd ,  prCat );
   printf("##\n##number of products who where never bought: %d\n", sizeLL ( listStrings ));
+  printf( "clients who never bought number %d \n" ,   getTotalClientsNumberWhoNeverBoughtProducts ( cplClient, clCat ) );
 
   end = time(NULL);
   printf("%.5f\n", (double)(end - start));

@@ -25,5 +25,11 @@ struct list* getClientsWhoBoughtEveryMonth__LL_STRINGS ( ClientProductLinker cli
 /* QUERIE 11 */
 int  getCPLinkerMonthSize ( ClientProductLinker clientPrLinker , int month );
 
+/* QUERIE 14.1 */
+struct list* getClientsWhoNeverBoughtProducts__LL_STRINGS ( ClientProductLinker clientPrLinker , ClientCatalog clCat );
+
+/* QUERIE 14 */
+int getTotalClientsNumberWhoNeverBoughtProducts ( ClientProductLinker clientPrLinker , ClientCatalog clCat );
+
 #endif /* _CLIENT_PRODUCT_LINKER_H_INCLUDED_ */
 
