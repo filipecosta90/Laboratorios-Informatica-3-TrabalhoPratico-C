@@ -245,6 +245,41 @@ int BSTNodeSize ( BstNode node ){
   }
 }
 
+List BstNodeToLLWithMergeRepeated ( List ll , BstNode b1 , int ( *isEqual ) ( void* , void* ) , void* ( *merger) ( void* , void* ) ){
+  if( b1 != NULL){
+    void* returnedValue;
+    returnedValue = searchLL ( ll , b1->data , isEqual );
+    if ( returnedValue != NULL ){
+      returnedValue = merger ( returnedValue , b1->data );
+    }
+    else {
+      appendLL ( ll , b1->data );
+    }
+    if( b1->left != NULL ){
+      ll = BstNodeToLLWithMergeRepeated ( ll , b1->left, isEqual , merger );
+    }
+    if ( b1->right != NULL ){
+      ll = BstNodeToLLWithMergeRepeated ( ll, b1->right , isEqual , merger );
+    }
+  }
+  return ll;
+}
+
+struct list* BSTreeToLLWithMergeRepeated ( BSTree tree , struct list* returningLL, int ( *isEqual ) ( void* , void* ) , void* ( *merger) ( void* , void* ) ){
+  /* No root */
+  if ( tree->root == NULL ){
+    return returningLL;
+  }
+  else{
+    returningLL = BstNodeToLLWithMergeRepeated ( returningLL , tree->root , isEqual , merger );
+  }
+  return returningLL;
+}
+
+
+
+
+
 int BSTreeSize ( BSTree tree ) {
   if( tree != NULL) {
     if ( tree->root != NULL ){

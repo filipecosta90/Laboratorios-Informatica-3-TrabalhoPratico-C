@@ -7,9 +7,10 @@
 #include "avlTree.h"
 #include "binarySearchTree.h"
 #include "clientCatalog.h"
-#include "clientProductLinker.h"
 #include "clientCPL.h"
 #include "clientSales.h"
+#include "productSales.h"
+#include "clientProductLinker.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -194,7 +195,7 @@ struct list* getClientsWhoBoughtEveryMonth__LL_STRINGS ( ClientProductLinker cli
 }
 
 /* QUERIE 11 */
-int  getCPLinkerMonthSize ( ClientProductLinker clientPrLinker , int month ) {
+int getCPLinkerMonthSize ( ClientProductLinker clientPrLinker , int month ) {
   int out , in, returningValue ;
   in = 0;
   out = 0;
@@ -206,6 +207,36 @@ int  getCPLinkerMonthSize ( ClientProductLinker clientPrLinker , int month ) {
     }
   }
   return returningValue;
+}
+
+/* QUERIE 13 */
+struct list* getClientTopNMostBoughtProducts__LL_STRINGS ( ClientProductLinker clientPrLinker , char* clientCode, int nMost ){
+  List cplLL;
+  List stringsLL;
+  int inPosition , outPosition , month;
+
+  ClientCPL searchResult;
+  ClientCPL cplClient;
+  searchResult = NULL;
+  cplClient = newClientCPL ( clientCode );
+
+  outPosition = getClientCPLArrayOutPosition( clientCode );
+  inPosition = getClientCPLArrayInPosition ( clientCode );
+  cplLL = initLL();
+  month = 0;
+  newLL ( cplLL , sizeof ( ProductSales ) , &deleteProductSales );
+  for ( ; month < 12; month++ ){
+    searchResult = (ClientCPL) searchBst ( clientPrLinker->lettersArray[month][outPosition][inPosition], cplClient );
+    if ( searchResult != NULL ){
+      cplLL = BSTreeToLLWithMergeRepeated ( getClientCPLBST ( searchResult ) , cplLL , &equalsProductSales , &mergeProductSales );
+    }
+  }
+
+  cplLL = reorderLL ( cplLL , &productSalesUnitComparator , sizeof ( ProductSales ) , &deleteProductSales );
+  cplLL = limitLL ( cplLL , nMost );
+
+  stringsLL = convertLLtoStringer ( cplLL , &toStringProductSales );
+  return stringsLL;
 }
 
 /* QUERIE 14 AUXILIAR METHOD */
@@ -258,7 +289,6 @@ struct list* getClientsWhoNeverBoughtProducts__LL_STRINGS ( ClientProductLinker 
       appendLL ( returnLL , toReturnString );
     }
   }
-  printf("######size: %d\n", sizeLL ( returnLL));
   return returnLL;
 }
 
@@ -267,4 +297,3 @@ int getTotalClientsNumberWhoNeverBoughtProducts ( ClientProductLinker clientPrLi
   returnLL = getClientsWhoNeverBoughtProducts__LL_STRINGS ( clientPrLinker , clCat );
   return sizeLL ( returnLL );
 }
-

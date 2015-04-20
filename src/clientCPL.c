@@ -89,6 +89,8 @@ List clientCPLGetProduct__LL_STRINGS ( ClientCPL cplClient ){
   return returningList;
 }
 
+
+
 /* QUERIE 5 */
 int clientCPLGetTotalProduct ( ClientCPL cplClient ){
   if (cplClient == NULL){
@@ -97,6 +99,10 @@ int clientCPLGetTotalProduct ( ClientCPL cplClient ){
   else {
     return  BSTreeMapReduceInt ( cplClient->productBST , &getProductSalesUnitsSold );
   }
+}
+
+struct bsTree* getClientCPLBST ( ClientCPL cplClient  ){
+  return cplClient->productBST;
 }
 
 char* clientCPLToString ( void* toString ){

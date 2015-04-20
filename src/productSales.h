@@ -19,6 +19,8 @@ int equalsProductSales ( void* , void* );
 
 void deleteProductSales ( void* );
 
+void* mergeProductSales ( void* , void* );
+
 int productSalesUnitComparator ( void* comp1 , void* comp2 );
 
 void* toStringProductSales ( void* );

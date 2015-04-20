@@ -32,7 +32,7 @@ int getProductSalesUnitsSold ( void* in  ){
   }
   else {
     p1 = ( ProductSales ) in;
-  return p1->unitsSold;
+    return p1->unitsSold;
   }
 }
 
@@ -50,6 +50,12 @@ int equalsProductSales ( void* isEqual1, void* isEqual2 ){
   p1 = ( ProductSales ) isEqual1;
   p2 = ( ProductSales ) isEqual2;
   returningValue = strcmp ( p1->productCode , p2->productCode );
+  if ( returningValue == 0 ){
+    returningValue = 1;
+  }
+  else {
+    returningValue = 0;
+  }
   return returningValue;
 }
 
@@ -57,7 +63,6 @@ int productSalesUnitComparator ( void* comp1 , void* comp2 ){
   ProductSales p1, p2;
   int returningValue;
   if ( comp1 == NULL || comp2 == NULL ){
-    printf("returning 0 beacuse of null\n");
     returningValue = 0;
   }
   else{
@@ -70,6 +75,20 @@ int productSalesUnitComparator ( void* comp1 , void* comp2 ){
   }
   return returningValue;
 }
+
+void* mergeProductSales ( void* comp1 , void* comp2 ){
+  ProductSales p1, p2;
+  if ( comp1 == NULL || comp2 == NULL ){
+    return NULL;
+  }
+  else{
+    p1 = ( ProductSales ) comp1;
+    p2 = ( ProductSales ) comp2;
+    p1->unitsSold = p1->unitsSold + p2->unitsSold;
+    return p1;
+  }
+}
+
 
 void deleteProductSales ( void* delete1 ){
   ProductSales d1;

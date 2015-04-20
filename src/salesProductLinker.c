@@ -97,6 +97,7 @@ List getPromotionClientsWhoBoughtProduct__LL_STRINGS ( struct salesProductLinker
   return returnLL;
 }
 
+/* QUERIE 12 */
 List getTopNMostSoldProducts__LL_STRINGS ( struct salesProductLinker* salesPrLinker , int nMost ){
   List splLL;
   List stringsLL; 

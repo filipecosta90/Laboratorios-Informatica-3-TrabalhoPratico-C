@@ -29,5 +29,7 @@ char* clientCPLToString ( void* );
 
 void destroyClientSPL ( void* );
 
+struct bsTree* getClientCPLBST ( ClientCPL cplClient  );
+
 #endif /* _CLIENT_CPL_H_INCLUDED_ */
 

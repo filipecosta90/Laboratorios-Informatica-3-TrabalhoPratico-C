@@ -22,9 +22,13 @@ void prependLL ( List , void* );
 
 void appendLL ( List , void* );
 
+void* searchLL (  struct list *list , void * element , int ( *isEqualFunc ) ( void* , void* ) );
+
 struct list* limitLL ( struct list* list , int limit );
 
 struct list* orderedInsertLL ( struct list *list , void * element , int ( *comparatorFunc ) ( void* , void* ) );
+
+struct list* reorderLL ( struct list *list , int ( *comparatorFunc ) ( void* , void* ) , int , freeFunction );
 
 struct list* orderedInsertLLWithLimit ( struct list *list , void * element , int ( *comparatorFunc ) ( void* , void* ) , int limit );
 

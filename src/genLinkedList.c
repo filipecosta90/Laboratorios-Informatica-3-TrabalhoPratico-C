@@ -211,3 +211,37 @@ struct list* convertLLtoStringer ( struct list* list  , void* ( toStringer ) ( v
   return returningList;
 }
 
+void* searchLL (  struct list *list , void * element , int ( *isEqualFunc ) ( void* , void* ) ){
+  int flagFound = 0;
+  struct listNode *current;
+  current = list->head;
+  while( current != NULL &&  flagFound == 0 ) {
+    if ( isEqualFunc ( current->data , element ) ){
+      flagFound = 1;
+    }
+    else{
+      current = current->next;
+    }
+  }
+  if ( flagFound == 0 ){
+    return NULL;
+  }
+  else {
+    return current->data;
+  }
+}
+
+struct list* reorderLL ( struct list *list , int ( *comparatorFunc ) ( void* , void* ) , int sizeStruct , void ( *freeFunc ) ( void* ) ){
+  struct list* newList;
+  struct listNode *current;
+  newList = initLL ();
+  newLL ( newList , sizeStruct , freeFunc );
+  current = list->head;
+  while( current != NULL ) {
+    newList = orderedInsertLL ( newList , current->data , comparatorFunc );
+    current = current->next;
+  }
+  return newList;
+}
+
+

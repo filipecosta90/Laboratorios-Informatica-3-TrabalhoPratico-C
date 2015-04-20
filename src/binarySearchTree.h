@@ -22,6 +22,8 @@ struct list* BSTreeToOrderedLLWithLimit ( BSTree tree , struct list* returningLL
 
 struct list* BSTreeToOrderedLL ( BSTree tree , struct list* returningLL, int ( *orderer ) ( void* , void* ) );
 
+struct list* BSTreeToLLWithMergeRepeated ( BSTree tree , struct list* returningLL, int ( *isEqual ) ( void* , void* ) , void* ( *merger) ( void* , void* ) );
+
 int BSTreeMapReduceInt ( BSTree tree  , int ( *mapper ) ( void* ) );
 
 int BSTreeSize ( BSTree tree );
