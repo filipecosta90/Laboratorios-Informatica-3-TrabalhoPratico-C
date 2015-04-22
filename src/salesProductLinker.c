@@ -179,10 +179,15 @@ void myFreeCharSPL1 ( void* myfree ){
 /* QUERIE 4 AUXILIAR METHOD */
 static int thisProductWasNeverBought ( SalesProductLinker salesPrLinker , char* productCode ){
   int inPosition, outPosition, month, flagJumpOf;
+  char* pos;
   ProductSPL searchResult;
   ProductSPL splProd;
   outPosition = getProductSPLArrayOutPosition( productCode );
   inPosition = getProductSPLArrayInPosition( productCode );
+  /* limpar \n indesejados */
+  if ((pos=strchr(productCode, '\n')) != NULL){
+    *pos = '\0';
+  }
   splProd = newProductSPL ( productCode );
   month = 0;
   flagJumpOf = 0;

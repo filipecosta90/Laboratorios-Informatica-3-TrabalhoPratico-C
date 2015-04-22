@@ -461,6 +461,7 @@ void querie3( SalesProductLinker splProd ){
 void querie4( SalesProductLinker splProd , ProductCatalog prCat , List listStrings ){
   system("clear");
   head();
+  listStrings = initLL();
   printf("Lista códigos de produtos (e o seu número total), que ninguém comprou.\n\n");
   listStrings = getProductsWhoWereNeverBought__LL_STRINGS ( splProd ,  prCat );
   printf( "Número total de produtos que ninguém comprou: %d\n", sizeLL ( listStrings ));
