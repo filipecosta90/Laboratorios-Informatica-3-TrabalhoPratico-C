@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
 #include "productCatalog.h"
 #include "clientCatalog.h"
@@ -16,14 +17,13 @@
 #include "genLinkedList.h"
 
 #define MAX_FILENAME 64
+#define MAX_LINE_OPTION 64
+#define PRODUCT_STRING_SIZE 6
+#define CLIENT_STRING_SIZE 5
 #define STANDARD_PRODUCT_FILENAME "../files/FichProdutos.txt"
 #define STANDARD_CLIENT_FILENAME "../files/FichClientes.txt"
 #define STANDARD_SALES_FILENAME "../files/Compras.txt"
 
-static char letra;
-static char cod_prod[6];
-static char cod_cli[5];
-static int mes,mes_ini,mes_fin,N;
 static int flagReadedClients, flagReadedProducts, flagReadedSales, flagBlockedContent;
 
 void handleStrings ( List strings ){
@@ -121,11 +121,22 @@ void menu(){
   printf("15-Sair\n");
 }
 
-void menuReadProductsFile( ProductCatalog prCat , int errorReadingProducts , int flagReadingProducts ){
-  int opInternal;
+void menuReadProductsFile( ProductCatalog prCat ){
+  char internalOption[MAX_LINE_OPTION];
   char fileName[MAX_FILENAME];
-  opInternal = 0;
-  while(opInternal!=3){
+  char * pos;
+  int errorReadingProducts;
+  int correctInsertedProducts;
+  int flagEXIT, firstTime;
+  flagEXIT = 0;
+  firstTime = 1;
+
+  do {
+    if( firstTime == 0 ){
+      printf("Pressione qualquer tecla para continuar.\n");
+      getchar();
+    }
+    firstTime = 0;
     system("clear");
     head();
     if( flagReadedProducts == 1 ){
@@ -139,34 +150,47 @@ void menuReadProductsFile( ProductCatalog prCat , int errorReadingProducts , int
 
     printf("3-Voltar ao menu anterior.\n");
     printf("\nEscolha uma opção:\n");
-    scanf("%d",&opInternal);
-    system("clear");
-    if(opInternal>0){
-      switch(opInternal) {
-        case 1 :
-          flagReadingProducts = readFileProducts ( STANDARD_PRODUCT_FILENAME , prCat , &errorReadingProducts );
-          flagReadedProducts = 1;
-          break;
-        case 2 :
-          printf("Insira o nome do ficheiro a ser lido:\n");
-          scanf("%s",fileName);
-          printf("%s\n",fileName);
-          flagReadingProducts = readFileProducts ( fileName , prCat , &errorReadingProducts );
-          flagReadedProducts = 1;
-          break;
-          /* Back one level */
-        default :
-          break;
-      }
+    fgets(internalOption, 256, stdin);
+    if ((pos=strchr(internalOption, '\n')) != NULL){
+      *pos = '\0';
     }
-  }
+
+    if ( strcmp ( internalOption , "1" ) == 0 ){
+      correctInsertedProducts = readFileProducts ( STANDARD_PRODUCT_FILENAME , prCat , &errorReadingProducts );
+      printf("Resultado leitura de %s\n\t%d linhas lidas.\n\t%d linhas validadas.\n\t%d linhas rejeitadas.\n", STANDARD_PRODUCT_FILENAME , correctInsertedProducts+errorReadingProducts, correctInsertedProducts , errorReadingProducts );
+      flagReadedProducts = 1;
+    }
+    if ( strcmp ( internalOption , "2" ) == 0 ){
+      printf("Insira o nome do ficheiro a ser lido:\n");
+      scanf("%s%*c",fileName);
+      printf("%s\n",fileName);
+      correctInsertedProducts = readFileProducts ( fileName , prCat , &errorReadingProducts );
+      printf("Resultado leitura de %s\n\t%d linhas lidas.\n\t%d linhas validadas.\n\t%d linhas rejeitadas.\n", fileName , correctInsertedProducts+errorReadingProducts, correctInsertedProducts , errorReadingProducts );
+
+      flagReadedProducts = 1;
+    }
+    if ( strcmp ( internalOption , "3" ) == 0 ){
+      flagEXIT = 1;
+    }
+  } while ( flagEXIT == 0 );
 }
 
-void menuReadClientsFile( ClientCatalog clCat , int errorReadingClients , int flagReadingClients ){
-  int opInternal;
+void menuReadClientsFile( ClientCatalog clCat ){
+  char internalOption[MAX_LINE_OPTION];
+  char * pos;
   char fileName[MAX_FILENAME];
-  opInternal = 0;
-  while(opInternal!=3){
+  int errorReadingClients;
+  int correctInsertedClients;
+  int flagEXIT, firstTime;
+  flagEXIT = 0;
+  firstTime = 1;
+
+  do {
+    if( firstTime == 0 ){
+      printf("Pressione qualquer tecla para continuar.\n");
+      getchar();
+    }
+    firstTime = 0;
     system("clear");
     head();
     if( flagReadedClients == 1 ){
@@ -179,34 +203,45 @@ void menuReadClientsFile( ClientCatalog clCat , int errorReadingClients , int fl
     }
     printf("3-Voltar ao menu anterior.\n");
     printf("\nEscolha uma opção:\n");
-    scanf("%d",&opInternal);
-    system("clear");
-    if(opInternal>0){
-      switch(opInternal) {
-        case 1 :
-          flagReadingClients = readFileClients ( STANDARD_CLIENT_FILENAME , clCat , &errorReadingClients );
-          flagReadedClients = 1;
-          break;
-        case 2 :
-          printf("Insira o nome do ficheiro a ser lido:\n");
-          scanf("%s",fileName);
-          printf("%s\n",fileName);
-          flagReadingClients = readFileClients ( fileName , clCat , &errorReadingClients );
-          flagReadedClients = 1;
-          break;
-          /* Back one level */
-        default :
-          break;
-      }
+    fgets(internalOption, 256, stdin);
+    if ((pos=strchr(internalOption, '\n')) != NULL){
+      *pos = '\0';
     }
-  }
+    if ( strcmp ( internalOption , "1" ) == 0 ){
+      correctInsertedClients = readFileClients ( STANDARD_CLIENT_FILENAME , clCat , &errorReadingClients );
+      printf("Resultado leitura de %s\n\t%d linhas lidas.\n\t%d linhas validadas.\n\t%d linhas rejeitadas.\n", STANDARD_CLIENT_FILENAME , correctInsertedClients+errorReadingClients, correctInsertedClients , errorReadingClients );
+      flagReadedClients = 1;
+    }
+    if ( strcmp ( internalOption , "2" ) == 0 ){
+      printf("Insira o nome do ficheiro a ser lido:\n");
+      scanf("%s%*c",fileName);
+      printf("%s\n",fileName);
+      correctInsertedClients = readFileClients ( fileName , clCat , &errorReadingClients );
+      printf("Resultado leitura de %s\n\t%d linhas lidas.\n\t%d linhas validadas.\n\t%d linhas rejeitadas.\n", fileName , correctInsertedClients+errorReadingClients, correctInsertedClients , errorReadingClients );
+      flagReadedClients = 1;
+    }
+    if ( strcmp ( internalOption , "3" ) == 0 ){
+      flagEXIT = 1;
+    }
+  } while ( flagEXIT == 0 );
 }
 
-void menuReadSalesFile ( Accounting acBook , ClientCatalog clCat , ProductCatalog prCat , SalesProductLinker splProd , ClientProductLinker cplClient , int errorReadingClients, int errorReadingProducts, int flagReadingSales  ) {
-  int opInternal;
+void menuReadSalesFile ( Accounting acBook , ClientCatalog clCat , ProductCatalog prCat , SalesProductLinker splProd , ClientProductLinker cplClient  ) {
+  char internalOption[MAX_LINE_OPTION];
+  char * pos;
   char fileName[MAX_FILENAME];
-  opInternal = 0;
-  while(opInternal!=3){
+  int errorReadingClientsInSales , errorReadingProductsInSales ;
+  int correctInsertedSales;
+  int flagEXIT, firstTime;
+  flagEXIT = 0;
+  firstTime = 1;
+
+  do {
+    if( firstTime == 0 ){
+      printf("Pressione qualquer tecla para continuar.\n");
+      getchar();
+    }
+    firstTime = 0;
     system("clear");
     head();
     if( flagReadedSales == 1 ){
@@ -217,29 +252,28 @@ void menuReadSalesFile ( Accounting acBook , ClientCatalog clCat , ProductCatalo
       printf("1-Ler o ficheiro de Compras Standard (%s).\n" , STANDARD_SALES_FILENAME);
       printf("2-Especificar o nome do ficheiro de Compras.\n");
     }
-
     printf("3-Voltar ao menu anterior.\n");
     printf("\nEscolha uma opção:\n");
-    scanf("%d",&opInternal);
-    system("clear");
-    if(opInternal>0){
-      switch(opInternal) {
-        case 1 :
-          flagReadingSales = readFileSales( STANDARD_SALES_FILENAME , acBook , clCat , prCat , splProd , cplClient , &errorReadingProducts , &errorReadingClients );
-          flagReadedSales = 1;
-          break;
-        case 2 :
-          printf("Insira o nome do ficheiro a ser lido:\n");
-          scanf("%s",fileName);
-          flagReadingSales = readFileSales( fileName , acBook , clCat , prCat , splProd , cplClient , &errorReadingProducts , &errorReadingClients );
-          flagReadedSales = 1;
-          break;
-          /* Back one level */
-        default :
-          break;
-      }
+    fgets(internalOption, 256, stdin);
+    if ((pos=strchr(internalOption, '\n')) != NULL){
+      *pos = '\0';
     }
-  }
+    if ( strcmp ( internalOption , "1" ) == 0 ){
+      correctInsertedSales = readFileSales( STANDARD_SALES_FILENAME , acBook , clCat , prCat , splProd , cplClient , &errorReadingProductsInSales , &errorReadingClientsInSales );
+      printf("Resultado leitura de %s\n\t%d linhas lidas.\n\t%d linhas validadas.\n\t%d linhas rejeitadas.\n", STANDARD_SALES_FILENAME , correctInsertedSales+errorReadingProductsInSales+errorReadingClientsInSales, correctInsertedSales , errorReadingProductsInSales+errorReadingClientsInSales );
+      flagReadedSales = 1;
+    }
+    if ( strcmp ( internalOption , "2" ) == 0 ){
+      printf("Insira o nome do ficheiro a ser lido:\n");
+      scanf("%s%*c",fileName);
+      correctInsertedSales = readFileSales( fileName , acBook , clCat , prCat , splProd , cplClient , &errorReadingProductsInSales , &errorReadingClientsInSales );
+      printf("Resultado leitura de %s\n\t%d linhas lidas.\n\t%d linhas validadas.\n\t%d linhas rejeitadas.\n", fileName , correctInsertedSales+errorReadingProductsInSales+errorReadingClientsInSales, correctInsertedSales , errorReadingProductsInSales+errorReadingClientsInSales );
+      flagReadedSales = 1;
+    }
+    if ( strcmp ( internalOption , "3" ) == 0 ){
+      flagEXIT = 1;
+    }
+  } while ( flagEXIT == 0 );
 }
 
 /* *
@@ -248,10 +282,21 @@ void menuReadSalesFile ( Accounting acBook , ClientCatalog clCat , ProductCatalo
  * O resultado desta leitura deverá ser a apresentação imediata ao utilizador do nome do ficheiro lido e o número total de linhas lidas e validadas.
  * Uma nova leitura destes ficheiros deverá de imediato reiniciar e refazer as estruturas de dados em memória;
  * */
-void querie1( ProductCatalog prCat , ClientCatalog clCat, Accounting acBook , SalesProductLinker splProd , ClientProductLinker cplClient , int* errorReadingProducts , int* flagReadingProducts , int *errorReadingClients, int *flagReadingClients , int* flagReadingSales ){
-  int opInternal;
-  opInternal = 0;
-  while(opInternal!=4){
+void querie1( ProductCatalog prCat , ClientCatalog clCat, Accounting acBook , SalesProductLinker splProd , ClientProductLinker cplClient ){
+  char internalOption[MAX_LINE_OPTION];
+  char* pos;
+  int errorReadingClients , errorReadingProducts , errorReadingClientsInSales , errorReadingProductsInSales ;
+  int correctInsertedClients, correctInsertedProducts, correctInsertedSales;
+  int firstTime , flagEXIT;
+  firstTime = 1;
+  flagEXIT = 0;
+
+  do{
+    if ( firstTime == 0 ){
+      printf("Pressione qualquer tecla para continuar\n");
+      getchar();
+    }
+    firstTime = 0;
     system("clear");
     head();
     if( flagReadedProducts == 0 ){
@@ -289,38 +334,40 @@ void querie1( ProductCatalog prCat , ClientCatalog clCat, Accounting acBook , Sa
     }
     printf("\n5-Voltar ao menu anterior.\n");
     printf("\nEscolha uma opção:\n");
-    scanf("%d",&opInternal);
-    system("clear");
-    if(opInternal>0){
-      switch(opInternal) {
-        case 1 :
-          menuReadProductsFile( prCat , *errorReadingProducts, *flagReadingProducts );
-          break;
-        case 2 :
-          menuReadClientsFile( clCat , *errorReadingClients, *flagReadingClients );
-          break;
-        case 3 :
-          if ( flagReadedProducts && flagReadedClients ){
-            menuReadSalesFile( acBook , clCat , prCat , splProd , cplClient , *errorReadingClients , *errorReadingProducts , *flagReadingSales );
-          }
-          else {
-            flagBlockedContent = 1;
-          }
-          break;
-        case 4 :
-          *flagReadingProducts = readFileProducts ( STANDARD_PRODUCT_FILENAME , prCat , errorReadingProducts );
-          flagReadedProducts = 1;
-          *flagReadingClients = readFileClients ( STANDARD_CLIENT_FILENAME , clCat , errorReadingClients );
-          flagReadedClients = 1;
-          *flagReadingSales = readFileSales( STANDARD_SALES_FILENAME , acBook , clCat , prCat , splProd , cplClient , errorReadingProducts , errorReadingClients );
-          flagReadedSales = 1;
-          break;
-          /* Back to top */
-        default :
-          break;
+    fgets(internalOption, 256, stdin);
+    if ((pos=strchr(internalOption, '\n')) != NULL){
+      *pos = '\0';
+    }
+    if ( strcmp ( internalOption , "1" ) == 0 ){
+      menuReadProductsFile( prCat );
+    }
+    if ( strcmp ( internalOption , "2" ) == 0 ){
+
+      menuReadClientsFile( clCat );
+    }
+    if ( strcmp ( internalOption , "3" ) == 0 ){
+      if ( flagReadedProducts && flagReadedClients ){
+        menuReadSalesFile( acBook , clCat , prCat , splProd , cplClient );
+      }
+      else {
+        flagBlockedContent = 1;
       }
     }
-  }
+    if ( strcmp ( internalOption , "4" ) == 0 ){
+      correctInsertedProducts = readFileProducts ( STANDARD_PRODUCT_FILENAME , prCat , &errorReadingProducts );
+      printf("Resultado leitura de %s\n\t%d linhas lidas.\n\t%d linhas validadas.\n\t%d linhas rejeitadas.\n", STANDARD_PRODUCT_FILENAME , correctInsertedProducts+errorReadingProducts, correctInsertedProducts , errorReadingProducts );
+      flagReadedProducts = 1;
+      correctInsertedClients = readFileClients ( STANDARD_CLIENT_FILENAME , clCat , &errorReadingClients );
+      printf("Resultado leitura de %s\n\t%d linhas lidas.\n\t%d linhas validadas.\n\t%d linhas rejeitadas.\n", STANDARD_CLIENT_FILENAME , correctInsertedClients+errorReadingClients, correctInsertedClients , errorReadingClients );
+      flagReadedClients = 1;
+      correctInsertedSales = readFileSales( STANDARD_SALES_FILENAME , acBook , clCat , prCat , splProd , cplClient , &errorReadingProductsInSales , &errorReadingClientsInSales );
+      printf("Resultado leitura de %s\n\t%d linhas lidas.\n\t%d linhas validadas.\n\t%d linhas rejeitadas.\n", STANDARD_SALES_FILENAME , correctInsertedSales+errorReadingProductsInSales+errorReadingClientsInSales, correctInsertedSales , errorReadingProductsInSales+errorReadingClientsInSales );
+      flagReadedSales = 1;
+    }
+    if ( strcmp ( internalOption , "5" ) == 0 ){
+      flagEXIT = 1;
+    }
+  } while ( flagEXIT == 0 );
 }
 
 /* *
@@ -329,11 +376,12 @@ void querie1( ProductCatalog prCat , ClientCatalog clCat, Accounting acBook , Sa
  * Apresentar tal lista ao utilizador e permitir que o mesmo navegue na mesma, sendo tal lista apresentada por ordem alfabética;
  * */
 void querie2( ProductCatalog prCat , List listStrings ){
+  char letra;
   system("clear");
   head();
   printf("Listar produtos começados por uma determinada letra.\n\n");
   printf("Insira uma letra: ");
-  scanf("%c",&letra);
+  scanf("%c%*c",&letra);
   listStrings = getProductsByLetter__LL_strings ( prCat , letra );
   handleStrings ( listStrings );
 }
@@ -343,6 +391,8 @@ void querie2( ProductCatalog prCat , List listStrings ){
  * Dado um mês e um código de produto válidos, determinar e apresentar o número total de vendas em modo N e em modo P, e o total facturado com esse produto em tal mês ;
  * */
 void querie3( SalesProductLinker splProd ){
+  char codProduto[PRODUCT_STRING_SIZE];
+  int mes;
   float totalBilled;
   int normalSales, promotionSales;
   normalSales = 0;
@@ -352,13 +402,13 @@ void querie3( SalesProductLinker splProd ){
   head();
   printf("Apresentar o número total de vendas em modo N e em modo P, e o total facturado de um produto num dado mês\n\n");
   printf("Insira um código de um produto valido:\n");
-  scanf( "%s" , cod_prod );
+  scanf( "%s%*c" , codProduto );
   printf("Insira um mês válido:\n");
-  scanf( "%d" , &mes);
-  promotionSales =  getPromotionClientsNumberWhoBoughtProductInMonth ( splProd , cod_prod , mes );
-  normalSales = getNormalClientsNumberWhoBoughtProductInMonth ( splProd , cod_prod , mes );
-  totalBilled = getTotalBilledByProductInMonth ( splProd , cod_prod , mes );
-  printf ( " Detalhes de vendas de código de produto %s para o mês %d\n\t Número de vendas N: %d\tvendas T, %d\n\tTotal faturado:%f\n", cod_prod , mes, normalSales , promotionSales , totalBilled );
+  scanf( "%d%*c" , &mes);
+  promotionSales =  getPromotionClientsNumberWhoBoughtProductInMonth ( splProd , codProduto , mes );
+  normalSales = getNormalClientsNumberWhoBoughtProductInMonth ( splProd , codProduto , mes );
+  totalBilled = getTotalBilledByProductInMonth ( splProd , codProduto , mes );
+  printf ( " Detalhes de vendas de código de produto %s para o mês %d\n\t Número de vendas N: %d\tvendas T, %d\n\tTotal faturado:%f\n", codProduto , mes, normalSales , promotionSales , totalBilled );
 }
 
 /**
@@ -382,18 +432,19 @@ void querie4( SalesProductLinker splProd , ProductCatalog prCat , List listStrin
 void querie5( ClientProductLinker cplClient , List listStrings ){
   char guardar;
   char fileName[MAX_FILENAME];
+  char codCliente[CLIENT_STRING_SIZE];
   system("clear");
   head();
   printf("Tabela de produtos comprados (mês a mês) de um dado cliente.\n\n");
   printf("Insira um codigo de um cliente valido:\n");
-  scanf("%s",cod_cli);
-  listStrings = getClientProductTableByMonth__LL_STRINGS ( cplClient , cod_cli );
+  scanf( "%s%*c" , codCliente );
+  listStrings = getClientProductTableByMonth__LL_STRINGS ( cplClient , codCliente );
   handleStrings ( listStrings );
   printf("Pretende guardar a tabela num ficheiro de texto? (s/n)\n");
-  scanf("%c",&guardar);
+  scanf( "%c%*c", &guardar );
   if ( guardar == 'S' || guardar == 's' ){
     printf("Indique o nome do ficheiro:\n");
-    scanf ("%s", fileName);
+    scanf ("%s%*c", fileName);
     handleStringsToFile( listStrings , fileName);
   }
 }
@@ -403,11 +454,12 @@ void querie5( ClientProductLinker cplClient , List listStrings ){
  *Determinar a lista de todos os códigos de clientes iniciados pela letra dada como parâmetro (maiúscula ou minúscula deverá ser indiferente);
  **/
 void querie6( ClientCatalog clCat , List listStrings ){
+  char letra;
   system("clear");
   head();
   printf("Listar clientes cujo código começa por uma determinada letra.\n\n");
   printf("Insira uma letra: ");
-  scanf("%c",&letra);
+  scanf("%c%*c",&letra);
   listStrings = getClientsByLetter__LL_strings ( clCat , letra );
   handleStrings ( listStrings );
 }
@@ -417,13 +469,14 @@ void querie6( ClientCatalog clCat , List listStrings ){
  *Dado um intervalo fechado de meses, por exemplo [2..6], determinar o total de compras registadas nesse intervalo e o total facturado;
  **/
 void querie7( Accounting acBook ){
+  int mesInicial, mesFinal;
   system("clear");
   head();
   printf("Lista compras registadas e total faturado num dado intervalo de tempo.\n\n");
   printf("Insira um intervalo de mêses (Ex: 2 4):\n");
-  scanf("%d %d",&mes_ini,&mes_fin);
-  printf("Número total de vendas no invervalo[%d-%d]: %d\n", mes_ini , mes_fin , getIntervalTotalSales( acBook, mes_ini, mes_fin ));
-  printf("Total facturado no invervalo[%d-%d]: %f\n", mes_ini , mes_fin , getIntervalTotalBilled( acBook, mes_ini, mes_fin));
+  scanf( "%d %d%*c" , &mesInicial ,&mesFinal );
+  printf("Número total de vendas no invervalo[%d-%d]: %d\n", mesInicial , mesFinal , getIntervalTotalSales( acBook, mesInicial , mesFinal ));
+  printf("Total facturado no invervalo[%d-%d]: %f\n", mesInicial , mesFinal , getIntervalTotalBilled( acBook , mesInicial , mesFinal ));
 }
 
 /**
@@ -431,16 +484,17 @@ void querie7( Accounting acBook ){
  *Dado um código de produto, determinar os códigos (e número total) dos clientes que o compraram, distinguido entre compra N e compra P;
  **/
 void querie8( SalesProductLinker splProd , List listStrings ){
+  char codProduto[PRODUCT_STRING_SIZE];
   system("clear");
   head();
   printf("Lista de clientes (e numero total) que compraram um determinado produto (Normais e Promoções).\n\n");
   printf("Insira um codigo de um produto valido:\n");
-  scanf("%s",cod_prod);
-  listStrings = getNormalClientsWhoBoughtProduct__LL_STRINGS  ( splProd , cod_prod );
-  printf("Número total de clientes que compraram %s em modo normal: %d\n", cod_prod, sizeLL ( listStrings ));
+  scanf( "%s%*c" , codProduto );
+  listStrings = getNormalClientsWhoBoughtProduct__LL_STRINGS  ( splProd , codProduto );
+  printf("Número total de clientes que compraram %s em modo normal: %d\n", codProduto , sizeLL ( listStrings ));
   handleStrings ( listStrings );
-  listStrings = getPromotionClientsWhoBoughtProduct__LL_STRINGS  ( splProd , cod_prod );
-  printf("Número total de clientes que compraram %s em modo promocional: %d\n", cod_prod, sizeLL ( listStrings ));
+  listStrings = getPromotionClientsWhoBoughtProduct__LL_STRINGS  ( splProd , codProduto );
+  printf("Número total de clientes que compraram %s em modo promocional: %d\n", codProduto , sizeLL ( listStrings ));
   handleStrings ( listStrings );
 }
 
@@ -449,14 +503,16 @@ void querie8( SalesProductLinker splProd , List listStrings ){
  *Dado um código de cliente e um mês, determinar a lista de códigos de produtos que mais comprou, por ordem descendente;
  **/
 void querie9( ClientProductLinker cplClient , List listStrings ){
+  int mes;
+  char codCliente[CLIENT_STRING_SIZE];
   system("clear");
   head();
   printf("Lista por ordem descendente de produtos que um determinado cliente comprou num dado mês\n\n");
   printf("Insira um codigo de um cliente valido:\n");
-  scanf("%s",cod_cli);
+  scanf( "%s%*c" , codCliente );
   printf("Insira um mês valido:\n");
-  scanf ( "%d",&mes );
-  listStrings = getClientOrderedProductListOfMonth__LL_STRINGS ( cplClient , cod_cli , mes );
+  scanf ( "%d%*c" , &mes );
+  listStrings = getClientOrderedProductListOfMonth__LL_STRINGS ( cplClient , codCliente , mes );
   handleStrings ( listStrings );
 }
 
@@ -491,7 +547,7 @@ void querie11( Accounting acBook , ClientProductLinker cplClient ){
   head();
   printf("Criar ficheiro CSV com o número de compras realizadas e número total de clientes que realizaram compras para cada mês.\n\n");
   printf("Insira o nome do ficheiro a ser escrito:\n");
-  scanf("%s",fileName);
+  scanf("%s%*c",fileName);
   fp = fopen (fileName, "w");
   fprintf( fp, "\"Mes\",\"#Compras\",\"#Clientes\"\n");
   printf( "\"Mes\",\"#Compras\",\"#Clientes\"\n");
@@ -507,12 +563,13 @@ void querie11( Accounting acBook , ClientProductLinker cplClient ){
  *Criar uma lista dos N produtos mais vendidos em todo o ano, indicando o número total de clientes e o número de unidades vendidas;
  **/
 void querie12( SalesProductLinker splProd , List listStrings ){
+  int nProd;
   system("clear");
   head();
   printf("Lista de N produtos mais vendidos em todo o ano bem como o total de clientes que o comprou e número de unidades vendidas.\n\n");
   printf("Insira o numero de consultas que quer ver:\n");
-  scanf("%d",&N);
-  listStrings = getTopNMostSoldProducts__LL_STRINGS ( splProd , N );
+  scanf( "%d%*c" , &nProd );
+  listStrings = getTopNMostSoldProducts__LL_STRINGS ( splProd , nProd );
   handleStrings ( listStrings );
 }
 
@@ -521,12 +578,13 @@ void querie12( SalesProductLinker splProd , List listStrings ){
  *Dado um código de cliente determinar quais os 3 produtos que mais comprou durante o ano;
  **/
 void querie13( ClientProductLinker cplClient , List listStrings ){
+  char codCliente[CLIENT_STRING_SIZE];
   system("clear");
   head();
   printf("Lista os 3 produtos mais comprados por um determinado cliente durante o ano.\n\n");
   printf("Insira um codigo de um cliente valido:\n");
-  scanf("%s",cod_cli);
-  listStrings = getClientTopNMostBoughtProducts__LL_STRINGS ( cplClient , cod_cli , 3 );
+  scanf( "%s%*c" , codCliente );
+  listStrings = getClientTopNMostBoughtProducts__LL_STRINGS ( cplClient , codCliente , 3 );
   handleStrings ( listStrings );
 }
 
@@ -543,10 +601,19 @@ void querie14( SalesProductLinker splProd , ClientProductLinker cplClient , Prod
   printf( "Número de clientes registados que não realizaram compras: %d\n" ,   getTotalClientsNumberWhoNeverBoughtProducts ( cplClient, clCat ) );
 }
 
-void navegar( ProductCatalog prCat , ClientCatalog clCat, Accounting acBook , SalesProductLinker splProd , ClientProductLinker cplClient , int* errorReadingProducts , int* flagReadingProducts , int *errorReadingClients, int *flagReadingClients , int* flagReadingSales , List listStrings ){
-  int op;
-  op = 0;
-  while(op!=15){
+void navegar( ProductCatalog prCat , ClientCatalog clCat, Accounting acBook , SalesProductLinker splProd , ClientProductLinker cplClient , List listStrings ){
+  int firstTime , flagEXIT;
+  char readedLine[MAX_LINE_OPTION];
+  char *pos;
+  flagEXIT = 0;
+  firstTime = 1;
+
+  do{
+    if ( firstTime == 0 ){
+      printf("Pressione qualquer tecla para continuar!\n");
+      getchar();
+    }
+    firstTime = 0;
     head();
     menu();
     if( flagBlockedContent == 1 ){
@@ -554,122 +621,124 @@ void navegar( ProductCatalog prCat , ClientCatalog clCat, Accounting acBook , Sa
       flagBlockedContent = 0;
     }
     printf("\nEscolha uma opção:\n");
-    scanf("%d",&op);
-    if(op>0){
-      switch(op) {
-        case 1 :
-          querie1( prCat , clCat, acBook , splProd , cplClient , errorReadingProducts , flagReadingProducts , errorReadingClients, flagReadingClients, flagReadingSales );
-          break;
-        case 2 :
-          if ( flagReadedProducts ){
-            querie2( prCat , listStrings );
-          }
-          else {
-            flagBlockedContent = 1;
-          }
-          break;
-        case 3 :
-          if ( flagReadedSales ){
-            querie3( splProd );
-          }
-          else {
-            flagBlockedContent = 1;
-          }
-          break;
-        case 4 :
-          if ( flagReadedSales ){
-            querie4( splProd , prCat , listStrings );
-          }
-          else {
-            flagBlockedContent = 1;
-          }
-          break;
-        case 5 :
-          if ( flagReadedSales ){
-            querie5( cplClient , listStrings );
-          }
-          else {
-            flagBlockedContent = 1;
-          }
-          break;
-        case 6 :
-          if ( flagReadedClients ){
-            querie6( clCat , listStrings );
-          }
-          else {
-            flagBlockedContent = 1;
-          }
-          break;
-        case 7 :
-          if ( flagReadedSales ){
-            querie7( acBook );
-          }
-          else {
-            flagBlockedContent = 1;
-          }
-          break;
-        case 8 :
-          if ( flagReadedSales ){
-            querie8( splProd , listStrings );
-          }
-          else {
-            flagBlockedContent = 1;
-          }
-          break;
-        case 9 :
-          if ( flagReadedSales ){
-            querie9( cplClient , listStrings );
-          }
-          else {
-            flagBlockedContent = 1;
-          }
-          break;
-        case 10 :
-          if ( flagReadedSales ){
-            querie10( cplClient , clCat , listStrings );
-          }
-          else {
-            flagBlockedContent = 1;
-          }
-          break;
-        case 11 :
-          if ( flagReadedSales ){
-            querie11( acBook , cplClient  );
-          }
-          else {
-            flagBlockedContent = 1;
-          }
-          break;
-        case 12 :
-          if ( flagReadedSales ){
-            querie12( splProd , listStrings );
-          }
-          else {
-            flagBlockedContent = 1;
-          }
-          break;
-        case 13 :
-          if ( flagReadedSales ){
-            querie13( cplClient , listStrings );
-          }
-          else {
-            flagBlockedContent = 1;
-          }
-          break;
-        case 14 :
-          if ( flagReadedSales ){
-            querie14( splProd , cplClient , prCat , clCat , listStrings );
-          }
-          else {
-            flagBlockedContent = 1;
-          }
-          break;
-          /* exit */
-        default :
-          break;
+    fgets(readedLine, 256, stdin);
+    if ((pos=strchr(readedLine, '\n')) != NULL){
+      *pos = '\0';
+    }
+    if ( strcmp ( readedLine , "1" ) == 0 ){
+      querie1( prCat , clCat, acBook , splProd , cplClient );
+
+    }
+    if ( strcmp ( readedLine , "2" ) == 0 ){
+      if ( flagReadedProducts ){
+        querie2( prCat , listStrings );
+      }
+      else {
+        flagBlockedContent = 1;
       }
     }
-  }
+    if ( strcmp ( readedLine , "3" ) == 0 ){
+      if ( flagReadedSales ){
+        querie3( splProd );
+      }
+      else {
+        flagBlockedContent = 1;
+      }
+    }
+    if ( strcmp ( readedLine , "4" ) == 0 ){
+      if ( flagReadedSales ){
+        querie4( splProd , prCat , listStrings );
+      }
+      else {
+        flagBlockedContent = 1;
+      }
+    }
+    if ( strcmp ( readedLine , "5" ) == 0 ){
+      if ( flagReadedSales ){
+        querie5( cplClient , listStrings );
+      }
+      else {
+        flagBlockedContent = 1;
+      }
+    }
+    if ( strcmp ( readedLine , "6" ) == 0 ){
+      if ( flagReadedClients ){
+        querie6( clCat , listStrings );
+      }
+      else {
+        flagBlockedContent = 1;
+      }
+    }
+    if ( strcmp ( readedLine , "7" ) == 0 ){
+      if ( flagReadedSales ){
+        querie7( acBook );
+      }
+      else {
+        flagBlockedContent = 1;
+      }
+    }
+    if ( strcmp ( readedLine , "8" ) == 0 ){
+
+      if ( flagReadedSales ){
+        querie8( splProd , listStrings );
+      }
+      else {
+        flagBlockedContent = 1;
+      }
+    }
+    if ( strcmp ( readedLine , "9" ) == 0 ){
+
+      if ( flagReadedSales ){
+        querie9( cplClient , listStrings );
+      }
+      else {
+        flagBlockedContent = 1;
+      }
+    }
+    if ( strcmp ( readedLine , "10" ) == 0 ){
+      if ( flagReadedSales ){
+        querie10( cplClient , clCat , listStrings );
+      }
+      else {
+        flagBlockedContent = 1;
+      }
+    }
+    if ( strcmp ( readedLine , "11" ) == 0 ){
+      if ( flagReadedSales ){
+        querie11( acBook , cplClient  );
+      }
+      else {
+        flagBlockedContent = 1;
+      }
+    }
+    if ( strcmp ( readedLine , "12" ) == 0 ){
+      if ( flagReadedSales ){
+        querie12( splProd , listStrings );
+      }
+      else {
+        flagBlockedContent = 1;
+      }
+    }
+    if ( strcmp ( readedLine , "13" ) == 0 ){
+      if ( flagReadedSales ){
+        querie13( cplClient , listStrings );
+      }
+      else {
+        flagBlockedContent = 1;
+      }
+    }
+    if ( strcmp ( readedLine , "14" ) == 0 ){
+      if ( flagReadedSales ){
+        querie14( splProd , cplClient , prCat , clCat , listStrings );
+      }
+      else {
+        flagBlockedContent = 1;
+      }
+    }
+    if ( strcmp ( readedLine , "15" ) == 0 ){
+      flagEXIT = 1;
+    }
+  }while ( flagEXIT == 0 );
 }
 
 int main (int argc, char *argv[] ){
@@ -680,13 +749,7 @@ int main (int argc, char *argv[] ){
   SalesProductLinker splProd;
   ClientProductLinker cplClient;
   List listStrings;
-  int flagReadingSales, flagReadingClients, flagReadingProducts, errorReadingProducts, errorReadingClients, idleProd, totalProdCatalogNumber, totalSPLProdNumber;
   listStrings = NULL;
-  idleProd = 0;
-  totalProdCatalogNumber = 0;
-  totalSPLProdNumber = 0;
-  errorReadingClients = 0;
-  errorReadingProducts = 0;
   start = time(NULL);
   acBook = newAccounting();
   clCat = newClientCatalog();
@@ -694,7 +757,7 @@ int main (int argc, char *argv[] ){
   splProd = newSalesProductLinker ();
   cplClient = newClientProductLinker ();
   initAccounting (acBook);
-  navegar( prCat , clCat, acBook , splProd , cplClient , &errorReadingProducts , &flagReadingProducts , &errorReadingClients, &flagReadingClients , &flagReadingSales , listStrings );
+  navegar( prCat , clCat, acBook , splProd , cplClient , listStrings );
   return 0;
 }
 

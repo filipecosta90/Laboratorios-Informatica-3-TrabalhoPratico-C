@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -g -Wall -ansi -pedantic -O2
+CFLAGS = -g -Wall -ansi -pedantic -O2 
 
 gesthiper: gesthiper.o accounting.o clientCatalog.o productCatalog.o productSPL.o clientCPL.o clientProductLinker.o salesProductLinker.o parser.o binarySearchTree.o genLinkedList.o avlTree.o month.o clientSales.o productSales.o
 	gcc -o $@ $^ $(CFLAGS)

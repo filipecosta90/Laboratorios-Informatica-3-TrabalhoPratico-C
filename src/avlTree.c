@@ -259,8 +259,9 @@ void* toStringer ( struct avlNode * node ){
   sizeToAllocate = 0;
   if( node != NULL ){
   sizeToAllocate = strlen ( node->key );
-  nKey = (char*) malloc ( (sizeToAllocate+1) * sizeof ( char ) );
+  nKey = (char*) malloc ( (sizeToAllocate+2) * sizeof ( char ) );
   strcpy( nKey , node->key );
+  strcat ( nKey , "\n" );
   }
   return nKey;
 }
