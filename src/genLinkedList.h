@@ -36,6 +36,8 @@ int sizeLL ( List );
 
 void*  headLL ( List );
 
+void*  getDataInPositionLL ( struct list *list , int position );
+
 void tailLL ( List , void * );
 
 struct list* convertLLtoStringer ( struct list* list , void* ( toStringer ) ( void* ) );

@@ -162,6 +162,19 @@ void*  headLL ( struct list *list ){
   return node->data;
 }
 
+void*  getDataInPositionLL ( struct list *list , int position ){
+  int currentPosition;
+  struct listNode *current;
+  current = list->head;
+  currentPosition = 1;
+  assert( list->head != NULL );
+  while ( currentPosition < position && current != NULL ){
+    current=current->next;
+    currentPosition++;
+  }
+  return current->data;
+}
+
 void tailLL ( struct list *list, void *element ){
   struct listNode *node;
   node = list->tail;
@@ -243,5 +256,4 @@ struct list* reorderLL ( struct list *list , int ( *comparatorFunc ) ( void* , v
   }
   return newList;
 }
-
 

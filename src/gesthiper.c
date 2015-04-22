@@ -23,15 +23,53 @@
 #define STANDARD_PRODUCT_FILENAME "../files/FichProdutos.txt"
 #define STANDARD_CLIENT_FILENAME "../files/FichClientes.txt"
 #define STANDARD_SALES_FILENAME "../files/Compras.txt"
+#define UP        0x48
+#define DOWN   0x50
+#define LEFT     0x4B
+#define RIGHT   0x4D
+#define HOME   0x47
+#define HORIZONTAL_LINES 20
 
 static int flagReadedClients, flagReadedProducts, flagReadedSales, flagBlockedContent;
 
 void handleStrings ( List strings ){
+  int actual, actualTopLimit, horizontalLines, actualLowLimit, readedSize, flagEXIT;
+  char key;
   char* handler;
   handler = NULL;
-  while ( sizeLL (strings) > 0 ){
-    handler = headLL ( strings );
-    printf( "%s" , handler );
+  actualLowLimit = 1;
+  horizontalLines = (int) HORIZONTAL_LINES;
+  readedSize = sizeLL (strings);
+  flagEXIT=0;
+  while ( flagEXIT == 0 ){
+    system("clear");
+    actual = actualLowLimit;
+    actualTopLimit = actualLowLimit + horizontalLines -1;
+    printf("/****************************************\n");
+    printf("/*\tTotal de elementos lidos: %d\n" , readedSize);
+    printf("/*\tMostrando elementos %d a %d\n" , actualLowLimit , actualTopLimit);
+    printf("/****************************************\n");
+
+    while ( actual <=  actualTopLimit ){
+      handler = (char*) getDataInPositionLL ( strings , actual );
+      printf( "%d|\t\t%s" , actual , handler );
+      actual++;
+    }
+    printf("/****************************************\n");
+    printf("/*\tPara terminar prima 'q'\n" );
+    printf("/*\tPara avançar 1 elemento prima 'd'\n" );
+    printf("/*\tPara avançar 20 elementos prima 'f'\n" );
+    printf("/*\tPara recuar 1 elemento prima 's'\n" );
+    printf("/*\tPara recuar 20 elementos prima 'a'\n" );
+    printf("/****************************************\n");
+    printf("opção:\n");
+
+    key = getchar();
+    if ( key == 's' ){ actualLowLimit--; if( actualLowLimit < 1 ){ actualLowLimit = 1; } }
+    if ( key == 'd' ){ actualLowLimit++; if( actualTopLimit > readedSize ){ actualTopLimit = readedSize; } }
+    if ( key == 'f' ){ actualLowLimit+=20; if( actualTopLimit > readedSize ){ actualTopLimit = readedSize; } }
+    if ( key == 'a' ){ actualLowLimit-=20; if( actualLowLimit < 1 ){ actualLowLimit = 1; } }
+    if ( key == 'q' ){ flagEXIT = 1; }
   }
 }
 
