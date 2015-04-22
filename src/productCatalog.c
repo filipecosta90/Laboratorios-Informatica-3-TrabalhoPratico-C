@@ -32,7 +32,7 @@ static int getProductArrayOutPosition ( char* productCode ) {
   int position;
   position = (int) productCode[0];
   if ( position >= 65 && position <= 90 ) { position -= 65; }
-  else if ( position >= 97 && position <= 122 ) { position -= 97; }
+  else if ( position >= 97 && position <= 122 ) { position -= 97; productCode[0] = 'A' + position; }
   else { position = -1; }
   return position;
 }
@@ -41,7 +41,7 @@ static int getProductArrayInPosition ( char* productCode ) {
   int position;
   position = (int) productCode[1];
   if ( position >= 65 && position <= 90 ) { position -= 65; }
-  else if ( position >= 97 && position <= 122 ) { position -= 97; }
+  else if ( position >= 97 && position <= 122 ) { position -= 97; productCode[1] = 'A' + position;}
   else { position = -1; }
   return position;
 }

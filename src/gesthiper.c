@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <ctype.h>
 
 #include "productCatalog.h"
 #include "clientCatalog.h"
@@ -23,14 +24,17 @@
 #define STANDARD_PRODUCT_FILENAME "../files/FichProdutos.txt"
 #define STANDARD_CLIENT_FILENAME "../files/FichClientes.txt"
 #define STANDARD_SALES_FILENAME "../files/Compras.txt"
-#define UP        0x48
-#define DOWN   0x50
-#define LEFT     0x4B
-#define RIGHT   0x4D
-#define HOME   0x47
 #define HORIZONTAL_LINES 20
 
 static int flagReadedClients, flagReadedProducts, flagReadedSales, flagBlockedContent;
+
+char* ensureUpper ( char *s ) {
+  int i;
+  for (i = 0; i < strlen(s); i++)
+    s[i] = toupper(s[i]);
+  return s;
+}
+
 
 void handleStrings ( List strings ){
   int actual, actualTopLimit, horizontalLines, actualLowLimit, readedSize, flagEXIT;
@@ -45,6 +49,7 @@ void handleStrings ( List strings ){
     system("clear");
     actual = actualLowLimit;
     actualTopLimit = actualLowLimit + horizontalLines -1;
+    if(actualTopLimit > readedSize ){ actualTopLimit = readedSize; }
     printf("/****************************************\n");
     printf("/*\tTotal de elementos lidos: %d\n" , readedSize);
     printf("/*\tMostrando elementos %d a %d\n" , actualLowLimit , actualTopLimit);
@@ -52,7 +57,7 @@ void handleStrings ( List strings ){
 
     while ( actual <=  actualTopLimit ){
       handler = (char*) getDataInPositionLL ( strings , actual );
-      printf( "%d|\t\t%s" , actual , handler );
+      printf( "%d|\t%s" , actual , handler );
       actual++;
     }
     printf("/****************************************\n");
@@ -66,8 +71,8 @@ void handleStrings ( List strings ){
 
     key = getchar();
     if ( key == 's' ){ actualLowLimit--; if( actualLowLimit < 1 ){ actualLowLimit = 1; } }
-    if ( key == 'd' ){ actualLowLimit++; if( actualTopLimit > readedSize ){ actualTopLimit = readedSize; } }
-    if ( key == 'f' ){ actualLowLimit+=20; if( actualTopLimit > readedSize ){ actualTopLimit = readedSize; } }
+    if ( key == 'd' ){ actualLowLimit++; if( actualTopLimit > readedSize ){ actualTopLimit = readedSize; actualLowLimit = actualTopLimit - horizontalLines; } }
+    if ( key == 'f' ){ actualLowLimit+=20; if( actualTopLimit > readedSize ){ actualTopLimit = readedSize; actualLowLimit = actualTopLimit - horizontalLines;  } }
     if ( key == 'a' ){ actualLowLimit-=20; if( actualLowLimit < 1 ){ actualLowLimit = 1; } }
     if ( key == 'q' ){ flagEXIT = 1; }
   }
@@ -443,10 +448,10 @@ void querie3( SalesProductLinker splProd ){
   scanf( "%s%*c" , codProduto );
   printf("Insira um mês válido:\n");
   scanf( "%d%*c" , &mes);
-  promotionSales =  getPromotionClientsNumberWhoBoughtProductInMonth ( splProd , codProduto , mes );
-  normalSales = getNormalClientsNumberWhoBoughtProductInMonth ( splProd , codProduto , mes );
-  totalBilled = getTotalBilledByProductInMonth ( splProd , codProduto , mes );
-  printf ( " Detalhes de vendas de código de produto %s para o mês %d\n\t Número de vendas N: %d\tvendas T, %d\n\tTotal faturado:%f\n", codProduto , mes, normalSales , promotionSales , totalBilled );
+  promotionSales =  getPromotionClientsNumberWhoBoughtProductInMonth ( splProd , ensureUpper( codProduto ) , mes );
+  normalSales = getNormalClientsNumberWhoBoughtProductInMonth ( splProd , ensureUpper( codProduto ) , mes );
+  totalBilled = getTotalBilledByProductInMonth ( splProd , ensureUpper( codProduto ) , mes );
+  printf ( " Detalhes de vendas de código de produto %s para o mês %d\n\tNúmero de vendas N: %d\tvendas T: %d\n\tTotal faturado:%f\n", codProduto , mes, normalSales , promotionSales , totalBilled );
 }
 
 /**
@@ -476,7 +481,7 @@ void querie5( ClientProductLinker cplClient , List listStrings ){
   printf("Tabela de produtos comprados (mês a mês) de um dado cliente.\n\n");
   printf("Insira um codigo de um cliente valido:\n");
   scanf( "%s%*c" , codCliente );
-  listStrings = getClientProductTableByMonth__LL_STRINGS ( cplClient , codCliente );
+  listStrings = getClientProductTableByMonth__LL_STRINGS ( cplClient , ensureUpper( codCliente ) );
   handleStrings ( listStrings );
   printf("Pretende guardar a tabela num ficheiro de texto? (s/n)\n");
   scanf( "%c%*c", &guardar );
@@ -528,10 +533,10 @@ void querie8( SalesProductLinker splProd , List listStrings ){
   printf("Lista de clientes (e numero total) que compraram um determinado produto (Normais e Promoções).\n\n");
   printf("Insira um codigo de um produto valido:\n");
   scanf( "%s%*c" , codProduto );
-  listStrings = getNormalClientsWhoBoughtProduct__LL_STRINGS  ( splProd , codProduto );
+  listStrings = getNormalClientsWhoBoughtProduct__LL_STRINGS  ( splProd , ensureUpper( codProduto ) );
   printf("Número total de clientes que compraram %s em modo normal: %d\n", codProduto , sizeLL ( listStrings ));
   handleStrings ( listStrings );
-  listStrings = getPromotionClientsWhoBoughtProduct__LL_STRINGS  ( splProd , codProduto );
+  listStrings = getPromotionClientsWhoBoughtProduct__LL_STRINGS  ( splProd , ensureUpper( codProduto ) );
   printf("Número total de clientes que compraram %s em modo promocional: %d\n", codProduto , sizeLL ( listStrings ));
   handleStrings ( listStrings );
 }
@@ -550,7 +555,7 @@ void querie9( ClientProductLinker cplClient , List listStrings ){
   scanf( "%s%*c" , codCliente );
   printf("Insira um mês valido:\n");
   scanf ( "%d%*c" , &mes );
-  listStrings = getClientOrderedProductListOfMonth__LL_STRINGS ( cplClient , codCliente , mes );
+  listStrings = getClientOrderedProductListOfMonth__LL_STRINGS ( cplClient , ensureUpper( codCliente ) , mes );
   handleStrings ( listStrings );
 }
 
@@ -562,7 +567,7 @@ void querie10( ClientProductLinker cplClient , ClientCatalog clCat , List listSt
   system("clear");
   head();
   printf("Listar clientes que realizaram compras em todos os meses do ano.\n\n");
-  listStrings = getClientsWhoBoughtEveryMonth__LL_STRINGS ( cplClient, clCat );
+  listStrings = getClientsWhoBoughtEveryMonth__LL_STRINGS ( cplClient , clCat );
   printf("Número de clientes que realizaram compras em todos os meses do ano: %d\n", sizeLL ( listStrings ));
   handleStrings ( listStrings );
 }
@@ -622,7 +627,7 @@ void querie13( ClientProductLinker cplClient , List listStrings ){
   printf("Lista os 3 produtos mais comprados por um determinado cliente durante o ano.\n\n");
   printf("Insira um codigo de um cliente valido:\n");
   scanf( "%s%*c" , codCliente );
-  listStrings = getClientTopNMostBoughtProducts__LL_STRINGS ( cplClient , codCliente , 3 );
+  listStrings = getClientTopNMostBoughtProducts__LL_STRINGS ( cplClient , ensureUpper( codCliente ) , 3 );
   handleStrings ( listStrings );
 }
 

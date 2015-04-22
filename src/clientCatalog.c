@@ -33,7 +33,7 @@ static int getClientArrayOutPosition ( char* clientCode ) {
   int position;
   position = (int) clientCode[0];
   if ( position >= 65 && position <= 90 ) { position -= 65; }
-  else if ( position >= 97 && position <= 122 ) { position -= 97; }
+  else if ( position >= 97 && position <= 122 ) { position -= 97; clientCode[0] = 'A' + position; }
   else { position = -1; }
   return position;
 }
@@ -42,7 +42,7 @@ static int getClientArrayInPosition ( char* clientCode ) {
   int position;
   position = (int) clientCode[1];
   if ( position >= 65 && position <= 90 ) { position -= 65; }
-  else if ( position >= 97 && position <= 122 ) { position -= 97; }
+  else if ( position >= 97 && position <= 122 ) { position -= 97; clientCode[0] = 'A' + position; }
   else { position = -1; }
   return position;
 }

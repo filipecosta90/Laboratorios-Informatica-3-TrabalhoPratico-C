@@ -38,7 +38,7 @@ static int getProductSPLArrayOutPosition ( char* productCode ) {
   int position;
   position = (int) productCode[0];
   if ( position >= 65 && position <= 90 ) { position -= 65; }
-  else if ( position >= 97 && position <= 122 ) { position -= 97; }
+  else if ( position >= 97 && position <= 122 ) { position -= 97; productCode[0] = 'A' + position; }
   else { position = -1; }
   return position;
 }
@@ -47,7 +47,7 @@ static int getProductSPLArrayInPosition ( char* productCode ) {
   int position;
   position = (int) productCode[1];
   if ( position >= 65 && position <= 90 ) { position -= 65; } 
-  else if ( position >= 97 && position <= 122 ) { position -= 97; }
+  else if ( position >= 97 && position <= 122 ) { position -= 97; productCode[1] = 'A' + position; }
   else { position = -1; }
   return position;
 }
@@ -222,7 +222,7 @@ struct list* getProductsWhoWereNeverBought__LL_STRINGS ( SalesProductLinker sale
       sizeString = strlen ( productCode );
       toReturnString = ( char* ) malloc ( ( sizeString +1 ) * sizeof ( char ) );
       strcat ( toReturnString , productCode);
-      strcat ( toReturnString , "\n\0");
+      strcat ( toReturnString , "\n");
       appendLL ( returnLL , toReturnString );
     }
   }
