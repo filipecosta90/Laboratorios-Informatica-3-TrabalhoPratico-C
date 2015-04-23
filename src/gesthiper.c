@@ -5,6 +5,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdlib.h>
 #include <time.h>
 #include <string.h>
 #include <ctype.h>
@@ -25,6 +26,8 @@
 #define STANDARD_CLIENT_FILENAME "../files/FichClientes.txt"
 #define STANDARD_SALES_FILENAME "../files/Compras.txt"
 #define HORIZONTAL_LINES 20
+
+
 
 static int flagReadedClients, flagReadedProducts, flagReadedSales, flagBlockedContent;
 
@@ -93,12 +96,12 @@ void handleStringsToFile ( List strings , char* fileName ){
   fclose(fp);
 }
 
-void logStats ( char* fileName , char* querie_number , time_t start, time_t ended ){
+void logStats ( char* fileName , char* querie_number ,  clock_t tstart , clock_t tend ){
   FILE * fp;
   double duration;
   fp = fopen (fileName, "a");
-  duration = difftime(ended, start);
-    fprintf( fp , "\"%s\",\"%f\"\n", querie_number , duration );
+  duration = (((double)tend - (double)tstart) / CLOCKS_PER_SEC ) * 1000;
+  fprintf( fp , "\"%s\",\"%.5f\"\n", querie_number , duration );
   fclose(fp);
 }
 
@@ -183,6 +186,7 @@ void menuReadProductsFile( ProductCatalog prCat ){
   int errorReadingProducts;
   int correctInsertedProducts;
   int flagEXIT, firstTime;
+  clock_t start , end;
   flagEXIT = 0;
   firstTime = 1;
 
@@ -211,6 +215,7 @@ void menuReadProductsFile( ProductCatalog prCat ){
     }
 
     if ( strcmp ( internalOption , "1" ) == 0 ){
+      start = clock();
       if ( flagReadedProducts == 1 ) {
         prCat = newProductCatalog();
         correctInsertedProducts = readFileProducts ( STANDARD_PRODUCT_FILENAME , prCat , &errorReadingProducts );
@@ -218,6 +223,8 @@ void menuReadProductsFile( ProductCatalog prCat ){
       else{
         correctInsertedProducts = readFileProducts ( STANDARD_PRODUCT_FILENAME , prCat , &errorReadingProducts );
       }
+      end = clock();
+      logStats ( "statistics.csv" , "QUERIE QUERIE 1-Products" , start, end );
       printf("Resultado leitura de %s\n\t%d linhas lidas.\n\t%d linhas validadas.\n\t%d linhas rejeitadas.\n", STANDARD_PRODUCT_FILENAME , correctInsertedProducts+errorReadingProducts, correctInsertedProducts , errorReadingProducts );
       flagReadedProducts = 1;
     }
@@ -227,6 +234,7 @@ void menuReadProductsFile( ProductCatalog prCat ){
       if ((pos=strchr(fileName, '\n')) != NULL){
         *pos = '\0';
       }
+      start = clock();
       if ( flagReadedProducts == 1 ) {
         prCat = newProductCatalog();
         correctInsertedProducts = readFileProducts ( fileName , prCat , &errorReadingProducts );
@@ -234,6 +242,8 @@ void menuReadProductsFile( ProductCatalog prCat ){
       else{
         correctInsertedProducts = readFileProducts ( fileName , prCat , &errorReadingProducts );
       }
+      end = clock();
+      logStats ( "statistics.csv" , "QUERIE 1-Products" , start, end );
       printf("Resultado leitura de %s\n\t%d linhas lidas.\n\t%d linhas validadas.\n\t%d linhas rejeitadas.\n", fileName , correctInsertedProducts+errorReadingProducts, correctInsertedProducts , errorReadingProducts );
 
       flagReadedProducts = 1;
@@ -251,6 +261,7 @@ void menuReadClientsFile( ClientCatalog clCat ){
   int errorReadingClients;
   int correctInsertedClients;
   int flagEXIT, firstTime;
+  clock_t start , end;
   flagEXIT = 0;
   firstTime = 1;
 
@@ -276,6 +287,7 @@ void menuReadClientsFile( ClientCatalog clCat ){
     if ((pos=strchr(internalOption, '\n')) != NULL){
       *pos = '\0';
     }
+    start= clock();
     if ( strcmp ( internalOption , "1" ) == 0 ){
       if ( flagReadedClients == 1 ) {
         clCat = newClientCatalog();
@@ -284,6 +296,8 @@ void menuReadClientsFile( ClientCatalog clCat ){
       else{
         correctInsertedClients = readFileClients ( STANDARD_CLIENT_FILENAME , clCat , &errorReadingClients );
       }
+      end = clock();
+      logStats ( "statistics.csv" , "QUERIE 1-Clients" , start, end );
       printf("Resultado leitura de %s\n\t%d linhas lidas.\n\t%d linhas validadas.\n\t%d linhas rejeitadas.\n", STANDARD_CLIENT_FILENAME , correctInsertedClients+errorReadingClients, correctInsertedClients , errorReadingClients );
       flagReadedClients = 1;
     }
@@ -293,6 +307,7 @@ void menuReadClientsFile( ClientCatalog clCat ){
       if ((pos=strchr(fileName, '\n')) != NULL){
         *pos = '\0';
       }
+      start = clock();
       if ( flagReadedClients == 1 ) {
         clCat = newClientCatalog();
         correctInsertedClients = readFileClients ( fileName , clCat , &errorReadingClients );
@@ -300,6 +315,8 @@ void menuReadClientsFile( ClientCatalog clCat ){
       else{
         correctInsertedClients = readFileClients ( fileName , clCat , &errorReadingClients );
       }
+      end = clock();
+      logStats ( "statistics.csv" , "QUERIE 1-Clients" , start, end );
       printf("Resultado leitura de %s\n\t%d linhas lidas.\n\t%d linhas validadas.\n\t%d linhas rejeitadas.\n", fileName , correctInsertedClients+errorReadingClients, correctInsertedClients , errorReadingClients );
       flagReadedClients = 1;
     }
@@ -316,6 +333,7 @@ void menuReadSalesFile ( Accounting acBook , ClientCatalog clCat , ProductCatalo
   int errorReadingClientsInSales , errorReadingProductsInSales ;
   int correctInsertedSales;
   int flagEXIT, firstTime;
+  clock_t start , end;
   flagEXIT = 0;
   firstTime = 1;
 
@@ -342,6 +360,7 @@ void menuReadSalesFile ( Accounting acBook , ClientCatalog clCat , ProductCatalo
       *pos = '\0';
     }
     if ( strcmp ( internalOption , "1" ) == 0 ){
+      start = clock();
       if ( flagReadedSales == 1 ) {
         acBook = newAccounting();
         splProd = newSalesProductLinker();
@@ -352,6 +371,8 @@ void menuReadSalesFile ( Accounting acBook , ClientCatalog clCat , ProductCatalo
       else{
         correctInsertedSales = readFileSales( STANDARD_SALES_FILENAME , acBook , clCat , prCat , splProd , cplClient , &errorReadingProductsInSales , &errorReadingClientsInSales );
       }
+      end = clock();
+      logStats ( "statistics.csv" , "QUERIE 1-Sales" , start, end );
       printf("Resultado leitura de %s\n\t%d linhas lidas.\n\t%d linhas validadas.\n\t%d linhas rejeitadas.\n", STANDARD_SALES_FILENAME , correctInsertedSales+errorReadingProductsInSales+errorReadingClientsInSales, correctInsertedSales , errorReadingProductsInSales+errorReadingClientsInSales );
       flagReadedSales = 1;
     }
@@ -361,6 +382,7 @@ void menuReadSalesFile ( Accounting acBook , ClientCatalog clCat , ProductCatalo
       if ((pos=strchr(fileName, '\n')) != NULL){
         *pos = '\0';
       }
+      start= clock();
       if ( flagReadedSales == 1 ) {
         acBook = newAccounting();
         splProd = newSalesProductLinker();
@@ -371,6 +393,8 @@ void menuReadSalesFile ( Accounting acBook , ClientCatalog clCat , ProductCatalo
       else{
         correctInsertedSales = readFileSales( fileName , acBook , clCat , prCat , splProd , cplClient , &errorReadingProductsInSales , &errorReadingClientsInSales );
       }
+      end = clock();
+      logStats ( "statistics.csv" , "QUERIE 1-Sales" , start, end );
       printf("Resultado leitura de %s\n\t%d linhas lidas.\n\t%d linhas validadas.\n\t%d linhas rejeitadas.\n", fileName , correctInsertedSales+errorReadingProductsInSales+errorReadingClientsInSales, correctInsertedSales , errorReadingProductsInSales+errorReadingClientsInSales );
       flagReadedSales = 1;
     }
@@ -392,6 +416,7 @@ void querie1( ProductCatalog prCat , ClientCatalog clCat, Accounting acBook , Sa
   int errorReadingClients , errorReadingProducts , errorReadingClientsInSales , errorReadingProductsInSales ;
   int correctInsertedClients, correctInsertedProducts, correctInsertedSales;
   int firstTime , flagEXIT;
+  clock_t start , end;
   firstTime = 1;
   flagEXIT = 0;
 
@@ -458,6 +483,7 @@ void querie1( ProductCatalog prCat , ClientCatalog clCat, Accounting acBook , Sa
       }
     }
     if ( strcmp ( internalOption , "4" ) == 0 ){
+      start = clock();
       if ( flagReadedProducts == 1 ) {
         prCat = newProductCatalog();
         correctInsertedProducts = readFileProducts ( STANDARD_PRODUCT_FILENAME , prCat , &errorReadingProducts );
@@ -467,6 +493,9 @@ void querie1( ProductCatalog prCat , ClientCatalog clCat, Accounting acBook , Sa
       }
       printf("Resultado leitura de %s\n\t%d linhas lidas.\n\t%d linhas validadas.\n\t%d linhas rejeitadas.\n", STANDARD_PRODUCT_FILENAME , correctInsertedProducts+errorReadingProducts, correctInsertedProducts , errorReadingProducts );
       flagReadedProducts = 1;
+      end = clock();
+      logStats ( "statistics.csv" , "QUERIE 1-Products" , start, end );
+      start = clock();
       if ( flagReadedClients == 1 ) {
         clCat = newClientCatalog();
         correctInsertedClients = readFileClients ( STANDARD_CLIENT_FILENAME , clCat , &errorReadingClients );
@@ -474,8 +503,11 @@ void querie1( ProductCatalog prCat , ClientCatalog clCat, Accounting acBook , Sa
       else{
         correctInsertedClients = readFileClients ( STANDARD_CLIENT_FILENAME , clCat , &errorReadingClients );
       }
+      end = clock();
+      logStats ( "statistics.csv" , "QUERIE 1-Clients" , start, end );
       printf("Resultado leitura de %s\n\t%d linhas lidas.\n\t%d linhas validadas.\n\t%d linhas rejeitadas.\n", STANDARD_CLIENT_FILENAME , correctInsertedClients+errorReadingClients, correctInsertedClients , errorReadingClients );
       flagReadedClients = 1;
+      start = clock();
       if ( flagReadedSales == 1 ) {
         acBook = newAccounting();
         splProd = newSalesProductLinker();
@@ -486,6 +518,8 @@ void querie1( ProductCatalog prCat , ClientCatalog clCat, Accounting acBook , Sa
       else{
         correctInsertedSales = readFileSales( STANDARD_SALES_FILENAME , acBook , clCat , prCat , splProd , cplClient , &errorReadingProductsInSales , &errorReadingClientsInSales );
       }
+      end = clock();
+      logStats ( "statistics.csv" , "QUERIE 1-Sales" , start, end );
       printf("Resultado leitura de %s\n\t%d linhas lidas.\n\t%d linhas validadas.\n\t%d linhas rejeitadas.\n", STANDARD_SALES_FILENAME , correctInsertedSales+errorReadingProductsInSales+errorReadingClientsInSales, correctInsertedSales , errorReadingProductsInSales+errorReadingClientsInSales );
       flagReadedSales = 1;
     }
@@ -503,7 +537,7 @@ void querie1( ProductCatalog prCat , ClientCatalog clCat, Accounting acBook , Sa
 void querie2( ProductCatalog prCat , List listStrings ){
   char line[MAX_LINE_OPTION];
   char* pos;
-  time_t start , end;
+  clock_t start , end;
   system("clear");
   head();
   printf("Listar produtos começados por uma determinada letra.\n\n");
@@ -512,10 +546,10 @@ void querie2( ProductCatalog prCat , List listStrings ){
   if ((pos=strchr( line , '\n')) != NULL){
     *pos = '\0';
   }
-  start = time(NULL);
+  start = clock();
   listStrings = getProductsByLetter__LL_strings ( prCat , line[0] );
-  end = time(NULL);
-  logStats ( "statistics.csv" , "2" , start, end );
+  end = clock();
+  logStats ( "statistics.csv" , "QUERIE 2" , start, end );
   handleStrings ( listStrings , "total de produtos cujo código se inicia por uma dada letra" );
 }
 
@@ -530,7 +564,7 @@ void querie3( SalesProductLinker splProd ){
   float totalBilled;
   int normalSales, promotionSales;
   int mes;
-  time_t start , end;
+  time_t start, end;
   normalSales = 0;
   promotionSales = 0;
   totalBilled = 0.0;
@@ -548,12 +582,12 @@ void querie3( SalesProductLinker splProd ){
     *pos = '\0';
   }
   mes = atoi ( mesString );
-  start = time ( NULL );
+  start = clock();
   promotionSales =  getPromotionClientsNumberWhoBoughtProductInMonth ( splProd , ensureUpper( codProduto ) , mes );
   normalSales = getNormalClientsNumberWhoBoughtProductInMonth ( splProd , ensureUpper( codProduto ) , mes );
   totalBilled = getTotalBilledByProductInMonth ( splProd , ensureUpper( codProduto ) , mes );
-  end = time ( NULL );
-  logStats ( "statistics.csv" , "3" , start, end );
+  end = clock();
+  logStats ( "statistics.csv" , "QUERIE 3" , start, end );
   printf ( " Detalhes de vendas de código de produto %s para o mês %d\n\tNúmero de vendas N: %d\tvendas P: %d\n\tTotal faturado:%f\n", codProduto , mes, normalSales , promotionSales , totalBilled );
 }
 
@@ -566,12 +600,12 @@ void querie4( SalesProductLinker splProd , ProductCatalog prCat , List listStrin
   system("clear");
   head();
   printf("Lista códigos de produtos (e o seu número total), que ninguém comprou.\n\n");
-  start = time ( NULL );
+  start = clock();
   listStrings = getProductsWhoWereNeverBought__LL_STRINGS ( splProd ,  prCat );
-  end = time ( NULL );
+  end = clock();
   printf( "Número total de produtos que ninguém comprou: %d\n", sizeLL ( listStrings ));
   handleStrings ( listStrings , "lista de códigos de produtos que ninguém comprou" );
-  logStats ( "statistics.csv" , "4" , start, end );
+  logStats ( "statistics.csv" , "QUERIE 4" , start, end );
 }
 
 /**
@@ -593,10 +627,10 @@ void querie5( ClientProductLinker cplClient , List listStrings ){
   if ((pos=strchr(codCliente, '\n')) != NULL){
     *pos = '\0';
   }
-  start = time ( NULL );
+  start = clock();
   listStrings = getClientProductTableByMonth__LL_STRINGS ( cplClient , ensureUpper( codCliente ) );
-  end = time ( NULL );
-  logStats ( "statistics.csv" , "5" , start, end );
+  end = clock();
+  logStats ( "statistics.csv" , "QUERIE 5" , start, end );
   handleStrings ( listStrings , "tabela com o número total de produtos comprados, mês a mês" );
   printf("Pretende guardar a tabela num ficheiro de texto? (s/n)\n");
   fgets(internalOption, MAX_LINE_OPTION, stdin);
@@ -629,10 +663,10 @@ void querie6( ClientCatalog clCat , List listStrings ){
   if ((pos=strchr(internalOption, '\n')) != NULL){
     *pos = '\0';
   }
-  start = time ( NULL );
+  start = clock();
   listStrings = getClientsByLetter__LL_strings ( clCat , internalOption[0] );
-  end = time ( NULL );
-  logStats ( "statistics.csv" , "6" , start, end );
+  end = clock();
+  logStats ( "statistics.csv" , "QUERIE 6" , start, end );
   handleStrings ( listStrings , "lista de todos os códigos de clientes iniciados pela letra dada como parâmetro" );
 }
 
@@ -644,7 +678,7 @@ void querie7( Accounting acBook ){
   int mesInicial, mesFinal;
   char internalOption[MAX_LINE_OPTION];
   char *pos;
-  time_t start , end;
+  clock_t start , end;
   system("clear");
   head();
   printf("Lista compras registadas e total faturado num dado intervalo de tempo.\n\n");
@@ -660,11 +694,11 @@ void querie7( Accounting acBook ){
     *pos = '\0';
   }
   mesFinal = atoi ( internalOption );
-  start = time ( NULL );
+  start = clock();
   printf("Número total de vendas no invervalo[%d-%d]: %d\n", mesInicial , mesFinal , getIntervalTotalSales( acBook, mesInicial , mesFinal ));
   printf("Total facturado no invervalo[%d-%d]: %f\n", mesInicial , mesFinal , getIntervalTotalBilled( acBook , mesInicial , mesFinal ));
-  end = time ( NULL );
-  logStats ( "statistics.csv" , "7" , start, end );
+  end = clock();
+  logStats ( "statistics.csv" , "QUERIE 7" , start, end );
 }
 
 /**
@@ -674,7 +708,7 @@ void querie7( Accounting acBook ){
 void querie8( SalesProductLinker splProd , List listStrings ){
   char codProduto[PRODUCT_STRING_SIZE];
   char* pos;
-  time_t start , end;
+  clock_t start , end;
   system("clear");
   head();
   printf("Lista de clientes (e numero total) que compraram um determinado produto (Normais e Promoções).\n\n");
@@ -683,10 +717,10 @@ void querie8( SalesProductLinker splProd , List listStrings ){
   if ((pos=strchr( codProduto , '\n')) != NULL){
     *pos = '\0';
   }
-  start = time ( NULL );
+  start = clock();
   listStrings = getNormalClientsWhoBoughtProduct__LL_STRINGS  ( splProd , ensureUpper( codProduto ) );
-  end = time ( NULL );
-  logStats ( "statistics.csv" , "8" , start, end );
+  end = clock();
+  logStats ( "statistics.csv" , "QUERIE 8" , start, end );
   printf("Número total de clientes que compraram %s em modo normal: %d\n", codProduto , sizeLL ( listStrings ));
   handleStrings ( listStrings , "Códigos de clientes que compraram o produto em modo normal");
   listStrings = getPromotionClientsWhoBoughtProduct__LL_STRINGS  ( splProd , ensureUpper( codProduto ) );
@@ -703,7 +737,7 @@ void querie9( ClientProductLinker cplClient , List listStrings ){
   char codCliente[CLIENT_STRING_SIZE];
   char internalOption[MAX_LINE_OPTION];
   char* pos;
-  time_t start , end;
+  clock_t start , end;
   system("clear");
   head();
   printf("Lista por ordem descendente de produtos que um determinado cliente comprou num dado mês\n\n");
@@ -718,10 +752,10 @@ void querie9( ClientProductLinker cplClient , List listStrings ){
     *pos = '\0';
   }
   mes = atoi ( internalOption );
-  start = time ( NULL );
+  start = clock();
   listStrings = getClientOrderedProductListOfMonth__LL_STRINGS ( cplClient , ensureUpper( codCliente ) , mes );
-  end = time(NULL);
-  logStats ( "statistics.csv" , "9" , start, end );
+  end = clock();
+  logStats ( "statistics.csv" , "QUERIE 9" , start, end );
   handleStrings ( listStrings , "lista de códigos de produto que mais comprou" );
 }
 
@@ -730,14 +764,14 @@ void querie9( ClientProductLinker cplClient , List listStrings ){
  *Determinar a lista de códigos de clientes que realizaram compras em todos os meses do ano;
  **/
 void querie10( ClientProductLinker cplClient , ClientCatalog clCat , List listStrings ){
-  time_t start , end;
+  clock_t start , end;
   system("clear");
   head();
   printf("Listar clientes que realizaram compras em todos os meses do ano.\n\n");
-  start = time ( NULL );
+  start = clock();
   listStrings = getClientsWhoBoughtEveryMonth__LL_STRINGS ( cplClient , clCat );
-  end = time(NULL);
-  logStats ( "statistics.csv" , "10" , start, end );
+  end = clock();
+  logStats ( "statistics.csv" , "QUERIE 10" , start, end );
   printf("Número de clientes que realizaram compras em todos os meses do ano: %d\n", sizeLL ( listStrings ));
   handleStrings ( listStrings , "lista de códigos de clientes que realizaram compras em todos os meses do ano" );
 }
@@ -756,7 +790,7 @@ void querie11( Accounting acBook , ClientProductLinker cplClient ){
   char fileName[MAX_FILENAME];
   char* pos;
   FILE * fp;
-  time_t start , end;
+  clock_t start , end;
   monthQ = 1;
   system("clear");
   head();
@@ -766,7 +800,7 @@ void querie11( Accounting acBook , ClientProductLinker cplClient ){
   if ((pos=strchr(fileName, '\n')) != NULL){
     *pos = '\0';
   }
-  start = time ( NULL );
+  start = clock();
   fp = fopen (fileName, "w");
   fprintf( fp, "\"Mes\",\"#Compras\",\"#Clientes\"\n");
   printf( "\"Mes\",\"#Compras\",\"#Clientes\"\n");
@@ -775,8 +809,8 @@ void querie11( Accounting acBook , ClientProductLinker cplClient ){
     printf("\"%d\",\"%d\",\"%d\"\n", monthQ, getMonthSales(acBook, monthQ ) , getCPLinkerMonthSize ( cplClient , monthQ ) );
   }
   fclose(fp);
-  end = time(NULL);
-  logStats ( "statistics.csv" , "11" , start, end );
+  end = clock();
+  logStats ( "statistics.csv" , "QUERIE 11" , start, end );
 }
 
 /**
@@ -787,7 +821,7 @@ void querie12( SalesProductLinker splProd , List listStrings ){
   int nProd;
   char internalOption[MAX_LINE_OPTION];
   char *pos;
-  time_t start , end;
+  clock_t start , end;
   system("clear");
   head();
   printf("Lista de N produtos mais vendidos em todo o ano bem como o total de clientes que o comprou e número de unidades vendidas.\n\n");
@@ -797,10 +831,10 @@ void querie12( SalesProductLinker splProd , List listStrings ){
     *pos = '\0';
   }
   nProd = atoi ( internalOption );
-  start = time ( NULL );
+  start = clock();
   listStrings = getTopNMostSoldProducts__LL_STRINGS ( splProd , nProd );
-  end = time(NULL);
-  logStats ( "statistics.csv" , "12" , start, end );
+  end = clock();
+  logStats ( "statistics.csv" , "QUERIE 12" , start, end );
   handleStrings ( listStrings , "lista dos N produtos mais vendidos em todo o ano" );
 }
 
@@ -811,7 +845,7 @@ void querie12( SalesProductLinker splProd , List listStrings ){
 void querie13( ClientProductLinker cplClient , List listStrings ){
   char codCliente[CLIENT_STRING_SIZE];
   char* pos;
-  time_t start , end;
+  clock_t start , end;
   system("clear");
   head();
   printf("Lista os 3 produtos mais comprados por um determinado cliente durante o ano.\n\n");
@@ -820,10 +854,10 @@ void querie13( ClientProductLinker cplClient , List listStrings ){
   if ((pos=strchr(codCliente, '\n')) != NULL){
     *pos = '\0';
   }
-  start = time ( NULL );
+  start = clock();
   listStrings = getClientTopNMostBoughtProducts__LL_STRINGS ( cplClient , ensureUpper( codCliente ) , 3 );
-  end = time(NULL);
-  logStats ( "statistics.csv" , "13" , start, end );
+  end = clock();
+  logStats ( "statistics.csv" , "QUERIE 13" , start, end );
   handleStrings ( listStrings , "3 produtos mais comprados do cliente durante o ano" );
 }
 
@@ -832,16 +866,16 @@ void querie13( ClientProductLinker cplClient , List listStrings ){
  *Determinar o número de clientes registados que não realizaram compras bem como o número de produtos que ninguém comprou;
  **/
 void querie14( SalesProductLinker splProd , ClientProductLinker cplClient , ProductCatalog prCat , ClientCatalog clCat , List listStrings ){
-  time_t start , end;
+  clock_t start , end;
   system("clear");
   head();
-  start = time ( NULL );
+  start = clock();
   printf("Número de clientes registados que não realizaram compras bem como o número de produtos que ninguém comprou.\n\n");
   listStrings = getProductsWhoWereNeverBought__LL_STRINGS ( splProd ,  prCat );
   printf("Número de produtos que ninguém comprou: %d\n", sizeLL ( listStrings ));
   printf( "Número de clientes registados que não realizaram compras: %d\n" ,   getTotalClientsNumberWhoNeverBoughtProducts ( cplClient, clCat ) );
-  end = time(NULL);
-  logStats ( "statistics.csv" , "14" , start, end );
+  end = clock();
+  logStats ( "statistics.csv" , "QUERIE 14" , start, end );
 }
 
 void navegar( ProductCatalog prCat , ClientCatalog clCat, Accounting acBook , SalesProductLinker splProd , ClientProductLinker cplClient , List listStrings ){
