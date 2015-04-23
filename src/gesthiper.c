@@ -164,7 +164,7 @@ void menu(){
   if ( flagReadedSales == 0 ){
     printf ( "\t **bloqueado** ");
   }
-  printf("14-Listar clientes registados que não realizaram compras bem como o número de produtos que ninguém comprou.\n");
+  printf("14-Número de clientes registados que não realizaram compras bem como o número de produtos que ninguém comprou.\n");
   printf("15-Sair\n");
 }
 
@@ -197,7 +197,7 @@ void menuReadProductsFile( ProductCatalog prCat ){
 
     printf("3-Voltar ao menu anterior.\n");
     printf("\nEscolha uma opção:\n");
-    fgets(internalOption, 256, stdin);
+    fgets(internalOption, MAX_LINE_OPTION, stdin);
     if ((pos=strchr(internalOption, '\n')) != NULL){
       *pos = '\0';
     }
@@ -208,7 +208,7 @@ void menuReadProductsFile( ProductCatalog prCat ){
         correctInsertedProducts = readFileProducts ( STANDARD_PRODUCT_FILENAME , prCat , &errorReadingProducts );
       }
       else{
-      correctInsertedProducts = readFileProducts ( STANDARD_PRODUCT_FILENAME , prCat , &errorReadingProducts );
+        correctInsertedProducts = readFileProducts ( STANDARD_PRODUCT_FILENAME , prCat , &errorReadingProducts );
       }
       printf("Resultado leitura de %s\n\t%d linhas lidas.\n\t%d linhas validadas.\n\t%d linhas rejeitadas.\n", STANDARD_PRODUCT_FILENAME , correctInsertedProducts+errorReadingProducts, correctInsertedProducts , errorReadingProducts );
       flagReadedProducts = 1;
@@ -264,7 +264,7 @@ void menuReadClientsFile( ClientCatalog clCat ){
     }
     printf("3-Voltar ao menu anterior.\n");
     printf("\nEscolha uma opção:\n");
-    fgets(internalOption, 256, stdin);
+    fgets(internalOption, MAX_LINE_OPTION , stdin);
     if ((pos=strchr(internalOption, '\n')) != NULL){
       *pos = '\0';
     }
@@ -329,7 +329,7 @@ void menuReadSalesFile ( Accounting acBook , ClientCatalog clCat , ProductCatalo
     }
     printf("3-Voltar ao menu anterior.\n");
     printf("\nEscolha uma opção:\n");
-    fgets(internalOption, 256, stdin);
+    fgets(internalOption, MAX_LINE_OPTION , stdin);
     if ((pos=strchr(internalOption, '\n')) != NULL){
       *pos = '\0';
     }
@@ -430,7 +430,7 @@ void querie1( ProductCatalog prCat , ClientCatalog clCat, Accounting acBook , Sa
     }
     printf("\n5-Voltar ao menu anterior.\n");
     printf("\nEscolha uma opção:\n");
-    fgets(internalOption, 256, stdin);
+    fgets(internalOption, MAX_LINE_OPTION , stdin);
     if ((pos=strchr(internalOption, '\n')) != NULL){
       *pos = '\0';
     }
@@ -495,7 +495,6 @@ void querie1( ProductCatalog prCat , ClientCatalog clCat, Accounting acBook , Sa
 void querie2( ProductCatalog prCat , List listStrings ){
   char line[MAX_LINE_OPTION];
   char* pos;
-  fflush(stdin);
   system("clear");
   head();
   printf("Listar produtos começados por uma determinada letra.\n\n");
@@ -522,7 +521,6 @@ void querie3( SalesProductLinker splProd ){
   normalSales = 0;
   promotionSales = 0;
   totalBilled = 0.0;
-  fflush(stdin);
   system("clear");
   head();
   printf("Apresentar o número total de vendas em modo N e em modo P, e o total facturado de um produto num dado mês\n\n");
@@ -540,7 +538,7 @@ void querie3( SalesProductLinker splProd ){
   promotionSales =  getPromotionClientsNumberWhoBoughtProductInMonth ( splProd , ensureUpper( codProduto ) , mes );
   normalSales = getNormalClientsNumberWhoBoughtProductInMonth ( splProd , ensureUpper( codProduto ) , mes );
   totalBilled = getTotalBilledByProductInMonth ( splProd , ensureUpper( codProduto ) , mes );
-  printf ( " Detalhes de vendas de código de produto %s para o mês %d\n\tNúmero de vendas N: %d\tvendas T: %d\n\tTotal faturado:%f\n", codProduto , mes, normalSales , promotionSales , totalBilled );
+  printf ( " Detalhes de vendas de código de produto %s para o mês %d\n\tNúmero de vendas N: %d\tvendas P: %d\n\tTotal faturado:%f\n", codProduto , mes, normalSales , promotionSales , totalBilled );
 }
 
 /**
@@ -550,7 +548,6 @@ void querie3( SalesProductLinker splProd ){
 void querie4( SalesProductLinker splProd , ProductCatalog prCat , List listStrings ){
   system("clear");
   head();
-  listStrings = initLL();
   printf("Lista códigos de produtos (e o seu número total), que ninguém comprou.\n\n");
   listStrings = getProductsWhoWereNeverBought__LL_STRINGS ( splProd ,  prCat );
   printf( "Número total de produtos que ninguém comprou: %d\n", sizeLL ( listStrings ));
@@ -567,7 +564,6 @@ void querie5( ClientProductLinker cplClient , List listStrings ){
   char fileName[MAX_FILENAME];
   char codCliente[CLIENT_STRING_SIZE];
   char* pos;
-  fflush(stdin);
   system("clear");
   head();
   printf("Tabela de produtos comprados (mês a mês) de um dado cliente.\n\n");
@@ -579,7 +575,6 @@ void querie5( ClientProductLinker cplClient , List listStrings ){
   listStrings = getClientProductTableByMonth__LL_STRINGS ( cplClient , ensureUpper( codCliente ) );
   handleStrings ( listStrings , "tabela com o número total de produtos comprados, mês a mês" );
   printf("Pretende guardar a tabela num ficheiro de texto? (s/n)\n");
-  fflush(stdin);
   fgets(internalOption, MAX_LINE_OPTION, stdin);
   if ((pos=strchr(internalOption, '\n')) != NULL){
     *pos = '\0';
@@ -601,7 +596,6 @@ void querie5( ClientProductLinker cplClient , List listStrings ){
 void querie6( ClientCatalog clCat , List listStrings ){
   char internalOption[MAX_LINE_OPTION];
   char* pos;
-  fflush(stdin);
   system("clear");
   head();
   printf("Listar clientes cujo código começa por uma determinada letra.\n\n");
@@ -622,7 +616,6 @@ void querie7( Accounting acBook ){
   int mesInicial, mesFinal;
   char internalOption[MAX_LINE_OPTION];
   char *pos;
-  fflush(stdin);
   system("clear");
   head();
   printf("Lista compras registadas e total faturado num dado intervalo de tempo.\n\n");
@@ -632,7 +625,7 @@ void querie7( Accounting acBook ){
     *pos = '\0';
   }
   mesInicial = atoi ( internalOption );
-  printf("Insira mês inicial:\n");
+  printf("Insira mês final:\n");
   fgets(internalOption, MAX_LINE_OPTION, stdin);
   if ((pos=strchr(internalOption, '\n')) != NULL){
     *pos = '\0';
@@ -649,7 +642,6 @@ void querie7( Accounting acBook ){
 void querie8( SalesProductLinker splProd , List listStrings ){
   char codProduto[PRODUCT_STRING_SIZE];
   char* pos;
-  fflush(stdin);
   system("clear");
   head();
   printf("Lista de clientes (e numero total) que compraram um determinado produto (Normais e Promoções).\n\n");
