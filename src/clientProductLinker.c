@@ -144,9 +144,14 @@ struct list* getClientOrderedProductListOfMonth__LL_STRINGS ( ClientProductLinke
 /* QUERIE 10 AUXILIAR METHOD */
 static int thisClientBoughtEveryMonth ( ClientProductLinker clientPrLinker , char* clientCode ){
   int inPosition, outPosition, month, flagJumpOf;
+  char* pos;
   ClientCPL searchResult;
   ClientCPL cplClient;
   searchResult = NULL;
+  /* limpar \n indesejados */
+  if ((pos=strchr(clientCode, '\n')) != NULL){
+    *pos = '\0';
+  }
   cplClient = newClientCPL ( clientCode );
   month = 0;
   flagJumpOf = 0;
@@ -269,6 +274,7 @@ struct list* getClientsWhoNeverBoughtProducts__LL_STRINGS ( ClientProductLinker 
   struct list* returnLL;
   char* clientCode;
   char* toReturnString;
+  char* pos;
   clientCode = NULL;
   in = 0;
   out = 0;
@@ -281,6 +287,10 @@ struct list* getClientsWhoNeverBoughtProducts__LL_STRINGS ( ClientProductLinker 
   newLL ( returnLL , sizeof ( char* ) , &myFreeCharCPL1 );
   for ( ; sizeLL ( clientLL ) > 0 ;  ){
     clientCode = (char*) headLL (clientLL);
+    /* limpar \n indesejados */
+    if ((pos=strchr(clientCode, '\n')) != NULL){
+      *pos = '\0';
+    }
     if ( thisClientHasNeverBought ( clientPrLinker , clientCode ) ){
       sizeString = strlen ( clientCode );
       toReturnString = ( char* ) malloc ( ( sizeString +1 ) * sizeof ( char ) );
