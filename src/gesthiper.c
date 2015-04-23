@@ -93,12 +93,12 @@ void handleStringsToFile ( List strings , char* fileName ){
   fclose(fp);
 }
 
-void logStats ( char* fileName , int querie_number , time_t start, time_t ended ){
+void logStats ( char* fileName , char* querie_number , time_t start, time_t ended ){
   FILE * fp;
   double duration;
-  fp = fopen (fileName, "w+");
+  fp = fopen (fileName, "a");
   duration = difftime(ended, start);
-    fprintf( fp , "\"%d\",\"%f\"\n", querie_number , duration );
+    fprintf( fp , "\"%s\",\"%f\"\n", querie_number , duration );
   fclose(fp);
 }
 
@@ -515,7 +515,7 @@ void querie2( ProductCatalog prCat , List listStrings ){
   start = time(NULL);
   listStrings = getProductsByLetter__LL_strings ( prCat , line[0] );
   end = time(NULL);
-  logStats ( "statistics.csv" , 2 , start, end );
+  logStats ( "statistics.csv" , "2" , start, end );
   handleStrings ( listStrings , "total de produtos cujo código se inicia por uma dada letra" );
 }
 
@@ -553,7 +553,7 @@ void querie3( SalesProductLinker splProd ){
   normalSales = getNormalClientsNumberWhoBoughtProductInMonth ( splProd , ensureUpper( codProduto ) , mes );
   totalBilled = getTotalBilledByProductInMonth ( splProd , ensureUpper( codProduto ) , mes );
   end = time ( NULL );
-  logStats ( "statistics.csv" , 3 , start, end );
+  logStats ( "statistics.csv" , "3" , start, end );
   printf ( " Detalhes de vendas de código de produto %s para o mês %d\n\tNúmero de vendas N: %d\tvendas P: %d\n\tTotal faturado:%f\n", codProduto , mes, normalSales , promotionSales , totalBilled );
 }
 
@@ -571,7 +571,7 @@ void querie4( SalesProductLinker splProd , ProductCatalog prCat , List listStrin
   end = time ( NULL );
   printf( "Número total de produtos que ninguém comprou: %d\n", sizeLL ( listStrings ));
   handleStrings ( listStrings , "lista de códigos de produtos que ninguém comprou" );
-  logStats ( "statistics.csv" , 4 , start, end );
+  logStats ( "statistics.csv" , "4" , start, end );
 }
 
 /**
@@ -596,7 +596,7 @@ void querie5( ClientProductLinker cplClient , List listStrings ){
   start = time ( NULL );
   listStrings = getClientProductTableByMonth__LL_STRINGS ( cplClient , ensureUpper( codCliente ) );
   end = time ( NULL );
-  logStats ( "statistics.csv" , 5 , start, end );
+  logStats ( "statistics.csv" , "5" , start, end );
   handleStrings ( listStrings , "tabela com o número total de produtos comprados, mês a mês" );
   printf("Pretende guardar a tabela num ficheiro de texto? (s/n)\n");
   fgets(internalOption, MAX_LINE_OPTION, stdin);
@@ -632,7 +632,7 @@ void querie6( ClientCatalog clCat , List listStrings ){
   start = time ( NULL );
   listStrings = getClientsByLetter__LL_strings ( clCat , internalOption[0] );
   end = time ( NULL );
-  logStats ( "statistics.csv" , 6 , start, end );
+  logStats ( "statistics.csv" , "6" , start, end );
   handleStrings ( listStrings , "lista de todos os códigos de clientes iniciados pela letra dada como parâmetro" );
 }
 
@@ -664,7 +664,7 @@ void querie7( Accounting acBook ){
   printf("Número total de vendas no invervalo[%d-%d]: %d\n", mesInicial , mesFinal , getIntervalTotalSales( acBook, mesInicial , mesFinal ));
   printf("Total facturado no invervalo[%d-%d]: %f\n", mesInicial , mesFinal , getIntervalTotalBilled( acBook , mesInicial , mesFinal ));
   end = time ( NULL );
-  logStats ( "statistics.csv" , 7 , start, end );
+  logStats ( "statistics.csv" , "7" , start, end );
 }
 
 /**
@@ -686,7 +686,7 @@ void querie8( SalesProductLinker splProd , List listStrings ){
   start = time ( NULL );
   listStrings = getNormalClientsWhoBoughtProduct__LL_STRINGS  ( splProd , ensureUpper( codProduto ) );
   end = time ( NULL );
-  logStats ( "statistics.csv" , 8 , start, end );
+  logStats ( "statistics.csv" , "8" , start, end );
   printf("Número total de clientes que compraram %s em modo normal: %d\n", codProduto , sizeLL ( listStrings ));
   handleStrings ( listStrings , "Códigos de clientes que compraram o produto em modo normal");
   listStrings = getPromotionClientsWhoBoughtProduct__LL_STRINGS  ( splProd , ensureUpper( codProduto ) );
@@ -703,6 +703,7 @@ void querie9( ClientProductLinker cplClient , List listStrings ){
   char codCliente[CLIENT_STRING_SIZE];
   char internalOption[MAX_LINE_OPTION];
   char* pos;
+  time_t start , end;
   system("clear");
   head();
   printf("Lista por ordem descendente de produtos que um determinado cliente comprou num dado mês\n\n");
@@ -717,7 +718,10 @@ void querie9( ClientProductLinker cplClient , List listStrings ){
     *pos = '\0';
   }
   mes = atoi ( internalOption );
+  start = time ( NULL );
   listStrings = getClientOrderedProductListOfMonth__LL_STRINGS ( cplClient , ensureUpper( codCliente ) , mes );
+  end = time(NULL);
+  logStats ( "statistics.csv" , "9" , start, end );
   handleStrings ( listStrings , "lista de códigos de produto que mais comprou" );
 }
 
@@ -726,10 +730,14 @@ void querie9( ClientProductLinker cplClient , List listStrings ){
  *Determinar a lista de códigos de clientes que realizaram compras em todos os meses do ano;
  **/
 void querie10( ClientProductLinker cplClient , ClientCatalog clCat , List listStrings ){
+  time_t start , end;
   system("clear");
   head();
   printf("Listar clientes que realizaram compras em todos os meses do ano.\n\n");
+  start = time ( NULL );
   listStrings = getClientsWhoBoughtEveryMonth__LL_STRINGS ( cplClient , clCat );
+  end = time(NULL);
+  logStats ( "statistics.csv" , "10" , start, end );
   printf("Número de clientes que realizaram compras em todos os meses do ano: %d\n", sizeLL ( listStrings ));
   handleStrings ( listStrings , "lista de códigos de clientes que realizaram compras em todos os meses do ano" );
 }
@@ -748,6 +756,7 @@ void querie11( Accounting acBook , ClientProductLinker cplClient ){
   char fileName[MAX_FILENAME];
   char* pos;
   FILE * fp;
+  time_t start , end;
   monthQ = 1;
   system("clear");
   head();
@@ -757,6 +766,7 @@ void querie11( Accounting acBook , ClientProductLinker cplClient ){
   if ((pos=strchr(fileName, '\n')) != NULL){
     *pos = '\0';
   }
+  start = time ( NULL );
   fp = fopen (fileName, "w");
   fprintf( fp, "\"Mes\",\"#Compras\",\"#Clientes\"\n");
   printf( "\"Mes\",\"#Compras\",\"#Clientes\"\n");
@@ -765,6 +775,8 @@ void querie11( Accounting acBook , ClientProductLinker cplClient ){
     printf("\"%d\",\"%d\",\"%d\"\n", monthQ, getMonthSales(acBook, monthQ ) , getCPLinkerMonthSize ( cplClient , monthQ ) );
   }
   fclose(fp);
+  end = time(NULL);
+  logStats ( "statistics.csv" , "11" , start, end );
 }
 
 /**
@@ -775,6 +787,7 @@ void querie12( SalesProductLinker splProd , List listStrings ){
   int nProd;
   char internalOption[MAX_LINE_OPTION];
   char *pos;
+  time_t start , end;
   system("clear");
   head();
   printf("Lista de N produtos mais vendidos em todo o ano bem como o total de clientes que o comprou e número de unidades vendidas.\n\n");
@@ -784,7 +797,10 @@ void querie12( SalesProductLinker splProd , List listStrings ){
     *pos = '\0';
   }
   nProd = atoi ( internalOption );
+  start = time ( NULL );
   listStrings = getTopNMostSoldProducts__LL_STRINGS ( splProd , nProd );
+  end = time(NULL);
+  logStats ( "statistics.csv" , "12" , start, end );
   handleStrings ( listStrings , "lista dos N produtos mais vendidos em todo o ano" );
 }
 
@@ -795,6 +811,7 @@ void querie12( SalesProductLinker splProd , List listStrings ){
 void querie13( ClientProductLinker cplClient , List listStrings ){
   char codCliente[CLIENT_STRING_SIZE];
   char* pos;
+  time_t start , end;
   system("clear");
   head();
   printf("Lista os 3 produtos mais comprados por um determinado cliente durante o ano.\n\n");
@@ -803,7 +820,10 @@ void querie13( ClientProductLinker cplClient , List listStrings ){
   if ((pos=strchr(codCliente, '\n')) != NULL){
     *pos = '\0';
   }
+  start = time ( NULL );
   listStrings = getClientTopNMostBoughtProducts__LL_STRINGS ( cplClient , ensureUpper( codCliente ) , 3 );
+  end = time(NULL);
+  logStats ( "statistics.csv" , "13" , start, end );
   handleStrings ( listStrings , "3 produtos mais comprados do cliente durante o ano" );
 }
 
@@ -812,12 +832,16 @@ void querie13( ClientProductLinker cplClient , List listStrings ){
  *Determinar o número de clientes registados que não realizaram compras bem como o número de produtos que ninguém comprou;
  **/
 void querie14( SalesProductLinker splProd , ClientProductLinker cplClient , ProductCatalog prCat , ClientCatalog clCat , List listStrings ){
+  time_t start , end;
   system("clear");
   head();
+  start = time ( NULL );
   printf("Número de clientes registados que não realizaram compras bem como o número de produtos que ninguém comprou.\n\n");
   listStrings = getProductsWhoWereNeverBought__LL_STRINGS ( splProd ,  prCat );
   printf("Número de produtos que ninguém comprou: %d\n", sizeLL ( listStrings ));
   printf( "Número de clientes registados que não realizaram compras: %d\n" ,   getTotalClientsNumberWhoNeverBoughtProducts ( cplClient, clCat ) );
+  end = time(NULL);
+  logStats ( "statistics.csv" , "14" , start, end );
 }
 
 void navegar( ProductCatalog prCat , ClientCatalog clCat, Accounting acBook , SalesProductLinker splProd , ClientProductLinker cplClient , List listStrings ){
