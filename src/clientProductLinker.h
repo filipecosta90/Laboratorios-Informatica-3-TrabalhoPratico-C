@@ -6,7 +6,6 @@
 #ifndef _CLIENT_PRODUCT_LINKER_H_INCLUDED_
 #define _CLIENT_PRODUCT_LINKER_H_INCLUDED_
 
-
 typedef struct clientProductLinker*  ClientProductLinker;
 
 struct clientProductLinker* newClientProductLinker ( );

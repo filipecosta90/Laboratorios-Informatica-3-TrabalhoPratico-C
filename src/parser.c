@@ -1,3 +1,8 @@
+/*
+ *  * Copyright (C) Carlos Sá, Filipe Oliveira, Sérgio Caldas
+ *  * Copyright (C) Laboratórios Informática III, Universidade do Minho, 2015
+ *  */
+
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
@@ -151,8 +156,8 @@ int readFileSales(char* filename, Accounting acBook , ClientCatalog clCat, Produ
                     correctCount++;
                     addSale( acBook, monthToken  );
                     addClient( acBook, monthToken );
-                    addBill( acBook, monthToken, priceToken );
-                    addSalesLineToSPL ( splProd , productToken , clientToken , modeToken , unitToken , priceToken , monthToken );
+                    addBill( acBook, monthToken, priceToken * unitToken );
+                    addSalesLineToSPL ( splProd , productToken , clientToken , modeToken , unitToken , priceToken*unitToken , monthToken );
                     addSalesLineToCPL ( cplClient , productToken , clientToken , unitToken , monthToken );
                   }
                   else{

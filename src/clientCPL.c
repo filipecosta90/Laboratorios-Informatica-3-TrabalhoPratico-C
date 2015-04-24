@@ -56,16 +56,11 @@ ClientCPL addProductCPL ( ClientCPL cplClient , char* productCode , int UnitType
 
 int clientCPLEquals ( void *isEqual1, void* isEqual2 ){
   ClientCPL c1, c2;
-  int returningValue;
-  if ( isEqual1 == NULL || isEqual2 == NULL ){
-    returningValue = 0;
-  }
-  else{
-    c1 = ( ClientCPL ) isEqual1;
-    c2 = ( ClientCPL ) isEqual2;
-    returningValue = strcmp ( c1->clientCode , c2->clientCode );
-  }
-  return returningValue;
+  assert ( isEqual1 != NULL );
+  assert ( isEqual2 != NULL );
+  c1 = ( ClientCPL ) isEqual1;
+  c2 = ( ClientCPL ) isEqual2;
+  return strcmp ( c1->clientCode , c2->clientCode );
 }
 
 void myFreeCharCPL ( void* myfree ){

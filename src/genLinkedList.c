@@ -229,7 +229,7 @@ void* searchLL (  struct list *list , void * element , int ( *isEqualFunc ) ( vo
   struct listNode *current;
   current = list->head;
   while( current != NULL &&  flagFound == 0 ) {
-    if ( isEqualFunc ( current->data , element ) ){
+    if ( isEqualFunc ( current->data , element ) == 0 ){
       flagFound = 1;
     }
     else{

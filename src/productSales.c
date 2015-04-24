@@ -1,9 +1,13 @@
+/*
+ *  * Copyright (C) Carlos Sá, Filipe Oliveira, Sérgio Caldas
+ *  * Copyright (C) Laboratórios Informática III, Universidade do Minho, 2015
+ *  */
+
 #include <stdlib.h>
 #include <string.h>
 #include "assert.h"
 #include <stdio.h>
 #include "productSales.h"
-
 
 struct productSales {
   char* productCode;
@@ -38,25 +42,17 @@ int getProductSalesUnitsSold ( void* in  ){
 
 ProductSales addUnitProductSales ( ProductSales p1 , int addUnit ){
   assert ( p1 != NULL );
-  p1->unitsSold += addUnit;
+  p1->unitsSold = p1->unitsSold + addUnit;
   return p1;
 }
 
 int equalsProductSales ( void* isEqual1, void* isEqual2 ){
   ProductSales p1, p2;
-  int returningValue = -1;
   assert ( isEqual1 != NULL );
   assert ( isEqual2 != NULL );
   p1 = ( ProductSales ) isEqual1;
   p2 = ( ProductSales ) isEqual2;
-  returningValue = strcmp ( p1->productCode , p2->productCode );
-  if ( returningValue == 0 ){
-    returningValue = 1;
-  }
-  else {
-    returningValue = 0;
-  }
-  return returningValue;
+  return strcmp ( p1->productCode , p2->productCode );
 }
 
 int productSalesUnitComparator ( void* comp1 , void* comp2 ){

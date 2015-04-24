@@ -14,7 +14,7 @@ void* searchBst ( BSTree , void* );
 
 void insertBst ( BSTree , void* );
 
-struct list* BSTreeToLL ( BSTree tree , int sizeStruct,  void ( *destroyer ) (void *) );
+struct list* BSTreeToLL ( BSTree tree , struct list* returningLL );
 
 struct list* BSTreeToLL_ToString ( BSTree tree, int sizeStruct , void ( *destroyer ) ( void* ) , void* ( *toStringer ) ( void* ) );
 

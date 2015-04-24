@@ -1,3 +1,8 @@
+/*
+ *  * Copyright (C) Carlos Sá, Filipe Oliveira, Sérgio Caldas
+ *  * Copyright (C) Laboratórios Informática III, Universidade do Minho, 2015
+ *  */
+
 #include <stdlib.h>
 #include <string.h>
 #include "avlTree.h"
@@ -258,10 +263,10 @@ void* toStringer ( struct avlNode * node ){
   nKey = NULL;
   sizeToAllocate = 0;
   if( node != NULL ){
-  sizeToAllocate = strlen ( node->key );
-  nKey = (char*) malloc ( (sizeToAllocate+2) * sizeof ( char ) );
-  strcpy( nKey , node->key );
-  strcat ( nKey , "\n" );
+    sizeToAllocate = strlen ( node->key );
+    nKey = (char*) malloc ( (sizeToAllocate+2) * sizeof ( char ) );
+    strcpy( nKey , node->key );
+    strcat ( nKey , "\n" );
   }
   return nKey;
 }

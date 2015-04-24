@@ -47,7 +47,7 @@ void handleStrings ( List strings , char* title ){
   readedSize = sizeLL (strings);
   flagEXIT=0;
   while ( flagEXIT == 0 ){
-    system("clear");
+    /*system("clear");*/
     actual = actualLowLimit;
     actualTopLimit = actualLowLimit + horizontalLines -1;
     if(actualTopLimit > readedSize ){ actualTopLimit = readedSize; }

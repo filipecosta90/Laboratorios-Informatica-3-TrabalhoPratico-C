@@ -136,10 +136,7 @@ List BstNodeToLL_ToString ( List ll , BstNode b1 , void* ( *toStringer ) ( void*
   return ll;
 }
 
-List BSTreeToLL ( BSTree tree , int sizeStruct,  void ( *destroyer ) (void *) ){
-  List returningLL;
-  returningLL = initLL();
-  newLL ( returningLL , sizeStruct , destroyer );
+List BSTreeToLL ( BSTree tree , List returningLL ){
   /* No root */
   if ( tree->root == NULL ){
     return returningLL;
@@ -275,10 +272,6 @@ struct list* BSTreeToLLWithMergeRepeated ( BSTree tree , struct list* returningL
   }
   return returningLL;
 }
-
-
-
-
 
 int BSTreeSize ( BSTree tree ) {
   if( tree != NULL) {

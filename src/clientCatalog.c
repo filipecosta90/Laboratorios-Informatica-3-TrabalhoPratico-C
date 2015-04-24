@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
+#include <string.h>
 
 struct clientCatalog {
   AvlTree lettersArray[26][26];
@@ -72,7 +73,6 @@ int containsClientCode ( struct clientCatalog* clCat, char* clientCode ){
   return avlContains ( clCat->lettersArray[outPosition][inPosition] , clientCode );
 }
 
-
 void deleteClientCatalog ( struct clientCatalog* clCat ) {
   int out , in;
   out = 0;
@@ -94,6 +94,15 @@ void myFreeCharclCat ( void* myfree ){
   free ( stringF );
 }
 
+int reorderStringclCat ( void* isEqual1, void* isEqual2 ){
+  char* p1, *p2;
+  assert ( isEqual1 != NULL );
+  assert ( isEqual2 != NULL );
+  p1 = ( char* ) isEqual1;
+  p2 = ( char* ) isEqual2;
+  return strcmp ( p2 , p1 );
+}
+
 /* QUERIE 6 */
 struct list* getClientsByLetter__LL_strings ( struct clientCatalog* clCat , char clientInitial ){
   int outPosition, inPosition;
@@ -105,6 +114,7 @@ struct list* getClientsByLetter__LL_strings ( struct clientCatalog* clCat , char
   for ( ; inPosition < 26 ; inPosition++){
     returningLL = avlToLL ( clCat->lettersArray[outPosition][inPosition] , returningLL  );
   }
+  returningLL = reorderLL ( returningLL , &reorderStringclCat , sizeof ( char )  , &myFreeCharclCat );
   return returningLL;
 }
 

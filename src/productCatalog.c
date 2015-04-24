@@ -9,6 +9,7 @@
 
 #include <assert.h>
 #include <stdlib.h>
+#include <string.h>
 
 struct productCatalog {
   AvlTree lettersArray[26][26];
@@ -93,6 +94,15 @@ void myFreeCharprCat ( void* myfree ){
   free ( stringF );
 }
 
+int reorderStringprCat ( void* isEqual1, void* isEqual2 ){
+  char* p1, *p2;
+  assert ( isEqual1 != NULL );
+  assert ( isEqual2 != NULL );
+  p1 = ( char* ) isEqual1;
+  p2 = ( char* ) isEqual2;
+  return strcmp ( p2 , p1 );
+}
+
 /* QUERIE 2 */
 struct list* getProductsByLetter__LL_strings ( struct productCatalog* prCat , char productInitial ){
   int outPosition, inPosition;
@@ -104,6 +114,7 @@ struct list* getProductsByLetter__LL_strings ( struct productCatalog* prCat , ch
   for ( ; inPosition < 26 ; inPosition++){
     returningLL = avlToLL ( prCat->lettersArray[outPosition][inPosition] , returningLL  );
   }
+  returningLL = reorderLL ( returningLL , &reorderStringprCat , sizeof ( char )  , &myFreeCharprCat );
   return returningLL;
 }
 

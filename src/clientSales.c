@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include "clientSales.h"
 
-
 struct clientSales {
   char* clientCode;
   int unitsSold;

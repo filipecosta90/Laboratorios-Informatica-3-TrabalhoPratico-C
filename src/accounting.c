@@ -1,3 +1,8 @@
+/*
+ *  * Copyright (C) Carlos Sá, Filipe Oliveira, Sérgio Caldas
+ *  * Copyright (C) Laboratórios Informática III, Universidade do Minho, 2015
+ *  */
+
 #include "accounting.h"
 #include "month.h"
 #include <stdlib.h>
