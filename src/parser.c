@@ -15,6 +15,8 @@
 #include "accounting.h"
 #include "parser.h"
 
+#define MAX_PARSER_LINE 32
+
 static int productOk(char* line){
 
   int result = 1;
@@ -111,7 +113,7 @@ int readFileSales(char* filename, Accounting acBook , ClientCatalog clCat, Produ
   int tokenPosition = 0;
   int clientError=0;
   int productError=0;
-  char buf[32];
+  char buf[MAX_PARSER_LINE];
   int maxSize=0;
   char* tk;
   float priceToken = 0.0;
@@ -154,8 +156,7 @@ int readFileSales(char* filename, Accounting acBook , ClientCatalog clCat, Produ
                   if(error==0){
                     monthToken = atoi ( tk );
                     correctCount++;
-                    addSale( acBook, monthToken  );
-                    addClient( acBook, monthToken );
+                    addSale( acBook, monthToken );
                     addBill( acBook, monthToken, priceToken * unitToken );
                     addSalesLineToSPL ( splProd , productToken , clientToken , modeToken , unitToken , priceToken*unitToken , monthToken );
                     addSalesLineToCPL ( cplClient , productToken , clientToken , unitToken , monthToken );

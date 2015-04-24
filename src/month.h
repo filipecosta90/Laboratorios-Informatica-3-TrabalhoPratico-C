@@ -14,13 +14,9 @@ void initMonth ( Month );
 
 int getNumberSales ( Month );
 
-int getNumberClients ( Month );
-
 float getTotalBilled ( Month );
 
 void addSales ( Month , int );
-
-void addClients ( Month, int );
 
 void addBills ( Month , float );
 

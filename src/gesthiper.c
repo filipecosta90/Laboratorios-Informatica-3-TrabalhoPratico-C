@@ -732,10 +732,10 @@ void querie8( SalesProductLinker splProd , List listStrings ){
   end = clock();
   logStats ( "statistics.csv" , "QUERIE 8" , start, end );
   printf("Número total de clientes que compraram %s em modo normal: %d\n", codProduto , sizeLL ( listStrings ));
-  handleStrings ( listStrings , "Códigos de clientes que compraram o produto em modo normal");
+  handleStrings ( listStrings , "Códigos de clientes que compraram o produto em MODO NORMAL");
   listStrings = getPromotionClientsWhoBoughtProduct__LL_STRINGS  ( splProd , ensureUpper( codProduto ) );
   printf("Número total de clientes que compraram %s em modo promocional: %d\n", codProduto , sizeLL ( listStrings ));
-  handleStrings ( listStrings , "Códigos de clientes que compraram o produto em modo promocional");
+  handleStrings ( listStrings , "Códigos de clientes que compraram o produto em MODO PROMOCIONAL");
 }
 
 /**

@@ -31,12 +31,6 @@ void addSale ( struct accounting* acBook, int month ) {
   addSales( acBook->monthsArray[position] , 1 );
 }
 
-void addClient ( struct accounting* acBook, int month ) {
-  int position;
-  position = month-1;
-  addClients( acBook->monthsArray[position], 1);
-}
-
 void addBill ( struct accounting* acBook, int month , float billedValue) {
   int position = month -1;
   addBills ( acBook->monthsArray[position], billedValue );
