@@ -27,8 +27,6 @@
 #define STANDARD_SALES_FILENAME "../files/Compras.txt"
 #define HORIZONTAL_LINES 20
 
-
-
 static int flagReadedClients, flagReadedProducts, flagReadedSales, flagBlockedContent;
 
 char* ensureUpper ( char *s ) {
@@ -77,8 +75,8 @@ void handleStrings ( List strings , char* title ){
       *pos = '\0';
     }
     if ( strcmp ( internalOption , "s" ) == 0 ){ actualLowLimit--; if( actualLowLimit < 1 ){ actualLowLimit = 1; } }
-    if ( strcmp ( internalOption , "d" ) == 0 ){ actualLowLimit++; if( actualTopLimit > readedSize ){ actualTopLimit = readedSize; actualLowLimit = actualTopLimit - horizontalLines; } }
-    if ( strcmp ( internalOption , "f" ) == 0 ){ actualLowLimit+=20; if( actualTopLimit > readedSize ){ actualTopLimit = readedSize; actualLowLimit = actualTopLimit - horizontalLines;  } }
+    if ( strcmp ( internalOption , "d" ) == 0 ){ actualLowLimit++; if( actualLowLimit + horizontalLines-1 >= readedSize ){ actualTopLimit = readedSize; actualLowLimit = actualTopLimit - horizontalLines +1; } }
+    if ( strcmp ( internalOption , "f" ) == 0 ){ actualLowLimit+=20; if( ( actualLowLimit + horizontalLines-1 ) >= readedSize ){ actualTopLimit = readedSize; actualLowLimit = actualTopLimit - horizontalLines +1;  } }
     if ( strcmp ( internalOption , "a" ) == 0){ actualLowLimit-=20; if( actualLowLimit < 1 ){ actualLowLimit = 1; } }
     if ( strcmp ( internalOption , "q" ) == 0 ){ flagEXIT = 1; }
   }
