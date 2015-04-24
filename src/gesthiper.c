@@ -183,15 +183,17 @@ void menuReadProductsFile( ProductCatalog prCat ){
   char * pos;
   int errorReadingProducts;
   int correctInsertedProducts;
-  int flagEXIT, firstTime;
+  int flagEXIT, firstTime, flagPress;
   clock_t start , end;
   flagEXIT = 0;
   firstTime = 1;
+  flagPress = 0;
 
   do {
-    if( firstTime == 0 && flagEXIT == 0 ){
+    if( firstTime == 0 && flagPress == 1 ){
       printf("Pressione qualquer tecla para continuar.\n");
       getchar();
+      flagPress = 0;
     }
     firstTime = 0;
     system("clear");
@@ -225,6 +227,7 @@ void menuReadProductsFile( ProductCatalog prCat ){
       logStats ( "statistics.csv" , "QUERIE QUERIE 1-Products" , start, end );
       printf("Resultado leitura de %s\n\t%d linhas lidas.\n\t%d linhas validadas.\n\t%d linhas rejeitadas.\n", STANDARD_PRODUCT_FILENAME , correctInsertedProducts+errorReadingProducts, correctInsertedProducts , errorReadingProducts );
       flagReadedProducts = 1;
+      flagPress = 1;
     }
     if ( strcmp ( internalOption , "2" ) == 0 ){
       printf("Insira o nome do ficheiro a ser lido:\n");
@@ -243,8 +246,8 @@ void menuReadProductsFile( ProductCatalog prCat ){
       end = clock();
       logStats ( "statistics.csv" , "QUERIE 1-Products" , start, end );
       printf("Resultado leitura de %s\n\t%d linhas lidas.\n\t%d linhas validadas.\n\t%d linhas rejeitadas.\n", fileName , correctInsertedProducts+errorReadingProducts, correctInsertedProducts , errorReadingProducts );
-
       flagReadedProducts = 1;
+      flagPress = 1;
     }
     if ( strcmp ( internalOption , "3" ) == 0 ){
       flagEXIT = 1;
@@ -258,15 +261,17 @@ void menuReadClientsFile( ClientCatalog clCat ){
   char fileName[MAX_FILENAME];
   int errorReadingClients;
   int correctInsertedClients;
-  int flagEXIT, firstTime;
+  int flagEXIT, firstTime, flagPress;
   clock_t start , end;
   flagEXIT = 0;
   firstTime = 1;
+  flagPress = 0;
 
   do {
-    if( firstTime == 0 && flagEXIT == 0 ){
+    if( firstTime == 0 && flagPress == 1 ){
       printf("Pressione qualquer tecla para continuar.\n");
       getchar();
+      flagPress = 0;
     }
     firstTime = 0;
     system("clear");
@@ -298,6 +303,7 @@ void menuReadClientsFile( ClientCatalog clCat ){
       logStats ( "statistics.csv" , "QUERIE 1-Clients" , start, end );
       printf("Resultado leitura de %s\n\t%d linhas lidas.\n\t%d linhas validadas.\n\t%d linhas rejeitadas.\n", STANDARD_CLIENT_FILENAME , correctInsertedClients+errorReadingClients, correctInsertedClients , errorReadingClients );
       flagReadedClients = 1;
+      flagPress = 1;
     }
     if ( strcmp ( internalOption , "2" ) == 0 ){
       printf("Insira o nome do ficheiro a ser lido:\n");
@@ -317,6 +323,7 @@ void menuReadClientsFile( ClientCatalog clCat ){
       logStats ( "statistics.csv" , "QUERIE 1-Clients" , start, end );
       printf("Resultado leitura de %s\n\t%d linhas lidas.\n\t%d linhas validadas.\n\t%d linhas rejeitadas.\n", fileName , correctInsertedClients+errorReadingClients, correctInsertedClients , errorReadingClients );
       flagReadedClients = 1;
+      flagPress = 1;
     }
     if ( strcmp ( internalOption , "3" ) == 0 ){
       flagEXIT = 1;
@@ -330,15 +337,17 @@ void menuReadSalesFile ( Accounting acBook , ClientCatalog clCat , ProductCatalo
   char fileName[MAX_FILENAME];
   int errorReadingClientsInSales , errorReadingProductsInSales ;
   int correctInsertedSales;
-  int flagEXIT, firstTime;
+  int flagEXIT, firstTime, flagPress;
   clock_t start , end;
   flagEXIT = 0;
+  flagPress = 0;
   firstTime = 1;
 
   do {
-    if( firstTime == 0 && strcmp ( internalOption , "3" ) != 0 ){
+    if( firstTime == 0 && flagPress == 1 ){
       printf("Pressione qualquer tecla para continuar.\n");
       getchar();
+      flagPress = 0;
     }
     firstTime = 0;
     system("clear");
@@ -373,6 +382,7 @@ void menuReadSalesFile ( Accounting acBook , ClientCatalog clCat , ProductCatalo
       logStats ( "statistics.csv" , "QUERIE 1-Sales" , start, end );
       printf("Resultado leitura de %s\n\t%d linhas lidas.\n\t%d linhas validadas.\n\t%d linhas rejeitadas.\n", STANDARD_SALES_FILENAME , correctInsertedSales+errorReadingProductsInSales+errorReadingClientsInSales, correctInsertedSales , errorReadingProductsInSales+errorReadingClientsInSales );
       flagReadedSales = 1;
+      flagPress = 1;
     }
     if ( strcmp ( internalOption , "2" ) == 0 ){
       printf("Insira o nome do ficheiro a ser lido:\n");
@@ -395,6 +405,7 @@ void menuReadSalesFile ( Accounting acBook , ClientCatalog clCat , ProductCatalo
       logStats ( "statistics.csv" , "QUERIE 1-Sales" , start, end );
       printf("Resultado leitura de %s\n\t%d linhas lidas.\n\t%d linhas validadas.\n\t%d linhas rejeitadas.\n", fileName , correctInsertedSales+errorReadingProductsInSales+errorReadingClientsInSales, correctInsertedSales , errorReadingProductsInSales+errorReadingClientsInSales );
       flagReadedSales = 1;
+      flagPress = 1;
     }
     if ( strcmp ( internalOption , "3" ) == 0 ){
       flagEXIT = 1;
@@ -413,15 +424,17 @@ void querie1( ProductCatalog prCat , ClientCatalog clCat, Accounting acBook , Sa
   char* pos;
   int errorReadingClients , errorReadingProducts , errorReadingClientsInSales , errorReadingProductsInSales ;
   int correctInsertedClients, correctInsertedProducts, correctInsertedSales;
-  int firstTime , flagEXIT;
+  int firstTime , flagEXIT, flagPress;
   clock_t start , end;
   firstTime = 1;
+  flagPress = 0;
   flagEXIT = 0;
 
   do{
-    if ( firstTime == 0 && flagEXIT == 0 ){
+    if ( firstTime == 0 && flagPress == 1 ){
       printf("Pressione qualquer tecla para continuar\n");
       getchar();
+      flagPress = 0;
     }
     firstTime = 0;
     system("clear");
@@ -449,10 +462,7 @@ void querie1( ProductCatalog prCat , ClientCatalog clCat, Accounting acBook , Sa
     else {
       printf("3- ** bloqueado **  Ler o ficheiro de Compras. ** bloqueado **\n\tNota: para ler o ficheiro de compras tem que possuir uma leitura de produtos e clientes válida!\n");
     }
-    if( flagBlockedContent == 1 ){
-      printf ( "\nA opção que escolheu encontra-se bloqueada. Atente na nota localizada abaixo da opção.\n");
-      flagBlockedContent = 0;
-    }
+
     if ( flagReadedSales == 0 && flagReadedClients == 0 & flagReadedProducts == 0  ){
       printf("4-Ler o ficheiros de Produtos (%s), Compras (%s) e Vendas (%s) Standard.\n", STANDARD_PRODUCT_FILENAME, STANDARD_CLIENT_FILENAME, STANDARD_SALES_FILENAME);
     }
@@ -460,6 +470,10 @@ void querie1( ProductCatalog prCat , ClientCatalog clCat, Accounting acBook , Sa
       printf("4-Ler o ficheiros de Produtos (%s), Compras (%s) e Vendas (%s) Standard.\n\tNota: A leitura atual será eliminada!\n", STANDARD_PRODUCT_FILENAME, STANDARD_CLIENT_FILENAME, STANDARD_SALES_FILENAME);
     }
     printf("\n5-Voltar ao menu anterior.\n");
+    if( flagBlockedContent == 1 ){
+      printf ( "\nA opção que escolheu encontra-se bloqueada. Atente na nota localizada abaixo da opção.\n");
+      flagBlockedContent = 0;
+    }
     printf("\nEscolha uma opção:\n");
     fgets(internalOption, MAX_LINE_OPTION , stdin);
     if ((pos=strchr(internalOption, '\n')) != NULL){
@@ -520,6 +534,7 @@ void querie1( ProductCatalog prCat , ClientCatalog clCat, Accounting acBook , Sa
       logStats ( "statistics.csv" , "QUERIE 1-Sales" , start, end );
       printf("Resultado leitura de %s\n\t%d linhas lidas.\n\t%d linhas validadas.\n\t%d linhas rejeitadas.\n", STANDARD_SALES_FILENAME , correctInsertedSales+errorReadingProductsInSales+errorReadingClientsInSales, correctInsertedSales , errorReadingProductsInSales+errorReadingClientsInSales );
       flagReadedSales = 1;
+      flagPress = 1;
     }
     if ( strcmp ( internalOption , "5" ) == 0 ){
       flagEXIT = 1;
