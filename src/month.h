@@ -27,4 +27,3 @@ void addBills ( Month , float );
 void deleteMonth ( Month );
 
 #endif /* _MONTH_H_INCLUDED_ */
-

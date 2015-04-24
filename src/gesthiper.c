@@ -189,7 +189,7 @@ void menuReadProductsFile( ProductCatalog prCat ){
   firstTime = 1;
 
   do {
-    if( firstTime == 0 ){
+    if( firstTime == 0 && flagEXIT == 0 ){
       printf("Pressione qualquer tecla para continuar.\n");
       getchar();
     }
@@ -264,7 +264,7 @@ void menuReadClientsFile( ClientCatalog clCat ){
   firstTime = 1;
 
   do {
-    if( firstTime == 0 ){
+    if( firstTime == 0 && flagEXIT == 0 ){
       printf("Pressione qualquer tecla para continuar.\n");
       getchar();
     }
@@ -336,7 +336,7 @@ void menuReadSalesFile ( Accounting acBook , ClientCatalog clCat , ProductCatalo
   firstTime = 1;
 
   do {
-    if( firstTime == 0 ){
+    if( firstTime == 0 && strcmp ( internalOption , "3" ) != 0 ){
       printf("Pressione qualquer tecla para continuar.\n");
       getchar();
     }
@@ -419,7 +419,7 @@ void querie1( ProductCatalog prCat , ClientCatalog clCat, Accounting acBook , Sa
   flagEXIT = 0;
 
   do{
-    if ( firstTime == 0 ){
+    if ( firstTime == 0 && flagEXIT == 0 ){
       printf("Pressione qualquer tecla para continuar\n");
       getchar();
     }
@@ -877,16 +877,18 @@ void querie14( SalesProductLinker splProd , ClientProductLinker cplClient , Prod
 }
 
 void navegar( ProductCatalog prCat , ClientCatalog clCat, Accounting acBook , SalesProductLinker splProd , ClientProductLinker cplClient , List listStrings ){
-  int firstTime , flagEXIT;
+  int firstTime , flagEXIT, flagPress;
   char readedLine[MAX_LINE_OPTION];
   char *pos;
   flagEXIT = 0;
   firstTime = 1;
+  flagPress = 0;
 
   do{
-    if ( firstTime == 0 ){
+    if ( firstTime == 0 && flagPress == 1 ){
       printf("Pressione qualquer tecla para continuar!\n");
       getchar();
+      flagPress = 0;
     }
     firstTime = 0;
     head();
@@ -907,6 +909,7 @@ void navegar( ProductCatalog prCat , ClientCatalog clCat, Accounting acBook , Sa
     if ( strcmp ( readedLine , "2" ) == 0 ){
       if ( flagReadedProducts ){
         querie2( prCat , listStrings );
+
       }
       else {
         flagBlockedContent = 1;
@@ -915,6 +918,7 @@ void navegar( ProductCatalog prCat , ClientCatalog clCat, Accounting acBook , Sa
     if ( strcmp ( readedLine , "3" ) == 0 ){
       if ( flagReadedSales ){
         querie3( splProd );
+        flagPress = 1;
       }
       else {
         flagBlockedContent = 1;
@@ -947,6 +951,7 @@ void navegar( ProductCatalog prCat , ClientCatalog clCat, Accounting acBook , Sa
     if ( strcmp ( readedLine , "7" ) == 0 ){
       if ( flagReadedSales ){
         querie7( acBook );
+        flagPress = 1;
       }
       else {
         flagBlockedContent = 1;
@@ -981,6 +986,7 @@ void navegar( ProductCatalog prCat , ClientCatalog clCat, Accounting acBook , Sa
     if ( strcmp ( readedLine , "11" ) == 0 ){
       if ( flagReadedSales ){
         querie11( acBook , cplClient  );
+        flagPress = 1;
       }
       else {
         flagBlockedContent = 1;
@@ -1005,6 +1011,7 @@ void navegar( ProductCatalog prCat , ClientCatalog clCat, Accounting acBook , Sa
     if ( strcmp ( readedLine , "14" ) == 0 ){
       if ( flagReadedSales ){
         querie14( splProd , cplClient , prCat , clCat , listStrings );
+        flagPress = 1;
       }
       else {
         flagBlockedContent = 1;
