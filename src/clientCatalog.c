@@ -30,6 +30,19 @@ struct clientCatalog* newClientCatalog ( void ){
   return newClCat;
 }
 
+struct clientCatalog* resetClientCatalog ( struct clientCatalog* resetClCat ){
+  int in , out;
+  in = 0;
+  out = 0;
+  for( ; out<26; out++){
+    in = 0;
+    for ( ; in < 26; in++ ){
+      resetClCat->lettersArray[out][in] = createTree();
+    }
+  }
+  return resetClCat;
+}
+
 static int getClientArrayOutPosition ( char* clientCode ) {
   int position;
   position = (int) clientCode[0];

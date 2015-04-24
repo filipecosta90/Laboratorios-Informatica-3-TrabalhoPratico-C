@@ -369,9 +369,8 @@ void menuReadSalesFile ( Accounting acBook , ClientCatalog clCat , ProductCatalo
     if ( strcmp ( internalOption , "1" ) == 0 ){
       start = clock();
       if ( flagReadedSales == 1 ) {
-        acBook = newAccounting();
-        splProd = newSalesProductLinker();
-        cplClient = newClientProductLinker();
+        splProd = resetSalesProductLinker( splProd );
+        cplClient = resetClientProductLinker( cplClient );
         initAccounting (acBook);
         correctInsertedSales = readFileSales( STANDARD_SALES_FILENAME , acBook , clCat , prCat , splProd , cplClient , &errorReadingProductsInSales , &errorReadingClientsInSales );
       }
@@ -392,9 +391,8 @@ void menuReadSalesFile ( Accounting acBook , ClientCatalog clCat , ProductCatalo
       }
       start= clock();
       if ( flagReadedSales == 1 ) {
-        acBook = newAccounting();
-        splProd = newSalesProductLinker();
-        cplClient = newClientProductLinker();
+        splProd = resetSalesProductLinker( splProd );
+        cplClient = resetClientProductLinker( cplClient );
         initAccounting (acBook);
         correctInsertedSales = readFileSales( fileName , acBook , clCat , prCat , splProd , cplClient , &errorReadingProductsInSales , &errorReadingClientsInSales );
       }
@@ -497,7 +495,7 @@ void querie1( ProductCatalog prCat , ClientCatalog clCat, Accounting acBook , Sa
     if ( strcmp ( internalOption , "4" ) == 0 ){
       start = clock();
       if ( flagReadedProducts == 1 ) {
-        prCat = newProductCatalog();
+        prCat = resetProductCatalog( prCat );
         correctInsertedProducts = readFileProducts ( STANDARD_PRODUCT_FILENAME , prCat , &errorReadingProducts );
       }
       else{
@@ -509,7 +507,7 @@ void querie1( ProductCatalog prCat , ClientCatalog clCat, Accounting acBook , Sa
       logStats ( "statistics.csv" , "QUERIE 1-Products" , start, end );
       start = clock();
       if ( flagReadedClients == 1 ) {
-        clCat = newClientCatalog();
+        clCat = resetClientCatalog( clCat );
         correctInsertedClients = readFileClients ( STANDARD_CLIENT_FILENAME , clCat , &errorReadingClients );
       }
       else{
@@ -521,9 +519,8 @@ void querie1( ProductCatalog prCat , ClientCatalog clCat, Accounting acBook , Sa
       flagReadedClients = 1;
       start = clock();
       if ( flagReadedSales == 1 ) {
-        acBook = newAccounting();
-        splProd = newSalesProductLinker();
-        cplClient = newClientProductLinker();
+        splProd = resetSalesProductLinker( splProd );
+        cplClient = resetClientProductLinker( cplClient );
         initAccounting (acBook);
         correctInsertedSales = readFileSales( STANDARD_SALES_FILENAME , acBook , clCat , prCat , splProd , cplClient , &errorReadingProductsInSales , &errorReadingClientsInSales );
       }

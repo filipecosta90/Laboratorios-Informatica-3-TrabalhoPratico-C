@@ -12,6 +12,8 @@ typedef char* ProductCode;
 
 ProductCatalog newProductCatalog ( void );
 
+struct productCatalog* resetProductCatalog ( struct productCatalog* resetPrCat );
+
 void initProductCatalog ( ProductCatalog );
 
 void addProductToCatalog ( ProductCatalog , ProductCode );

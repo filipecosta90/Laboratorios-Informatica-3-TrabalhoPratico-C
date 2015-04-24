@@ -12,6 +12,8 @@ typedef struct salesProductLinker*  SalesProductLinker;
 
 SalesProductLinker newSalesProductLinker ( );
 
+struct salesProductLinker* resetSalesProductLinker ( struct salesProductLinker* resetSPL );
+
 struct list* getNormalClientsWhoBoughtProduct__LL_STRINGS  ( SalesProductLinker , productCode );
 
 struct list* getPromotionClientsWhoBoughtProduct__LL_STRINGS ( SalesProductLinker , productCode );

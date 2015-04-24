@@ -39,6 +39,23 @@ struct clientProductLinker* newClientProductLinker ( ) {
   return newCPL;
 }
 
+struct clientProductLinker* resetClientProductLinker ( struct clientProductLinker* resetCPL ) {
+  int out , in, month;
+  in = 0;
+  out = 0;
+  month = 0;
+  for ( ; month < 12 ; month ++ ){
+    out = 0;
+    for( ; out<26; out++){
+      in = 0;
+      for ( ; in<26; in++ ){
+        resetCPL->lettersArray[month][out][in] = newBSTree ( &clientCPLEquals );
+      }
+    }
+  }
+  return resetCPL;
+}
+
 static int getClientCPLArrayOutPosition ( char* clientCode ) {
   int position;
   position = (int) clientCode[0];

@@ -10,6 +10,8 @@ typedef struct clientProductLinker*  ClientProductLinker;
 
 struct clientProductLinker* newClientProductLinker ( );
 
+struct clientProductLinker* resetClientProductLinker ( struct clientProductLinker* resetCPL );
+
 void addSalesLineToCPL ( struct clientProductLinker* clientPrLinker , char* productCode, char* clientCode , int unitsSold , int month );
 
 /* QUERIE 5 */

@@ -34,6 +34,19 @@ struct salesProductLinker* newSalesProductLinker ( ) {
   return newSPL;
 }
 
+struct salesProductLinker* resetSalesProductLinker ( struct salesProductLinker* resetSPL ) {
+  int out , in;
+  in = 0;
+  out = 0;
+  for( ; out<26; out++){
+    in = 0;
+    for ( ; in<26; in++ ){
+      resetSPL->lettersArray[out][in] = newBSTree ( &productSPLEquals );
+    }
+  }
+  return resetSPL;
+}
+
 static int getProductSPLArrayOutPosition ( char* productCode ) {
   int position;
   position = (int) productCode[0];

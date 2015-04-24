@@ -29,6 +29,19 @@ struct productCatalog* newProductCatalog ( void ){
   return newPrCat;
 }
 
+struct productCatalog* resetProductCatalog ( struct productCatalog* resetPrCat ){
+  int out , in;
+  out = 0;
+  in = 0;
+  for ( ; out < 26; out++ ){
+    in = 0;
+    for( ; in<26; in++){
+      resetPrCat->lettersArray[out][in] = createTree();
+    }
+  }
+  return resetPrCat;
+}
+
 static int getProductArrayOutPosition ( char* productCode ) {
   int position;
   position = (int) productCode[0];

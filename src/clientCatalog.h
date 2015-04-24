@@ -10,6 +10,8 @@ typedef struct clientCatalog* ClientCatalog;
 
 ClientCatalog newClientCatalog ( void );
 
+struct clientCatalog* resetClientCatalog ( struct clientCatalog* resetClCat );
+
 void addClientToCatalog ( ClientCatalog , char* clientCode );
 
 int containsClientCode ( ClientCatalog, char* clientCode );
