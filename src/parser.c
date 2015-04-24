@@ -17,8 +17,8 @@
 
 static int productOk(char* line){
 
-  volatile int result = 1;
-  volatile int size = strlen(line);
+  int result = 1;
+  int size = strlen(line);
   if (size == 6){
     if(isalpha(line[0])){
       if(isalpha(line[1])){
@@ -32,10 +32,10 @@ static int productOk(char* line){
 }
 
 static int priceOk(char* buf){
-  volatile int totalSize = strlen(buf);
-  volatile int untilPoint = strcspn(buf,".");
-  volatile int position = 0;
-  volatile int errorFlag = 0;
+  int totalSize = strlen(buf);
+  int untilPoint = strcspn(buf,".");
+  int position = 0;
+  int errorFlag = 0;
   while (position < totalSize && errorFlag != 1){
     if(position != untilPoint){
       if(!isdigit(buf[position])){
@@ -48,9 +48,9 @@ static int priceOk(char* buf){
 }
 
 static int unitOk (char* buf){
-  volatile int errorFlag=0;
-  volatile int position=0;
-  volatile int totalSize=strlen(buf);
+  int errorFlag=0;
+  int position=0;
+  int totalSize=strlen(buf);
   while(position < totalSize && errorFlag==0){
     if(!isdigit(buf[position])){
       errorFlag=1;
@@ -61,8 +61,8 @@ static int unitOk (char* buf){
 }
 
 static int salesTypeOk(char* buf){
-  volatile int size = strlen (buf);
-  volatile int result = 1;
+  int size = strlen (buf);
+  int result = 1;
   if (size == 1){
     if( buf[0] == 'P' || buf[0] == 'p' || buf[0] == 'n'|| buf[0] == 'N' ) 
     {
@@ -73,8 +73,8 @@ static int salesTypeOk(char* buf){
 }
 
 static int clientOk(char* buf){
-  volatile int result = 1;
-  volatile int size = strlen (buf);
+  int result = 1;
+  int size = strlen (buf);
   if (size == 5){
     if(isalpha(buf[0])){
       if(isalpha(buf[1])){
@@ -88,9 +88,9 @@ static int clientOk(char* buf){
 }
 
 static int monthOk(char* buf){
-  volatile int result = 0;
-  volatile int size = strlen (buf) - 2;
-  volatile int position = 0;
+  int result = 0;
+  int size = strlen (buf) - 2;
+  int position = 0;
   if(size >= 1 && size <=2 ){
     while (position < size && result == 0){
       if(!isdigit(buf[position])){
@@ -104,15 +104,15 @@ static int monthOk(char* buf){
 
 int readFileSales(char* filename, Accounting acBook , ClientCatalog clCat, ProductCatalog prCat, struct salesProductLinker* splProd , struct clientProductLinker* cplClient , int* clientErrorCount , int* productErrorCount ){
   FILE *fp;
-  volatile int totalCount=0;
-  volatile int correctCount=0;
-  volatile int errorCount=0;
-  volatile int error = 0;
-  volatile int tokenPosition = 0;
-  volatile int clientError=0;
-  volatile int productError=0;
+  int totalCount=0;
+  int correctCount=0;
+  int errorCount=0;
+  int error = 0;
+  int tokenPosition = 0;
+  int clientError=0;
+  int productError=0;
   char buf[32];
-  volatile int maxSize=0;
+  int maxSize=0;
   char* tk;
   float priceToken = 0.0;
   char productToken[7];
@@ -181,13 +181,13 @@ int readFileSales(char* filename, Accounting acBook , ClientCatalog clCat, Produ
 
 int readFileProducts(char* filename, ProductCatalog prCat , int* errorFlagCount ){
   FILE *fp;
-  volatile int totalCount=0;
-  volatile int correctCount=0;
-  volatile int errorCount=0;
-  volatile int error = 0;
-  volatile int tokenPosition = 0;
+  int totalCount=0;
+  int correctCount=0;
+  int errorCount=0;
+  int error = 0;
+  int tokenPosition = 0;
   char buf[32];
-  volatile int maxSize=0;
+  int maxSize=0;
   char* tk;
   char productToken[7];
   fp = fopen(filename,"r");
@@ -212,12 +212,12 @@ int readFileProducts(char* filename, ProductCatalog prCat , int* errorFlagCount 
 
 int readFileClients( char* filename, ClientCatalog clCat, int* errorFlagCount ){
   FILE *fp;
-  volatile int totalCount=0;
-  volatile int correctCount=0;
-  volatile int errorCount=0;
-  volatile int error = 0;
-  volatile int tokenPosition = 0;
-  volatile int maxSize=0;
+  int totalCount=0;
+  int correctCount=0;
+  int errorCount=0;
+  int error = 0;
+  int tokenPosition = 0;
+  int maxSize=0;
   char clientToken[6];
   char buf[32];
   char* tk;
