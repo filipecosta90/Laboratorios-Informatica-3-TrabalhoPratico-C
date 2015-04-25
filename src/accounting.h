@@ -31,6 +31,7 @@ int getIntervalTotalSales ( Accounting, type_of_month , type_of_month );
 /* retorna o valor facturado registado no intervalo de meses */
 float getIntervalTotalBilled ( Accounting, type_of_month , type_of_month );
 
+/* elimina o modo contabilidade */
 void deleteAccounting ( Accounting );
 
 #endif /* _ACCOUNTING_H_INCLUDED_ */

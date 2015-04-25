@@ -42,6 +42,19 @@ struct productCatalog* resetProductCatalog ( struct productCatalog* resetPrCat )
   return resetPrCat;
 }
 
+void deleteProductCatalog ( struct productCatalog* prCat ) {
+  int out , in;
+  out = 0;
+  in = 0;
+  for ( ; out < 26 ; out++ ){
+    in = 0;
+    for( ; in<26; in++ ){
+      avlFree ( prCat->lettersArray[out][in]);
+    }
+  }
+  free (prCat);
+}
+
 static int getProductArrayOutPosition ( char* productCode ) {
   int position;
   position = (int) productCode[0];

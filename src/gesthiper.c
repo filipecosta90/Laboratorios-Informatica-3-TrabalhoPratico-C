@@ -1050,6 +1050,13 @@ int main (int argc, char *argv[] ){
   cplClient = newClientProductLinker ();
   initAccounting (acBook);
   navegar( prCat , clCat, acBook , splProd , cplClient , listStrings );
+  printf("Deleting structs\n");
+  deleteAccounting( acBook );
+  deleteClientCatalog ( clCat );
+  deleteProductCatalog ( prCat );
+  deleteSalesProductLinker ( splProd );
+  deleteClientProductLinker ( cplClient );
+  printf("Goodbye\n");
   return 0;
 }
 

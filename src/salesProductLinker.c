@@ -47,6 +47,19 @@ struct salesProductLinker* resetSalesProductLinker ( struct salesProductLinker* 
   return resetSPL;
 }
 
+void deleteSalesProductLinker ( struct salesProductLinker* deleteSPL ) {
+  int out , in;
+  in = 0;
+  out = 0;
+  for( ; out<26; out++){
+    in = 0;
+    for ( ; in<26; in++ ){
+      deleteBst ( deleteSPL->lettersArray[out][in] );
+    }
+  }
+  free ( deleteSPL );
+}
+
 static int getProductSPLArrayOutPosition ( char* productCode ) {
   int position;
   position = (int) productCode[0];

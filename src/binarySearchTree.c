@@ -110,6 +110,27 @@ void insertBst ( BSTree tree , void* data ) {
   }
 }
 
+void deleteBstNode ( BstNode b1 ){
+  if( b1 != NULL){
+    if( b1->left != NULL ){
+      deleteBstNode ( b1->left );
+    }
+    if ( b1->right != NULL ){
+      deleteBstNode ( b1->right );
+    }
+    free ( b1 );
+  }
+}
+
+void deleteBst ( BSTree tree ){
+  if( tree != NULL ) {
+    if( tree->root != NULL ){
+      deleteBstNode (  tree->root );
+      free ( tree );
+    }
+  }
+}
+
 List BstNodeToLL ( List ll , BstNode b1 ){
   if( b1 != NULL){
     prependLL ( ll , b1->data );
